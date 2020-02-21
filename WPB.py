@@ -13,4 +13,11 @@
 
 import os
 
-os.makedirs('c:\\backup', exist_ok=True) 
+
+#####################################################################
+##                                                                 ##
+##                    Importation des modules                      ##
+##                                                                 ##
+#####################################################################
+
+os.makedirs('/home/backup', exist_ok=True) 
