@@ -2,7 +2,7 @@
 
 #####################################################################
 ##                                                                 ##
-##     Script de sauvegarde et restauration wordpresss  V0.0C      ##
+##     Script de sauvegarde et restauration wordpresss  V0.1       ##
 ##                                                                 ##
 #####################################################################
 
@@ -27,12 +27,10 @@ from datetime import date #
 ##                                                                 ##
 #####################################################################
 
-############################ rétention ##############################
-
 ################ Import du fichier de configuration #################
 
 config = configparser.ConfigParser()
-config.read('D:\\Projet6\\AIC-Projet6\\P6_config.ini')
+config.read('P6_config.ini')
 FTP = config.get('config','serveur_ftp')
 UserFTP = config.get('config','user_ftp')
 MdpFTP = config.get('config','mdp_ftp')
@@ -52,6 +50,14 @@ BACKUPDATE_OLD = date_aujourdhui_retention.strftime("%d-%m-%Y") # formatage de l
 
 repertoire_de_sauvegarde = '/home/save' # répertoire de sauvegarde linux
 
+############################# Fonction ##############################
+
+
+def CONTAINER():
+ client = docker.from_env()
+ for container in client.containers.list():
+  print (container.image,container.id)
+
 #####################################################################
 ##                                                                 ##
 ##                    Programme de Backup                          ##
@@ -68,10 +74,9 @@ else:
 
 # Récupération du nom et de l'ID du conteneur #
 
-# client = docker.from_env()
-# for container in client.containers.list():
-#  print (container.image,container.id)
-
+#client = docker.from_env()
+#for container in client.containers.list():
+# print (container.image,container.id)
 
 print(BACKUPDATE)
 print(BACKUPDATE_OLD)
@@ -85,3 +90,5 @@ print('le mot de passe utilisateur de la BDD MariaDB est:' ,MdpBDD)
 print('le Nombre de jour de rétention des sauvegardes est de:' ,NBjourDEretention)
 print('répertoire de sauvegarde Linux:',rep_linux)
 print('')
+
+CONTAINER()
