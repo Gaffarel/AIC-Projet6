@@ -52,6 +52,7 @@ repertoire_de_sauvegarde = '/home/save' # répertoire de sauvegarde linux
 
 ############################# Fonction ##############################
 
+# Récupération du nom et de l'ID du conteneur #
 
 def CONTAINER():
  client = docker.from_env()
@@ -91,4 +92,4 @@ print('le Nombre de jour de rétention des sauvegardes est de:' ,NBjourDEretenti
 print('répertoire de sauvegarde Linux:',rep_linux)
 print('')
 
-CONTAINER()
+#CONTAINER()
