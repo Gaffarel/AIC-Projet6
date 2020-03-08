@@ -38,6 +38,7 @@ AZURE_KEY = config.get('config','azure_key')
 AZURE_REP_BKP = config.get('config','azure_bkp')
 UserBDD = config.get('config','user_bdd')
 MdpBDD = config.get('config','mdp_bdd')
+Nom_de_la_BDD = config.get('config','name_bdd')
 NBjourDEretention = config.get('retention','nbjour')
 repertoire_de_sauvegarde = config.get('repertoire','backup_repertoire')
 
@@ -72,7 +73,7 @@ print(BACKUP_DATE_OLD)
 client = docker.from_env()
 dict_conteneur = {} # dictionnaire vide des conteneurs
 for container in client.containers.list(): # equivaut a docker ps
-  dict_conteneur[str(container.image)[8:-1]] = str(container.short_id) # r  cuperation du short_id et de l'image avec mise en forme dans le dictionnaire
+  dict_conteneur[str(container.image)[8:-1]] = str(container.short_id) # récuperation du short_id et de l'image avec mise en forme dans le dictionnaire
 #print(conteneur)
 print({dict_conteneur["'mariadb:10.3.18'"]})
 
@@ -81,7 +82,7 @@ print({dict_conteneur["'mariadb:10.3.18'"]})
 client = docker.from_env()
 #container = client.containers.get('33a595d494')
 container = client.containers.get(dict_conteneur["'mariadb:10.3.18'"])
-res = str((container.exec_run("mysqldump -u allouis -pbob MyCompany")).output, 'utf-8')
+res = str((container.exec_run("mysqldump -u "+UserBDD+" -p"+MdpBDD+" "+Nom_de_la_BDD)).output, 'utf-8')
 #print(res)
 fichier = open(repertoire_de_sauvegarde+"/save_"+str(BACKUP_DATE)+"db.sql","w")
 fichier.write(res)
