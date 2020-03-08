@@ -2,7 +2,7 @@
 
 #####################################################################
 ##                                                                 ##
-## Script de restauration d'un serveur wordpress et MariaDB  V0.3  ##
+## Script de restauration d'un serveur wordpress et MariaDB  V0.1  ##
 ##                                                                 ##
 #####################################################################
 
