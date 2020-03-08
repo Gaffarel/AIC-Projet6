@@ -15,7 +15,7 @@
 
 import os # Diverses interfaces pour le système d'exploitation
 import os.path # manipulation courante des chemins
-import platform # modules pour vérifier la platform (Linux/Windows/Mac)
+#import platform # modules pour vérifier la platform (Linux/Windows/Mac)
 import datetime # Types de base pour la date et l'heure
 import configparser # Configuration file parser
 import docker # Docker
