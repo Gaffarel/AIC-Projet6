@@ -2,7 +2,7 @@
 
 #####################################################################
 ##                                                                 ##
-##    Script de création d'un serveur wordpress et MariaDB  V0.1   ##
+##    Script de création d'un serveur wordpress et MariaDB  V0.2   ##
 ##                                                                 ##
 #####################################################################
 
@@ -72,3 +72,8 @@ print(BACKUP_DATE_OLD)
 
 repertoire = shutil.copy('/home/Projet6/AIC-Projet6/docker-compose.yml', repertoire_de_sauvegarde+'/')
 print(repertoire)
+repertoire = shutil.copy('/home/Projet6/AIC-Projet6/.env', repertoire_de_sauvegarde+'/')
+print(repertoire)
+repertoire = shutil.copy('/home/Projet6/AIC-Projet6/P6_config.ini', repertoire_de_sauvegarde+'/')
+print(repertoire)
+
