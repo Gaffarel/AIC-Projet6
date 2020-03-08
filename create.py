@@ -71,9 +71,13 @@ print(BACKUP_DATE_OLD)
 # Copy des fichiers utiles au bon endroit #
 
 repertoire = shutil.copy('/home/Projet6/AIC-Projet6/docker-compose.yml', repertoire_de_sauvegarde+'/')
-print(repertoire)
 repertoire = shutil.copy('/home/Projet6/AIC-Projet6/.env', repertoire_de_sauvegarde+'/')
-print(repertoire)
 repertoire = shutil.copy('/home/Projet6/AIC-Projet6/P6_config.ini', repertoire_de_sauvegarde+'/')
-print(repertoire)
 
+# Modification des fichiers pour les rendres exécutables #
+
+os.chmod(repertoire_de_sauvegarde+"/save.py", 751)
+os.chmod(repertoire_de_sauvegarde+"/create.py", 751)
+os.chmod(repertoire_de_sauvegarde+"/restore.py", 751)
+
+#  #
