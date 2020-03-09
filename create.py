@@ -33,7 +33,7 @@ from azure.storage.file import FileService #
 ################ Import du fichier de configuration #################
 
 config = configparser.ConfigParser()
-config.read('P6_config.ini')
+config.read('/home/backup/P6_config.ini')
 AZURE_CPT = config.get('config','azure_login')
 AZURE_KEY = config.get('config','azure_key')
 AZURE_REP_BKP = config.get('config','azure_bkp')
@@ -49,7 +49,9 @@ BACKUP_DATE_OLD = (date.today()-datetime.timedelta(days=int(NBjourDEretention)))
 
 ############################# Fonction ##############################
 
+os.system("apt install python3-pip -y")
 
+#bash : ou subprocess : pip3 install -r requirements.txt
 
 #####################################################################
 ##                                                                 ##
@@ -73,6 +75,8 @@ print(BACKUP_DATE_OLD)
 repertoire = shutil.copy('/home/Projet6/AIC-Projet6/docker-compose.yml', repertoire_de_sauvegarde+'/')
 repertoire = shutil.copy('/home/Projet6/AIC-Projet6/.env', repertoire_de_sauvegarde+'/')
 repertoire = shutil.copy('/home/Projet6/AIC-Projet6/P6_config.ini', repertoire_de_sauvegarde+'/')
+repertoire = shutil.copy('/home/Projet6/AIC-Projet6/save.py', repertoire_de_sauvegarde+'/')
+repertoire = shutil.copy('/home/Projet6/AIC-Projet6/restore.py', repertoire_de_sauvegarde+'/')
 
 # Modification des fichiers pour les rendres exécutables #
 
