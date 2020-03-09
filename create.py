@@ -114,25 +114,25 @@ os.chmod(repertoire_de_sauvegarde+"/restore.py", 751)
 
 ########################### Docker Engine ###########################
 
-os.system("apt-get update") # apt-get update
+os.system("apt-get update")
 
 os.system("apt-get install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common") 
 
-os.system("curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -") # curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
+os.system("curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -")
 
-os.system("apt-key fingerprint 0EBFCD88") # apt-key fingerprint 0EBFCD88
+os.system("apt-key fingerprint 0EBFCD88")
 
 os.system('add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"')
 
-os.system("apt-get update") # apt-get update
+os.system("apt-get update")
 
-os.system("apt-get install -y docker-ce docker-ce-cli containerd.io") # apt-get install -y docker-ce docker-ce-cli containerd.io
+os.system("apt-get install -y docker-ce docker-ce-cli containerd.io")
 
 ########################## DOCKER-COMPOSE ###########################
 
-#os.system('curl -L "https://github.com/docker/compose/releases/download/1.25.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose') # curl -L "https://github.com/docker/compose/releases/download/1.25.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+os.system('curl -L "https://github.com/docker/compose/releases/download/1.25.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose') 
 
-#os.chmod("/usr/local/bin/docker-compose", 751) #chmod +x /usr/local/bin/docker-compose
+os.chmod("/usr/local/bin/docker-compose", 751)
 
 #docker-compose --version
 
