@@ -2,7 +2,7 @@
 
 #####################################################################
 ##                                                                 ##
-##    Script de création d'un serveur wordpress et MariaDB  V0.4   ##
+##    Script de création d'un serveur wordpress et MariaDB  V0.5   ##
 ##                                                                 ##
 #####################################################################
 
@@ -26,19 +26,19 @@ os.system("pip3 install azure-storage-file") # installation du module AZURE
 
 # Vérifier si le fichier .env existe ou non #
 
-if os.path.isfile('/home/Projet6/.env'):
+if os.path.isfile('/home/AIC-Projet6/.env'):
   print("Fichier .env présent")
 else:
   print("Fichier .env absent")
-exit(1)
+  exit(1)
 
 # Vérifier si le fichier P6_config.ini existe ou non #
 
-if os.path.isfile('/home/Projet6/P6_config.ini'):
+if os.path.isfile('/home/AIC-Projet6/P6_config.ini'):
   print("Fichier P6_config.ini présent")
 else:
   print("Fichier P6_config.ini absent")
-exit(1)
+  exit(1)
 
 import datetime # Types de base pour la date et l'heure
 import configparser # Configuration file parser
@@ -47,6 +47,7 @@ import docker # Docker
 from datetime import date #
 import tarfile #
 from azure.storage.file import FileService #
+import subprocess
 
 #####################################################################
 ##                                                                 ##
@@ -77,7 +78,7 @@ BACKUP_DATE_OLD = (date.today()-datetime.timedelta(days=int(NBjourDEretention)))
 
 #####################################################################
 ##                                                                 ##
-##                    Programme de Création                        ##
+##                  Programme de Préparation                       ##
 ##                                                                 ##
 #####################################################################
 
@@ -105,4 +106,48 @@ repertoire = shutil.copy('/home/AIC-Projet6/restore.py', repertoire_de_sauvegard
 os.chmod(repertoire_de_sauvegarde+"/save.py", 751)
 os.chmod(repertoire_de_sauvegarde+"/restore.py", 751)
 
-# suite #
+#####################################################################
+##                                                                 ##
+##              Programme d'installation de docker                 ##
+##                                                                 ##
+#####################################################################
+
+
+########################### Docker Engine ###########################
+
+os.system("apt-get update") # apt-get update
+
+# apt-get install -y \
+#     apt-transport-https \
+#     ca-certificates \
+#     curl \
+#     gnupg2 \
+#     software-properties-common
+
+os.system("apt-get install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common") 
+
+#os.system("curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -") # curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
+
+subprocess.call(["curl"," -fsSL https://download.docker.com/linux/debian/gpg"," | ","apt-key add -"])
+
+os.system("apt-key fingerprint 0EBFCD88") # apt-key fingerprint 0EBFCD88
+
+# add-apt-repository \
+#    "deb [arch=amd64] https://download.docker.com/linux/debian \
+#    $(lsb_release -cs) \
+#    stable"
+
+os.system("add-apt-repository deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable")
+
+os.system("apt-get update") # apt-get update
+
+os.system("apt-get install -y docker-ce docker-ce-cli containerd.io") # apt-get install -y docker-ce docker-ce-cli containerd.io
+
+########################## DOCKER-COMPOSE ###########################
+
+#curl -L "https://github.com/docker/compose/releases/download/1.25.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+#os.chmod("/usr/local/bin/docker-compose", 751) #chmod +x /usr/local/bin/docker-compose
+
+#docker-compose --version
+
