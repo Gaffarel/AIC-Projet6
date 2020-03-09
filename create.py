@@ -15,14 +15,18 @@
 
 import os # Diverses interfaces pour le système d'exploitation
 import os.path # manipulation courante des chemins
-#import platform # modules pour vérifier la platform (Linux/Windows/Mac)
+
+os.system("apt install python3-pip -y") # installation de PIP pour python 3
+os.system("pip3 install docker") # installation du module DOCKER
+os.system("pip3 install azure-storage-file") # installation du module AZURE
+
 import datetime # Types de base pour la date et l'heure
 import configparser # Configuration file parser
 import shutil # aide à automatiser la copie des fichiers et des répertoires
 import docker # Docker
-from datetime import date # 
-import tarfile # 
-from azure.storage.file import FileService # 
+from datetime import date #
+import tarfile #
+from azure.storage.file import FileService #
 
 #####################################################################
 ##                                                                 ##
@@ -48,8 +52,6 @@ BACKUP_DATE = date.today().strftime("%d-%m-%Y") # date d'aujourd'hui au format J
 BACKUP_DATE_OLD = (date.today()-datetime.timedelta(days=int(NBjourDEretention))).strftime("%d-%m-%Y") # date d'aujourd'hui - le nb de jour de rétention au format Jour/Mois/Année
 
 ############################# Fonction ##############################
-
-os.system("apt install python3-pip -y")
 
 #bash : ou subprocess : pip3 install -r requirements.txt
 
