@@ -2,7 +2,7 @@
 
 #####################################################################
 ##                                                                 ##
-##    Script de création d'un serveur wordpress et MariaDB  V0.3   ##
+##    Script de création d'un serveur wordpress et MariaDB  V0.4   ##
 ##                                                                 ##
 #####################################################################
 
@@ -16,9 +16,29 @@
 import os # Diverses interfaces pour le système d'exploitation
 import os.path # manipulation courante des chemins
 
+############# Installation des modules supplémentaires ##############
+
 os.system("apt install python3-pip -y") # installation de PIP pour python 3
 os.system("pip3 install docker") # installation du module DOCKER
 os.system("pip3 install azure-storage-file") # installation du module AZURE
+
+############################# Fonction ##############################
+
+# Vérifier si le fichier .env existe ou non #
+
+if os.path.isfile('/home/Projet6/.env'):
+  print("Fichier .env présent")
+else:
+  print("Fichier .env absent")
+exit(1)
+
+# Vérifier si le fichier P6_config.ini existe ou non #
+
+if os.path.isfile('/home/Projet6/P6_config.ini'):
+  print("Fichier P6_config.ini présent")
+else:
+  print("Fichier P6_config.ini absent")
+exit(1)
 
 import datetime # Types de base pour la date et l'heure
 import configparser # Configuration file parser
