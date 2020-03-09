@@ -2,7 +2,7 @@
 
 #####################################################################
 ##                                                                 ##
-##    Script de création d'un serveur wordpress et MariaDB  V0.5   ##
+##    Script de création d'un serveur wordpress et MariaDB  V0.6   ##
 ##                                                                 ##
 #####################################################################
 
@@ -47,7 +47,7 @@ import docker # Docker
 from datetime import date #
 import tarfile #
 from azure.storage.file import FileService #
-import subprocess
+#import subprocess
 
 #####################################################################
 ##                                                                 ##
@@ -126,9 +126,8 @@ os.system("apt-get update") # apt-get update
 
 os.system("apt-get install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common") 
 
-#os.system("curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -") # curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
-
-subprocess.call(["curl"," -fsSL https://download.docker.com/linux/debian/gpg"," | ","apt-key add -"])
+os.system("curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -") # curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
+#subprocess.call(["curl"," -fsSL https://download.docker.com/linux/debian/gpg"," | ","apt-key add -"])
 
 os.system("apt-key fingerprint 0EBFCD88") # apt-key fingerprint 0EBFCD88
 
@@ -137,7 +136,7 @@ os.system("apt-key fingerprint 0EBFCD88") # apt-key fingerprint 0EBFCD88
 #    $(lsb_release -cs) \
 #    stable"
 
-os.system("add-apt-repository deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable")
+os.system('add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"')
 
 os.system("apt-get update") # apt-get update
 
