@@ -32,7 +32,7 @@ from azure.storage.file import FileService #
 ################ Import du fichier de configuration #################
 
 config = configparser.ConfigParser()
-config.read('P6_config.ini')
+config.read('/home/backup/P6_config.ini')
 AZURE_CPT = config.get('config','azure_login')
 AZURE_KEY = config.get('config','azure_key')
 AZURE_REP_BKP = config.get('config','azure_bkp')
