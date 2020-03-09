@@ -2,7 +2,7 @@
 
 #####################################################################
 ##                                                                 ##
-##    Script de création d'un serveur wordpress et MariaDB  V0.6   ##
+##    Script de création d'un serveur wordpress et MariaDB  V0.7   ##
 ##                                                                 ##
 #####################################################################
 
@@ -128,11 +128,19 @@ os.system("apt-get update")
 
 os.system("apt-get install -y docker-ce docker-ce-cli containerd.io")
 
+os.system("docker --version")
+
 ########################## DOCKER-COMPOSE ###########################
 
 os.system('curl -L "https://github.com/docker/compose/releases/download/1.25.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose') 
 
 os.chmod("/usr/local/bin/docker-compose", 751)
 
-#docker-compose --version
+os.system("docker-compose --version")
+
+#####################################################################
+##                                                                 ##
+##           Programme d'installation de docker-compose            ##
+##                                                                 ##
+#####################################################################
 
