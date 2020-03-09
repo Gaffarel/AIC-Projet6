@@ -2,14 +2,14 @@
 
 #####################################################################
 ##                                                                 ##
-##    Script de création d'un serveur wordpress et MariaDB  V0.2   ##
+##    Script de création d'un serveur wordpress et MariaDB  V0.3   ##
 ##                                                                 ##
 #####################################################################
 
 
 #####################################################################
 ##                                                                 ##
-##                    Importation des modules                      ##
+##  Importation des modules et installation des modules spéciaux   ##
 ##                                                                 ##
 #####################################################################
 
@@ -37,7 +37,7 @@ from azure.storage.file import FileService #
 ################ Import du fichier de configuration #################
 
 config = configparser.ConfigParser()
-config.read('/home/backup/P6_config.ini')
+config.read('P6_config.ini')
 AZURE_CPT = config.get('config','azure_login')
 AZURE_KEY = config.get('config','azure_key')
 AZURE_REP_BKP = config.get('config','azure_bkp')
@@ -72,18 +72,17 @@ else:
 print(BACKUP_DATE)
 print(BACKUP_DATE_OLD)
 
-# Copy des fichiers utiles au bon endroit #
+# Copy des fichiers utiles dans le repertoire de sauvegarde #
 
-repertoire = shutil.copy('/home/Projet6/AIC-Projet6/docker-compose.yml', repertoire_de_sauvegarde+'/')
-repertoire = shutil.copy('/home/Projet6/AIC-Projet6/.env', repertoire_de_sauvegarde+'/')
-repertoire = shutil.copy('/home/Projet6/AIC-Projet6/P6_config.ini', repertoire_de_sauvegarde+'/')
-repertoire = shutil.copy('/home/Projet6/AIC-Projet6/save.py', repertoire_de_sauvegarde+'/')
-repertoire = shutil.copy('/home/Projet6/AIC-Projet6/restore.py', repertoire_de_sauvegarde+'/')
+repertoire = shutil.copy('/home/AIC-Projet6/docker-compose.yml', repertoire_de_sauvegarde+'/')
+repertoire = shutil.copy('/home/AIC-Projet6/.env', repertoire_de_sauvegarde+'/')
+repertoire = shutil.copy('/home/AIC-Projet6/P6_config.ini', repertoire_de_sauvegarde+'/')
+repertoire = shutil.copy('/home/AIC-Projet6/save.py', repertoire_de_sauvegarde+'/')
+repertoire = shutil.copy('/home/AIC-Projet6/restore.py', repertoire_de_sauvegarde+'/')
 
-# Modification des fichiers pour les rendres exécutables #
+# Modification des fichiers save.py et create.py pour les rendres exécutables #
 
 os.chmod(repertoire_de_sauvegarde+"/save.py", 751)
-os.chmod(repertoire_de_sauvegarde+"/create.py", 751)
 os.chmod(repertoire_de_sauvegarde+"/restore.py", 751)
 
-#  #
+# suite #
