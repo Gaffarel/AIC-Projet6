@@ -144,3 +144,4 @@ os.system("docker-compose --version")
 ##                                                                 ##
 #####################################################################
 
+os.system("docker-compose -f /home/backup/docker-compose.yml up -d") # docker-compose -f /home/backup/docker-compose.yml up -d
