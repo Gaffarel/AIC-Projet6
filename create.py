@@ -2,7 +2,7 @@
 
 #####################################################################
 ##                                                                 ##
-##    Script de création d'un serveur wordpress et MariaDB  V0.7   ##
+##    Script de création d'un serveur wordpress et MariaDB  V0.7a  ##
 ##                                                                 ##
 #####################################################################
 
@@ -92,13 +92,13 @@ else:
 print(BACKUP_DATE)
 print(BACKUP_DATE_OLD)
 
-# Copy des fichiers utiles dans le repertoire de sauvegarde #
+# Déplacement fichiers utiles dans le repertoire de sauvegarde #
 
-repertoire = shutil.copy('/home/AIC-Projet6/docker-compose.yml', repertoire_de_sauvegarde+'/')
-repertoire = shutil.copy('/home/AIC-Projet6/.env', repertoire_de_sauvegarde+'/')
+repertoire = shutil.move('/home/AIC-Projet6/docker-compose.yml', repertoire_de_sauvegarde+'/docker-compose.yml')
+repertoire = shutil.move('/home/AIC-Projet6/.env', repertoire_de_sauvegarde+'/.env')
 repertoire = shutil.copy('/home/AIC-Projet6/P6_config.ini', repertoire_de_sauvegarde+'/')
-repertoire = shutil.copy('/home/AIC-Projet6/save.py', repertoire_de_sauvegarde+'/')
-repertoire = shutil.copy('/home/AIC-Projet6/restore.py', repertoire_de_sauvegarde+'/')
+repertoire = shutil.move('/home/AIC-Projet6/save.py', repertoire_de_sauvegarde+'/save.py')
+repertoire = shutil.move('/home/AIC-Projet6/restore.py', repertoire_de_sauvegarde+'/restore.py')
 
 # Modification des fichiers save.py et create.py pour les rendres exécutables #
 
@@ -140,8 +140,9 @@ os.system("docker-compose --version")
 
 #####################################################################
 ##                                                                 ##
-##           Programme d'installation de docker-compose            ##
+##          Installation des images Wordpress et MariaDB           ##
+##               via le fichier docker-compose.yml                 ##
 ##                                                                 ##
 #####################################################################
 
-os.system("docker-compose -f /home/backup/docker-compose.yml up -d") # docker-compose -f /home/backup/docker-compose.yml up -d
+os.system("docker-compose -f /home/backup/docker-compose.yml up -d") 
