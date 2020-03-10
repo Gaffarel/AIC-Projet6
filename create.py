@@ -2,7 +2,8 @@
 
 #####################################################################
 ##                                                                 ##
-##    Script de création d'un serveur wordpress et MariaDB  V0.7a  ##
+##     Script de création d'un serveur wordpress avec BDD V0.7b    ##
+##                avec docker-compose pour DEBIAN                  ##
 ##                                                                 ##
 #####################################################################
 
@@ -107,7 +108,7 @@ os.chmod(repertoire_de_sauvegarde+"/restore.py", 751)
 
 #####################################################################
 ##                                                                 ##
-##              Programme d'installation de docker                 ##
+##   Programme d'installation de Docker Engine et Docker-Compose   ##
 ##                                                                 ##
 #####################################################################
 
