@@ -2,7 +2,7 @@
 
 #####################################################################
 ##                                                                 ##
-##  Script de sauvegarde d'un serveur wordpress et MariaDB  V0.3a  ##
+##  Script de sauvegarde d'un serveur wordpress et MariaDB  V0.3b  ##
 ##                                                                 ##
 #####################################################################
 
@@ -81,10 +81,10 @@ print({dict_conteneur["'mariadb:10.3.18'"]})
 client = docker.from_env()
 #container = client.containers.get('33a595d494')
 container = client.containers.get(dict_conteneur["'mariadb:10.3.18'"])
-res = str((container.exec_run("mysqldump -u "+UserBDD+" -p"+MdpBDD+" "+Nom_de_la_BDD)).output, 'utf-8')
+MySQLdump = str((container.exec_run("mysqldump -u "+UserBDD+" -p"+MdpBDD+" "+Nom_de_la_BDD)).output, 'utf-8')
 #print(res)
 fichier = open(repertoire_de_sauvegarde+"/save_"+str(BACKUP_DATE)+"db.sql","w")
-fichier.write(res)
+fichier.write(MySQLdump)
 fichier.close()
 
 # Compréssion et sauvegarde des fichiers du serveur #
