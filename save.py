@@ -2,7 +2,7 @@
 
 #####################################################################
 ##                                                                 ##
-##   Script de sauvegarde d'un serveur wordpress et MariaDB  V0.3  ##
+##  Script de sauvegarde d'un serveur wordpress et MariaDB  V0.3a  ##
 ##                                                                 ##
 #####################################################################
 
@@ -15,7 +15,6 @@
 
 import os # Diverses interfaces pour le système d'exploitation
 import os.path # manipulation courante des chemins
-#import platform # modules pour vérifier la platform (Linux/Windows/Mac)
 import datetime # Types de base pour la date et l'heure
 import configparser # Configuration file parser
 import docker # Docker
@@ -130,7 +129,7 @@ os.remove(repertoire_de_sauvegarde+"/save_"+str(BACKUP_DATE)+".tar.bz2")
 list_file = file_service.list_directories_and_files(AZURE_REP_BKP)
 for file_or_dir in list_file:
   if ('save_'+str(BACKUP_DATE_OLD)) in file_or_dir.name:
-    file_service.delete_file(AZURE_REP_BKP,'save_'+str(BACKUP_DATE_OLD),'save_'+str(BACKUP_DATE)+'db.sql')
+    file_service.delete_file(AZURE_REP_BKP,'save_'+str(BACKUP_DATE_OLD),'save_'+str(BACKUP_DATE_OLD)+'db.sql')
     file_service.delete_file(AZURE_REP_BKP,'save_'+str(BACKUP_DATE_OLD),'save_'+str(BACKUP_DATE_OLD)+'.tar.bz2')
     file_service.delete_directory(AZURE_REP_BKP,'save_'+str(BACKUP_DATE_OLD))
   else:
