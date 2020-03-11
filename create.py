@@ -2,7 +2,7 @@
 
 #####################################################################
 ##                                                                 ##
-##     Script de création d'un serveur wordpress avec BDD V0.7b    ##
+##     Script de création d'un serveur wordpress avec BDD V0.7c    ##
 ##                avec docker-compose pour DEBIAN                  ##
 ##                                                                 ##
 #####################################################################
@@ -95,11 +95,11 @@ print(BACKUP_DATE_OLD)
 
 # Déplacement fichiers utiles dans le repertoire de sauvegarde #
 
-repertoire = shutil.move('/home/AIC-Projet6/docker-compose.yml', repertoire_de_sauvegarde+'/docker-compose.yml')
-repertoire = shutil.move('/home/AIC-Projet6/.env', repertoire_de_sauvegarde+'/.env')
+repertoire = shutil.copy('/home/AIC-Projet6/docker-compose.yml', repertoire_de_sauvegarde+'/')
+repertoire = shutil.copy('/home/AIC-Projet6/.env', repertoire_de_sauvegarde+'/')
 repertoire = shutil.copy('/home/AIC-Projet6/P6_config.ini', repertoire_de_sauvegarde+'/')
-repertoire = shutil.move('/home/AIC-Projet6/save.py', repertoire_de_sauvegarde+'/save.py')
-repertoire = shutil.move('/home/AIC-Projet6/restore.py', repertoire_de_sauvegarde+'/restore.py')
+repertoire = shutil.copy('/home/AIC-Projet6/save.py', repertoire_de_sauvegarde+'/')
+repertoire = shutil.copy('/home/AIC-Projet6/restore.py', repertoire_de_sauvegarde+'/')
 
 # Modification des fichiers save.py et create.py pour les rendres exécutables #
 
