@@ -2,7 +2,7 @@
 
 #####################################################################
 ##                                                                 ##
-## Script de restauration d'un serveur wordpress et MariaDB  V0.3  ##
+## Script de restauration d'un serveur wordpress et MariaDB  V0.4  ##
 ##                                                                 ##
 #####################################################################
 
@@ -51,22 +51,22 @@ BACKUP_DATE_OLD = (date.today()-datetime.timedelta(days=int(NBjourDEretention)))
 
 ############################# Fonction ##############################
 
-# # Récupération du short_id de la BDD via le dictionnaire #
+# Récupération du short_id de la BDD via le dictionnaire #
 
-# def get_short_id_container(name_container):
-#  client = docker.from_env()
-#  dict_conteneur = {} # dictionnaire vide des conteneurs
-#  for container in client.containers.list(): # equivaut a docker ps
-#    dict_conteneur[str(container.image)[9:-2]] = str(container.short_id) # récuperation du short_id et de l'image avec mise en forme dans le dictionnaire
-#  return (dict_conteneur[name_container])
+def get_short_id_container(name_container):
+  client = docker.from_env()
+  dict_conteneur = {} # dictionnaire vide des conteneurs
+  for container in client.containers.list(): # equivaut a docker ps
+    dict_conteneur[str(container.image)[9:-2]] = str(container.short_id) # récuperation du short_id et de l'image avec mise en forme dans le dictionnaire
+  return (dict_conteneur[name_container])
 
-# # Récupération du Nom de l'image de la BDD du fichier docker-compose.yml #
+# Récupération du Nom de l'image de la BDD du fichier docker-compose.yml #
 
-# def get_database_name():
-#   with open(repertoire_de_sauvegarde+"/docker-compose.yml",'r') as file:
-#     doc = yaml.load(file, Loader=yaml.FullLoader)
-#     txt = doc["services"]["db"]["image"]
-#   return(txt)
+def get_database_name():
+  with open(repertoire_de_sauvegarde+"/docker-compose.yml",'r') as file:
+    doc = yaml.load(file, Loader=yaml.FullLoader)
+    txt = doc["services"]["db"]["image"]
+  return(txt)
 
 # récupération d'un fichier de sauvegarde dans un répertoire de Microsoft AZURE
 
@@ -104,12 +104,28 @@ print ('décompression faite')
 
 # suppression du fichiers tar.bz2 sauvegarde récupéré
 
-os.remove(repertoire_de_sauvegarde+"/save_"+str(BACKUP_DATE_SAVE)+".tar.bz2")
+os.remove(repertoire_de_sauvegarde+"/"+BACKUP_DATE_SAVE+".tar.bz2")
 
 # Restauration de la base de donnée .sql
+NAME = get_database_name()
+print (NAME)
 
+ID = get_short_id_container(NAME)
+print (ID)
 
+#os.system("cat save_21-03-2020db.sql | docker exec -i 4698 /usr/bin/mysql -u allouis -pbob MyCompany")
+os.system("cat "+BACKUP_DATE_SAVE+"db.sql | docker exec -i "+ID+" /usr/bin/mysql -u "+UserBDD+" -p"+MdpBDD+" "+Nom_de_la_BDD)
+#MySQLdump = str((container.exec_run("mysqldump -u "+UserBDD+" -p"+MdpBDD+" "+Nom_de_la_BDD)).output, 'utf-8')
 
 # suppression du fichiers tar.bz2 sauvegarde récupéré
 
-#os.remove(repertoire_de_sauvegarde+"/save_"+str(BACKUP_DATE_SAVE)+"db.sql")
+#os.remove(repertoire_de_sauvegarde+"/"+BACKUP_DATE_SAVE+"db.sql")
+
+# restart = input("Voulez-vous redémarrer votre serveur ? (Oui / Non): ") 
+  
+# if restart == 'non' or 'N' or 'n': 
+#     exit() 
+# else: 
+# #    os.system("shutdown /r /t 1") 
+
+os.system("reboot") 
