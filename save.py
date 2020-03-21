@@ -2,7 +2,7 @@
 
 #####################################################################
 ##                                                                 ##
-##  Script de sauvegarde d'un serveur wordpress et MariaDB  V0.4a  ##
+##  Script de sauvegarde d'un serveur wordpress et MariaDB  V0.5   ##
 ##                                                                 ##
 #####################################################################
 
@@ -61,11 +61,11 @@ def get_database_name(): #
 # Récupération du short_id de la Base De Donnée via le dictionnaire #
 
 def get_short_id_container(name_container): #
- client = docker.from_env() #
- dict_conteneur = {} # dictionnaire vide des conteneurs
- for container in client.containers.list(): # equivaut à docker ps
-   dict_conteneur[str(container.image)[9:-2]] = str(container.short_id) # récuperation du short_id et de l'image avec mise en forme dans le dictionnaire
- return (dict_conteneur[name_container]) # la fontion retourne le short_id nom conteneur demandé
+  client = docker.from_env() #
+  dict_conteneur = {} # dictionnaire vide des conteneurs
+  for container in client.containers.list(): # equivaut à docker ps
+    dict_conteneur[str(container.image)[9:-2]] = str(container.short_id) # récuperation du short_id et de l'image avec mise en forme dans le dictionnaire
+  return (dict_conteneur[name_container]) # la fontion retourne le short_id nom conteneur demandé
 
 #####################################################################
 ##                                                                 ##
@@ -157,5 +157,6 @@ for file_or_dir in list_file:
     file_service.delete_file(AZURE_REP_BKP,'save_'+str(BACKUP_DATE_OLD),'save_'+str(BACKUP_DATE_OLD)+'.tar.bz2')
     file_service.delete_directory(AZURE_REP_BKP,'save_'+str(BACKUP_DATE_OLD))
   else:
-    print(file_or_dir.name)
     print("")
+    print(file_or_dir.name)
+
