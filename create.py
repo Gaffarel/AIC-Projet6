@@ -20,7 +20,7 @@ import os.path # manipulation courante des chemins
 ############# Installation des modules supplémentaires ##############
 
 os.system("apt install python3-pip -y") # installation de PIP pour python 3
-os.system("pip3 install -r /home/AIC-Projet6/requirements.txt")
+os.system("pip3 install -r /home/AIC-Projet6/requirements.txt") # installation de la liste des modules suplèmentaires via requirements.txt
 
 ############################# Fonction ##############################
 
