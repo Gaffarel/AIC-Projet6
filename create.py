@@ -2,7 +2,7 @@
 
 #####################################################################
 ##                                                                 ##
-##     Script de création d'un serveur wordpress avec BDD V0.7c    ##
+##     Script de création d'un serveur wordpress avec BDD V0.7e    ##
 ##                avec docker-compose pour DEBIAN                  ##
 ##                                                                 ##
 #####################################################################
@@ -22,6 +22,7 @@ import os.path # manipulation courante des chemins
 os.system("apt install python3-pip -y") # installation de PIP pour python 3
 os.system("pip3 install docker") # installation du module DOCKER
 os.system("pip3 install azure-storage-file") # installation du module AZURE
+os.system("pip3 install pyyaml") # installation du module pyyaml
 
 ############################# Fonction ##############################
 
