@@ -2,7 +2,7 @@
 
 #####################################################################
 ##                                                                 ##
-##     Script de création d'un serveur wordpress avec BDD V0.7e    ##
+##     Script de création d'un serveur wordpress avec BDD V0.7d    ##
 ##                avec docker-compose pour DEBIAN                  ##
 ##                                                                 ##
 #####################################################################
@@ -20,9 +20,11 @@ import os.path # manipulation courante des chemins
 ############# Installation des modules supplémentaires ##############
 
 os.system("apt install python3-pip -y") # installation de PIP pour python 3
-os.system("pip3 install docker") # installation du module DOCKER
-os.system("pip3 install azure-storage-file") # installation du module AZURE
-os.system("pip3 install pyyaml") # installation du module pyyaml
+# os.system("pip3 install docker") # installation du module DOCKER
+# os.system("pip3 install azure-storage-file") # installation du module AZURE
+# os.system("pip3 install pyyaml") # installation du module pyyaml
+
+os.system("pip3 install -r /home/AIC-Projet6/requirements.txt")
 
 ############################# Fonction ##############################
 
@@ -102,7 +104,7 @@ repertoire = shutil.copy('/home/AIC-Projet6/P6_config.ini', repertoire_de_sauveg
 repertoire = shutil.copy('/home/AIC-Projet6/save.py', repertoire_de_sauvegarde+'/')
 repertoire = shutil.copy('/home/AIC-Projet6/restore.py', repertoire_de_sauvegarde+'/')
 
-# Modification des fichiers save.py et create.py pour les rendres exécutables #
+# Modification des fichiers save.py et create.py pour les rendre exécutables #
 
 os.chmod(repertoire_de_sauvegarde+"/save.py", 751)
 os.chmod(repertoire_de_sauvegarde+"/restore.py", 751)
