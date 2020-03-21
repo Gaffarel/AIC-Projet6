@@ -2,7 +2,7 @@
 
 #####################################################################
 ##                                                                 ##
-##  Script de sauvegarde d'un serveur wordpress et MariaDB  V0.4   ##
+##  Script de sauvegarde d'un serveur wordpress et MariaDB  V0.4a  ##
 ##                                                                 ##
 #####################################################################
 
@@ -50,7 +50,7 @@ BACKUP_DATE_OLD = (date.today()-datetime.timedelta(days=int(NBjourDEretention)))
 
 ############################# Fonction ##############################
 
-# Récupération du Nom de l'image de la BDD du fichier docker-compose.yml #
+# Récupération du Nom de l'image de la Base De Donnée du fichier docker-compose.yml #
 
 def get_database_name(): #
   with open(repertoire_de_sauvegarde+"/docker-compose.yml",'r') as file: #
@@ -58,7 +58,7 @@ def get_database_name(): #
     txt = doc["services"]["db"]["image"] #
   return(txt) # la fontion retourne le nom du conteneur demandé
 
-# Récupération du short_id de la BDD via le dictionnaire #
+# Récupération du short_id de la Base De Donnée via le dictionnaire #
 
 def get_short_id_container(name_container): #
  client = docker.from_env() #
@@ -66,8 +66,6 @@ def get_short_id_container(name_container): #
  for container in client.containers.list(): # equivaut à docker ps
    dict_conteneur[str(container.image)[9:-2]] = str(container.short_id) # récuperation du short_id et de l'image avec mise en forme dans le dictionnaire
  return (dict_conteneur[name_container]) # la fontion retourne le short_id nom conteneur demandé
-
-
 
 #####################################################################
 ##                                                                 ##
