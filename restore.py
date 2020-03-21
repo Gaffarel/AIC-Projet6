@@ -2,7 +2,7 @@
 
 #####################################################################
 ##                                                                 ##
-## Script de restauration d'un serveur wordpress et MariaDB  V0.2  ##
+## Script de restauration d'un serveur wordpress et MariaDB  V0.3  ##
 ##                                                                 ##
 #####################################################################
 
@@ -51,26 +51,26 @@ BACKUP_DATE_OLD = (date.today()-datetime.timedelta(days=int(NBjourDEretention)))
 
 ############################# Fonction ##############################
 
-# Récupération du short_id de la BDD via le dictionnaire #
+# # Récupération du short_id de la BDD via le dictionnaire #
 
-def get_short_id_container(name_container):
- client = docker.from_env()
- dict_conteneur = {} # dictionnaire vide des conteneurs
- for container in client.containers.list(): # equivaut a docker ps
-   dict_conteneur[str(container.image)[9:-2]] = str(container.short_id) # récuperation du short_id et de l'image avec mise en forme dans le dictionnaire
- return (dict_conteneur[name_container])
+# def get_short_id_container(name_container):
+#  client = docker.from_env()
+#  dict_conteneur = {} # dictionnaire vide des conteneurs
+#  for container in client.containers.list(): # equivaut a docker ps
+#    dict_conteneur[str(container.image)[9:-2]] = str(container.short_id) # récuperation du short_id et de l'image avec mise en forme dans le dictionnaire
+#  return (dict_conteneur[name_container])
 
-# Récupération du Nom de l'image de la BDD du fichier docker-compose.yml #
+# # Récupération du Nom de l'image de la BDD du fichier docker-compose.yml #
 
-def get_database_name():
-  with open(repertoire_de_sauvegarde+"/docker-compose.yml",'r') as file:
-    doc = yaml.load(file, Loader=yaml.FullLoader)
-    txt = doc["services"]["db"]["image"]
-  return(txt)
+# def get_database_name():
+#   with open(repertoire_de_sauvegarde+"/docker-compose.yml",'r') as file:
+#     doc = yaml.load(file, Loader=yaml.FullLoader)
+#     txt = doc["services"]["db"]["image"]
+#   return(txt)
 
 # récupération d'un fichier de sauvegarde dans un répertoire de Microsoft AZURE
 
-def get_choix_de_la_sauveagrde():
+def get_choix_de_la_sauvegarde():
   list_file_save = file_service.list_directories_and_files(AZURE_REP_BKP)
   nb_save=1
   dict_save = {}
@@ -81,46 +81,35 @@ def get_choix_de_la_sauveagrde():
   choix = input("Entrez le numéro de sauvegarde: N°:") # input choice
   return(dict_save[int(choix)])
 
-
-NAME = get_database_name()
-print (NAME)
-
-ID = get_short_id_container(NAME)
-print (ID)
-
-client = docker.from_env()
-container = client.containers.get(ID)
-MySQLdump = str((container.exec_run("mysqldump -u "+UserBDD+" -p"+MdpBDD+" "+Nom_de_la_BDD)).output, 'utf-8')
-fichier = open(repertoire_de_sauvegarde+"/save_"+str(BACKUP_DATE)+"db.sql","w")
-fichier.write(MySQLdump)
-fichier.close()
-
 # Sauvegarde sur AZURE #
 
 # Autorisation d'accès au compte Microsoft AZURE
 
 file_service = FileService(account_name=AZURE_CPT, account_key=AZURE_KEY)
 
-# Liste des fichiers ou repertoires de Microsoft AZURE
-
-# list_file = file_service.list_directories_and_files(AZURE_REP_BKP)
-# for file_or_dir in list_file:
-#   if ('save_'+str(BACKUP_DATE_OLD)) in file_or_dir.name:
-#     file_service.delete_file(AZURE_REP_BKP,'save_'+str(BACKUP_DATE_OLD),'save_'+str(BACKUP_DATE_OLD)+'db.sql')
-#     file_service.delete_file(AZURE_REP_BKP,'save_'+str(BACKUP_DATE_OLD),'save_'+str(BACKUP_DATE_OLD)+'.tar.bz2')
-#     file_service.delete_directory(AZURE_REP_BKP,'save_'+str(BACKUP_DATE_OLD))
-#   else:
-#     print(file_or_dir.name)
-
-# Liste des fichiers ou répertoires de Microsoft AZURE
-# récupération d'un fichier dans un répertoire de Microsoft AZURE
-
-#file_service.get_file_to_path(AZURE_REP_BKP, 'repertoire de save_ + date', 'fichier distant', 'fichier origine')
-#file_service.get_file_to_path(AZURE_REP_BKP, 'save_07-03-2020', 'save_07-03-2020.tar.bz2', 'save_07-03-2020.tar.bz2')
-
 print ("Choix du Numéro de sauvegarde: ?")
 print ("")
-BACKUP_DATE_SAVE=get_choix_de_la_sauveagrde()
+BACKUP_DATE_SAVE=get_choix_de_la_sauvegarde()
 print (BACKUP_DATE_SAVE)
 file_service.get_file_to_path(AZURE_REP_BKP, BACKUP_DATE_SAVE, BACKUP_DATE_SAVE+'.tar.bz2', BACKUP_DATE_SAVE+'.tar.bz2')
 file_service.get_file_to_path(AZURE_REP_BKP, BACKUP_DATE_SAVE, BACKUP_DATE_SAVE+'db.sql', BACKUP_DATE_SAVE+'db.sql')
+print ('sauvegarde récupéré')
+
+# Décompression de la sauvegarde des fichiers du serveur #
+
+backup_bz2 = tarfile.open(repertoire_de_sauvegarde+'/'+BACKUP_DATE_SAVE+'.tar.bz2') # Emplacement de sauvegarde du fichier compressé (tar.bz2)
+backup_bz2.extractall('/')
+backup_bz2.close() #
+print ('décompression faite')
+
+# suppression du fichiers tar.bz2 sauvegarde récupéré
+
+os.remove(repertoire_de_sauvegarde+"/save_"+str(BACKUP_DATE_SAVE)+".tar.bz2")
+
+# Restauration de la base de donnée .sql
+
+
+
+# suppression du fichiers tar.bz2 sauvegarde récupéré
+
+#os.remove(repertoire_de_sauvegarde+"/save_"+str(BACKUP_DATE_SAVE)+"db.sql")
