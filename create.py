@@ -2,7 +2,7 @@
 
 #####################################################################
 ##                                                                 ##
-##     Script de création d'un serveur wordpress avec BDD V0.7d    ##
+##     Script de création d'un serveur wordpress avec BDD V0.7e    ##
 ##                avec docker-compose pour DEBIAN                  ##
 ##                                                                 ##
 #####################################################################
@@ -20,10 +20,6 @@ import os.path # manipulation courante des chemins
 ############# Installation des modules supplémentaires ##############
 
 os.system("apt install python3-pip -y") # installation de PIP pour python 3
-# os.system("pip3 install docker") # installation du module DOCKER
-# os.system("pip3 install azure-storage-file") # installation du module AZURE
-# os.system("pip3 install pyyaml") # installation du module pyyaml
-
 os.system("pip3 install -r /home/AIC-Projet6/requirements.txt")
 
 ############################# Fonction ##############################
@@ -74,10 +70,6 @@ repertoire_de_sauvegarde = config.get('repertoire','backup_repertoire')
 
 BACKUP_DATE = date.today().strftime("%d-%m-%Y") # date d'aujourd'hui au format Jour/Mois/Année
 BACKUP_DATE_OLD = (date.today()-datetime.timedelta(days=int(NBjourDEretention))).strftime("%d-%m-%Y") # date d'aujourd'hui - le nb de jour de rétention au format Jour/Mois/Année
-
-############################# Fonction ##############################
-
-#bash : ou subprocess : pip3 install -r requirements.txt
 
 #####################################################################
 ##                                                                 ##
