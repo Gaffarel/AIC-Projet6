@@ -3,7 +3,7 @@
 #####################################################################
 ##                                                                 ##
 ##      Script de sauvegarde, de création, et de restauration      ##   
-##            d'un serveur wordpress avec MariaDB  V0.1            ##
+##            d'un serveur wordpress avec MariaDB  V0.2            ##
 ##                                                                 ##
 #####################################################################
 
@@ -191,14 +191,41 @@ elif argument == 'restoreDB' or argument == '-rDB':
 elif argument == 'restoreT' or argument == '-rT':
   print("Restauration du serveur en cours ...")
 
+  print ("Choix du Numéro de sauvegarde: ?")
+  print ("")
+  BACKUP_DATE_SAVE=get_choix_de_la_sauvegarde()
+  print (BACKUP_DATE_SAVE)
+  file_service.get_file_to_path(AZURE_REP_BKP, BACKUP_DATE_SAVE, BACKUP_DATE_SAVE+'.tar.bz2', BACKUP_DATE_SAVE+'.tar.bz2')
+  file_service.get_file_to_path(AZURE_REP_BKP, BACKUP_DATE_SAVE, BACKUP_DATE_SAVE+'db.sql', BACKUP_DATE_SAVE+'db.sql')
+  print ('sauvegarde récupéré')
 
+# Décompression de la sauvegarde des fichiers du serveur #
 
+  backup_bz2 = tarfile.open(repertoire_de_sauvegarde+'/'+BACKUP_DATE_SAVE+'.tar.bz2') # Emplacement de sauvegarde du fichier compressé (tar.bz2)
+  backup_bz2.extractall('/')
+  backup_bz2.close() #
+  print ('décompression faite')
 
+# suppression du fichiers tar.bz2 sauvegarde récupéré #
 
+  os.remove(repertoire_de_sauvegarde+"/"+BACKUP_DATE_SAVE+".tar.bz2")
 
+# Restauration de la base de donnée .sql #
+  NAME = get_database_name()
+  print (NAME)
 
+  ID = get_short_id_container(NAME)
+  print (ID)
 
+  #os.system("cat save_21-03-2020db.sql | docker exec -i 4698 /usr/bin/mysql -u allouis -pbob MyCompany")
+  os.system("cat "+BACKUP_DATE_SAVE+"db.sql | docker exec -i "+ID+" /usr/bin/mysql -u "+UserBDD+" -p"+MdpBDD+" "+Nom_de_la_BDD)
+  #MySQLdump = str((container.exec_run("mysqldump -u "+UserBDD+" -p"+MdpBDD+" "+Nom_de_la_BDD)).output, 'utf-8')
 
+# suppression du fichiers tar.bz2 sauvegarde récupéré #
+  os.remove(repertoire_de_sauvegarde+"/"+BACKUP_DATE_SAVE+"db.sql")
+
+# redémarrage du serveur Linux # 
+  os.system("reboot") 
 
 
 else:
