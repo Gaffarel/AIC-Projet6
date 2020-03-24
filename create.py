@@ -2,7 +2,7 @@
 
 #####################################################################
 ##                                                                 ##
-##   Script de création d'un serveur wordpress avec MariaD V0.8a   ##
+##   Script de création d'un serveur wordpress avec MariaD V0.8b   ##
 ##               avec docker-compose sur DEBIAN 10.2               ##
 ##                                                                 ##
 #####################################################################
@@ -66,11 +66,6 @@ MdpBDD = config.get('config','mdp_bdd')
 NBjourDEretention = config.get('retention','nbjour')
 repertoire_de_sauvegarde = config.get('repertoire','backup_repertoire')
 
-############################## Temps ################################
-
-#BACKUP_DATE = date.today().strftime("%d-%m-%Y") # date d'aujourd'hui au format Jour/Mois/Année
-#BACKUP_DATE_OLD = (date.today()-datetime.timedelta(days=int(NBjourDEretention))).strftime("%d-%m-%Y") # date d'aujourd'hui - le nb de jour de rétention au format Jour/Mois/Année
-
 #####################################################################
 ##                                                                 ##
 ##                  Programme de Préparation                       ##
@@ -85,22 +80,15 @@ else:
      os.makedirs(repertoire_de_sauvegarde, exist_ok=True)
      print("Chemin " , repertoire_de_sauvegarde, " n'existe pas")
 
-#print(BACKUP_DATE)
-#print(BACKUP_DATE_OLD)
-
 # Déplacement fichiers utiles dans le repertoire de sauvegarde #
 
 repertoire = shutil.copy('/home/AIC-Projet6/docker-compose.yml', repertoire_de_sauvegarde+'/')
 repertoire = shutil.copy('/home/AIC-Projet6/.env', repertoire_de_sauvegarde+'/')
 repertoire = shutil.copy('/home/AIC-Projet6/P6_config.ini', repertoire_de_sauvegarde+'/')
-#repertoire = shutil.copy('/home/AIC-Projet6/save.py', repertoire_de_sauvegarde+'/')
-#repertoire = shutil.copy('/home/AIC-Projet6/restore.py', repertoire_de_sauvegarde+'/')
 repertoire = shutil.copy('/home/AIC-Projet6/SafetyWpress.py', repertoire_de_sauvegarde+'/')
 
 # Modification des fichiers save.py et create.py pour les rendre exécutables #
 
-#os.chmod(repertoire_de_sauvegarde+"/save.py", 751)
-#os.chmod(repertoire_de_sauvegarde+"/restore.py", 751)
 os.chmod(repertoire_de_sauvegarde+"/SafetyWpress.py", 751)
 
 #####################################################################
