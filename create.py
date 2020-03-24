@@ -2,7 +2,7 @@
 
 #####################################################################
 ##                                                                 ##
-##   Script de création d'un serveur wordpress avec MariaD V0.8b   ##
+##   Script de création d'un serveur wordpress avec MariaDB V0.8b  ##
 ##               avec docker-compose sur DEBIAN 10.2               ##
 ##                                                                 ##
 #####################################################################
