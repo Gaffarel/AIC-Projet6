@@ -2,7 +2,7 @@
 
 #####################################################################
 ##                                                                 ##
-##   Script de création d'un serveur wordpress avec MariaD V0.8    ##
+##   Script de création d'un serveur wordpress avec MariaD V0.8a   ##
 ##               avec docker-compose sur DEBIAN 10.2               ##
 ##                                                                 ##
 #####################################################################
@@ -93,13 +93,15 @@ else:
 repertoire = shutil.copy('/home/AIC-Projet6/docker-compose.yml', repertoire_de_sauvegarde+'/')
 repertoire = shutil.copy('/home/AIC-Projet6/.env', repertoire_de_sauvegarde+'/')
 repertoire = shutil.copy('/home/AIC-Projet6/P6_config.ini', repertoire_de_sauvegarde+'/')
-repertoire = shutil.copy('/home/AIC-Projet6/save.py', repertoire_de_sauvegarde+'/')
-repertoire = shutil.copy('/home/AIC-Projet6/restore.py', repertoire_de_sauvegarde+'/')
+#repertoire = shutil.copy('/home/AIC-Projet6/save.py', repertoire_de_sauvegarde+'/')
+#repertoire = shutil.copy('/home/AIC-Projet6/restore.py', repertoire_de_sauvegarde+'/')
+repertoire = shutil.copy('/home/AIC-Projet6/SafetyWpress.py', repertoire_de_sauvegarde+'/')
 
 # Modification des fichiers save.py et create.py pour les rendre exécutables #
 
-os.chmod(repertoire_de_sauvegarde+"/save.py", 751)
-os.chmod(repertoire_de_sauvegarde+"/restore.py", 751)
+#os.chmod(repertoire_de_sauvegarde+"/save.py", 751)
+#os.chmod(repertoire_de_sauvegarde+"/restore.py", 751)
+os.chmod(repertoire_de_sauvegarde+"/SafetyWpress.py", 751)
 
 #####################################################################
 ##                                                                 ##
