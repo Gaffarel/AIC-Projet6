@@ -3,7 +3,7 @@
 #####################################################################
 ##                                                                 ##
 ##      Script de sauvegarde, de création, et de restauration      ##   
-##            d'un serveur wordpress avec MariaDB  V0.2            ##
+##            d'un serveur wordpress avec MariaDB  V0.3            ##
 ##                                                                 ##
 #####################################################################
 
@@ -178,14 +178,32 @@ if argument == 'save' or argument == '-s':
       print("")
       print(file_or_dir.name)
 
-elif argument == 'create' or argument == '-c':
-  print("Création en cours ...")
-
-
+#elif argument == 'create' or argument == '-c':
+#  print("Création en cours ...")
 
 elif argument == 'restoreDB' or argument == '-rDB':
   print("Restauration de la Base de donnée en cours ...")
 
+  print ("Choix du Numéro de sauvegarde: ?")
+  print ("")
+  BACKUP_DATE_SAVE=get_choix_de_la_sauvegarde()
+  print (BACKUP_DATE_SAVE)
+  file_service.get_file_to_path(AZURE_REP_BKP, BACKUP_DATE_SAVE, BACKUP_DATE_SAVE+'db.sql', BACKUP_DATE_SAVE+'db.sql')
+  print ('sauvegarde récupéré')
+
+# Restauration de la base de donnée .sql #
+  NAME = get_database_name()
+  print (NAME)
+
+  ID = get_short_id_container(NAME)
+  print (ID)
+
+  #os.system("cat save_21-03-2020db.sql | docker exec -i 4698 /usr/bin/mysql -u allouis -pbob MyCompany")
+  os.system("cat "+BACKUP_DATE_SAVE+"db.sql | docker exec -i "+ID+" /usr/bin/mysql -u "+UserBDD+" -p"+MdpBDD+" "+Nom_de_la_BDD)
+  #MySQLdump = str((container.exec_run("mysqldump -u "+UserBDD+" -p"+MdpBDD+" "+Nom_de_la_BDD)).output, 'utf-8')
+
+# suppression du fichiers tar.bz2 sauvegarde récupéré #
+  os.remove(repertoire_de_sauvegarde+"/"+BACKUP_DATE_SAVE+"db.sql")
 
 
 elif argument == 'restoreT' or argument == '-rT':
