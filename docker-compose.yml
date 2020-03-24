@@ -18,6 +18,8 @@ services:
     restart: always
   db:
     image: mariadb:10.3.18
+    ports:
+      - 3306:3306
     env_file: .env
     environment:
       - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
