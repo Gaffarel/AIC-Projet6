@@ -2,8 +2,8 @@
 
 #####################################################################
 ##                                                                 ##
-##     Script de création d'un serveur wordpress avec BDD V0.7e    ##
-##                avec docker-compose pour DEBIAN                  ##
+##   Script de création d'un serveur wordpress avec MariaD V0.8a   ##
+##               avec docker-compose sur DEBIAN 10.2               ##
 ##                                                                 ##
 #####################################################################
 
@@ -20,7 +20,7 @@ import os.path # manipulation courante des chemins
 ############# Installation des modules supplémentaires ##############
 
 os.system("apt install python3-pip -y") # installation de PIP pour python 3
-os.system("pip3 install -r /home/AIC-Projet6/requirements.txt") # installation de la liste des modules suplèmentaires via requirements.txt
+os.system("pip3 install -r /home/AIC-Projet6/requirements.txt") # installation de la liste des modules suplèmentaires via le fichier requirements.txt
 
 ############################# Fonction ##############################
 
@@ -68,8 +68,8 @@ repertoire_de_sauvegarde = config.get('repertoire','backup_repertoire')
 
 ############################## Temps ################################
 
-BACKUP_DATE = date.today().strftime("%d-%m-%Y") # date d'aujourd'hui au format Jour/Mois/Année
-BACKUP_DATE_OLD = (date.today()-datetime.timedelta(days=int(NBjourDEretention))).strftime("%d-%m-%Y") # date d'aujourd'hui - le nb de jour de rétention au format Jour/Mois/Année
+#BACKUP_DATE = date.today().strftime("%d-%m-%Y") # date d'aujourd'hui au format Jour/Mois/Année
+#BACKUP_DATE_OLD = (date.today()-datetime.timedelta(days=int(NBjourDEretention))).strftime("%d-%m-%Y") # date d'aujourd'hui - le nb de jour de rétention au format Jour/Mois/Année
 
 #####################################################################
 ##                                                                 ##
@@ -85,21 +85,23 @@ else:
      os.makedirs(repertoire_de_sauvegarde, exist_ok=True)
      print("Chemin " , repertoire_de_sauvegarde, " n'existe pas")
 
-print(BACKUP_DATE)
-print(BACKUP_DATE_OLD)
+#print(BACKUP_DATE)
+#print(BACKUP_DATE_OLD)
 
 # Déplacement fichiers utiles dans le repertoire de sauvegarde #
 
 repertoire = shutil.copy('/home/AIC-Projet6/docker-compose.yml', repertoire_de_sauvegarde+'/')
 repertoire = shutil.copy('/home/AIC-Projet6/.env', repertoire_de_sauvegarde+'/')
 repertoire = shutil.copy('/home/AIC-Projet6/P6_config.ini', repertoire_de_sauvegarde+'/')
-repertoire = shutil.copy('/home/AIC-Projet6/save.py', repertoire_de_sauvegarde+'/')
-repertoire = shutil.copy('/home/AIC-Projet6/restore.py', repertoire_de_sauvegarde+'/')
+#repertoire = shutil.copy('/home/AIC-Projet6/save.py', repertoire_de_sauvegarde+'/')
+#repertoire = shutil.copy('/home/AIC-Projet6/restore.py', repertoire_de_sauvegarde+'/')
+repertoire = shutil.copy('/home/AIC-Projet6/SafetyWpress.py', repertoire_de_sauvegarde+'/')
 
 # Modification des fichiers save.py et create.py pour les rendre exécutables #
 
-os.chmod(repertoire_de_sauvegarde+"/save.py", 751)
-os.chmod(repertoire_de_sauvegarde+"/restore.py", 751)
+#os.chmod(repertoire_de_sauvegarde+"/save.py", 751)
+#os.chmod(repertoire_de_sauvegarde+"/restore.py", 751)
+os.chmod(repertoire_de_sauvegarde+"/SafetyWpress.py", 751)
 
 #####################################################################
 ##                                                                 ##
