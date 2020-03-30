@@ -13,9 +13,9 @@
 
 ## Table des matières :
 - [Préparation du serveur](#Préparation)
-    - [Configuration du programme create.py](#Configuration%20du%20programme%20create.py%20:)
-    - [Fichier P6_config.ini](#Le%20Fichier%20`P6_config.ini`%20:)
-    - [Fichier .env](#Le%20Fichier%20`.env`%20:)
+    - [Configuration du programme create.py](#Configuration%20du%20programme%20create.py)
+    - [Fichier P6_config.ini](#Le%20Fichier%20`P6_config.ini`)
+    - [Fichier .env](#Le%20Fichier%20`.env`)
 - [Utilisation du logiciel SafetyWpress.py](#)
 - [Licence](#licence)
 
