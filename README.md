@@ -53,7 +53,15 @@ nbjour=10 ; nombre de jour de rétention
 
 [repertoire]
 
-backup_repertoire=/srv/backup ; répertoire de sauvegarde
+backup_repertoire=/srv/backup ; répertoire de sauvegarde par défaut.  
+
+---
+
+Si vous décidez de modifier ce répertoire de sauvegarde par défaut, n'oubliez pas de modifier aussi la ligne du fichier `SafetyWpress.py` :  
+
+config.read('/srv/backup/P6_config.ini') 
+
+---
 
 ### Le Fichier `.env` :
 
@@ -67,7 +75,7 @@ WP_DB_NAME=********  # le nom de la base de donnée pour Wordpress
 
 ## Utilisation du logiciel `SafetyWpress.py` :
 
-| Commande                       | Argument      | Raccourcis     |
+| Commandes                      | Arguments     | Raccourcis     |
 |--------------------------------|---------------|----------------|
 | sauvegarde                     | -save         | -s             |
 | restauration totale du serveur | -restoreT     | -rT            |
