@@ -10,12 +10,13 @@
 ![Contibutions welcom](https://img.shields.io/badge/contributions-welcom-orange.svg)
 ![](https://img.shields.io/github/last-commit/Gaffarel/AIC-Projet6)
 
+https://github.com/Gaffarel/AIC-Projet6#licence
 
 ## Table des matières :
 - [Préparation du serveur](#pr%C3%A9paration-)
-    - [Configuration du programme create.py](#Configuration%20du%20programme%20create.py)
+    - [Configuration du programme create.py](#configuration-du-programme-createpy-)
     - [Fichier P6_config.ini](#Le%20Fichier%20`P6_config.ini`)
-    - [Fichier .env](#Le%20Fichier%20`.env`)
+    - [Fichier .env](#le-fichier-p6_configini-)
 - [Utilisation du logiciel SafetyWpress.py](#)
 - [Licence](#licence)
 
@@ -38,6 +39,7 @@ Avant de lancer le programme `create.py`, il vous faudra préparer les fichiers 
 ### Le Fichier `.env` :
 
 
+## Utilisation du logiciel `SafetyWpress.py`
 
 
 ## Licence 
