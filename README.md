@@ -18,7 +18,7 @@
     - [Fichier P6_config.ini](#le-fichier-p6_configini-)
     - [Fichier .env](#le-fichier-env-)
 - [Utilisation du logiciel SafetyWpress.py](#utilisation-du-logiciel-safetywpresspy-)
-- [Crontab](#)
+- [Crontab](#crontab)
 - [Licence](#licence)
 
 ## Préparation :
@@ -36,9 +36,34 @@ il faudra préparer les fichiers de configuration `P6_config.ini` et `.env`
 
 ### Le Fichier `P6_config.ini` :
 
+; Fichier de configuration
+
+[config]
+
+azure_login=******** ; Compte de stockage AZURE  
+azure_key=******** ; 'key azure'  
+azure_bkp=******** ; Répertoire de sauvegarde AZURE  
+user_bdd=******** ; le nom de l'utilisateur de la base de donnée autorisé à se connecter  
+mdp_bdd=******** ; le mot de passe de l'utilisateur de la base de donnée autorisé à se connecter  
+name_bdd=******** ; le nom de la base de donnée pour Wordpress  
+
+[retention]
+
+nbjour=10 ; nombre de jour de rétention
+
+[repertoire]
+
+backup_repertoire=/srv/backup ; répertoire de sauvegarde
 
 ### Le Fichier `.env` :
 
+DB_ROOT_PASSWORD=********  # Le mot de passe administrateur de notre moteur MariaDB  
+DB_DATABASE=********  # le nom de la base de donnée à créer  
+DB_USER=********  # le nom de l'utilisateur de la base de donnée  
+DB_PASSWORD=********  # le mot de passe de l'utilisateur de la base de donnée  
+WP_DB_USER=********  # le nom de l'utilisateur de la base de donnée  
+WP_DB_PASSWORD=********  # le mot de passe de l'utilisateur de la base de donnée  
+WP_DB_NAME=********  # le nom de la base de donnée pour Wordpress  
 
 ## Utilisation du logiciel `SafetyWpress.py` :
 
@@ -49,6 +74,10 @@ il faudra préparer les fichiers de configuration `P6_config.ini` et `.env`
 | restauration d'une BDD         | -restoreDB    | -rDB           |
 
 ## Crontab
+
+en root lancé crontab -e puis :
+
+
 
 
 ## Licence 
