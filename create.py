@@ -2,7 +2,7 @@
 
 #####################################################################
 ##                                                                 ##
-##   Script de création d'un serveur wordpress avec MariaDB V0.8b  ##
+##   Script de création d'un serveur wordpress avec MariaDB V0.8c  ##
 ##               avec docker-compose sur DEBIAN 10.2               ##
 ##                                                                 ##
 #####################################################################
@@ -16,25 +16,33 @@
 
 import os # Diverses interfaces pour le système d'exploitation
 import os.path # manipulation courante des chemins
+import logging #
+from pathlib import Path
+
+logging.basicConfig(filename='/var/log/create.log',level=logging.DEBUG)
 
 ############# Installation des modules supplémentaires ##############
 
 os.system("apt install python3-pip -y") # installation de PIP pour python 3
-os.system("pip3 install -r /home/AIC-Projet6/requirements.txt") # installation de la liste des modules suplèmentaires via le fichier requirements.txt
+#os.system("pip3 install -r /srv/AIC-Projet6/requirements.txt") # installation de la liste des modules suplèmentaires via le fichier requirements.txt
+os.system("pip3 install -r requirements.txt")
 
-############################# Fonction ##############################
+############## Présence des Fichiers de configuration ###############
 
 # Vérifier si le fichier .env existe ou non #
 
-if os.path.isfile('/home/AIC-Projet6/.env'):
-  print("Fichier .env présent")
-else:
-  print("Fichier .env absent")
-  exit(1)
+try:
+    (Path('.env')).resolve(strict=True)
+    print("Fichier .env présent")
+    logging.info("Fichier .env présent")
+except FileNotFoundError:
+    print("Fichier .env manquant")
+    logging.error("Fichier .env manquant")
+    exit(1)
 
 # Vérifier si le fichier P6_config.ini existe ou non #
 
-if os.path.isfile('/home/AIC-Projet6/P6_config.ini'):
+if os.path.isfile('P6_config.ini'):
   print("Fichier P6_config.ini présent")
 else:
   print("Fichier P6_config.ini absent")
@@ -82,10 +90,10 @@ else:
 
 # Déplacement fichiers utiles dans le repertoire de sauvegarde #
 
-repertoire = shutil.copy('/home/AIC-Projet6/docker-compose.yml', repertoire_de_sauvegarde+'/')
-repertoire = shutil.copy('/home/AIC-Projet6/.env', repertoire_de_sauvegarde+'/')
-repertoire = shutil.copy('/home/AIC-Projet6/P6_config.ini', repertoire_de_sauvegarde+'/')
-repertoire = shutil.copy('/home/AIC-Projet6/SafetyWpress.py', repertoire_de_sauvegarde+'/')
+repertoire = shutil.copy('docker-compose.yml', repertoire_de_sauvegarde+'/')
+repertoire = shutil.copy('.env', repertoire_de_sauvegarde+'/')
+repertoire = shutil.copy('P6_config.ini', repertoire_de_sauvegarde+'/')
+repertoire = shutil.copy('SafetyWpress.py', repertoire_de_sauvegarde+'/')
 
 # Modification des fichiers save.py et create.py pour les rendre exécutables #
 
@@ -131,4 +139,4 @@ os.system("docker-compose --version")
 ##                                                                 ##
 #####################################################################
 
-os.system("docker-compose -f /home/backup/docker-compose.yml up -d") 
+os.system("docker-compose -f /srv/backup/docker-compose.yml up -d") 
