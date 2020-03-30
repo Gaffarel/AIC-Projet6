@@ -2,7 +2,7 @@
 
 #####################################################################
 ##                                                                 ##
-##   Script de création d'un serveur wordpress avec MariaDB V0.8d  ##
+##   Script de création d'un serveur wordpress avec MariaDB V0.8e  ##
 ##               avec docker-compose sur DEBIAN 10.2               ##
 ##                                                                 ##
 #####################################################################
@@ -15,17 +15,25 @@
 #####################################################################
 
 import os # Diverses interfaces pour le système d'exploitation
-import os.path # manipulation courante des chemins
+#import os.path # manipulation courante des chemins
 import logging #
-from pathlib import Path
+from pathlib import Path #
+#import datetime # Types de base pour la date et l'heure
+import configparser # Configuration file parser
+import shutil # aide à automatiser la copie des fichiers et des répertoires
+import docker # Docker
+#from datetime import date #
+#import tarfile #
+#from azure.storage.file import FileService #
+
+####################### Nom du fichier de LOG #######################
 
 logging.basicConfig(filename='/var/log/create.log',level=logging.DEBUG)
 
 ############# Installation des modules supplémentaires ##############
 
 os.system("apt install python3-pip -y") # installation de PIP pour python 3
-#os.system("pip3 install -r /srv/AIC-Projet6/requirements.txt") # installation de la liste des modules suplèmentaires via le fichier requirements.txt
-os.system("pip3 install -r requirements.txt")
+os.system("pip3 install -r requirements.txt") # installation de la liste des modules suplèmentaires via le fichier requirements.txt
 
 ############## Présence des Fichiers de configuration ###############
 
@@ -42,19 +50,14 @@ except FileNotFoundError:
 
 # Vérifier si le fichier P6_config.ini existe ou non #
 
-if os.path.isfile('P6_config.ini'):
-  print("Fichier P6_config.ini présent")
-else:
-  print("Fichier P6_config.ini absent")
-  exit(1)
-
-import datetime # Types de base pour la date et l'heure
-import configparser # Configuration file parser
-import shutil # aide à automatiser la copie des fichiers et des répertoires
-import docker # Docker
-from datetime import date #
-import tarfile #
-from azure.storage.file import FileService #
+try:
+    (Path('P6_config.ini')).resolve(strict=True)
+    print("Fichier P6_config.ini présent")
+    logging.info("Fichier P6_config.ini présent")
+except FileNotFoundError:
+    print("Fichier P6_config.ini manquant")
+    logging.error("Fichier P6_config.ini manquant")
+    exit(1)
 
 #####################################################################
 ##                                                                 ##
