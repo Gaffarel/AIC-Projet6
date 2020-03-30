@@ -18,15 +18,16 @@
     - [Fichier P6_config.ini](#le-fichier-p6_configini-)
     - [Fichier .env](#le-fichier-env-)
 - [Utilisation du logiciel SafetyWpress.py](#utilisation-du-logiciel-safetywpresspy-)
+- [Crontab](#)
 - [Licence](#licence)
 
 ## Préparation :
 
 Afin d'utiliser au mieux les programmes [create.py](https://github.com/Gaffarel/AIC-Projet6/blob/master/create.py) et [SafetyWpress.py](https://github.com/Gaffarel/AIC-Projet6/blob/master/SafetyWpress.py),  
-il faurdra installer un serveur Linux avec Debian 10.
+il faudra installer un serveur Linux avec Debian 10.
 
 Puis on lancera le programme `create.py` pour préparer le serveur à recevoir  
-Docker, Docker-compose et les images de Wordpress ainsi que la base de donnée MariaDB.
+Docker, Docker-compose et les images de Wordpress ainsi que la base de donnée MariaDB avec le fichier `docker-compose.yml`.
 
 ### Configuration du programme `create.py` :
 
@@ -40,6 +41,14 @@ il faudra préparer les fichiers de configuration `P6_config.ini` et `.env`
 
 
 ## Utilisation du logiciel `SafetyWpress.py` :
+
+| Commande                       | Argument      | Raccourcis     |
+|--------------------------------|---------------|----------------|
+| sauvegarde                     | -save         | -s             |
+| restauration totale du serveur | -restoreT     | -rT            |
+| restauration d'une BDD         | -restoreDB    | -rDB           |
+
+## Crontab
 
 
 ## Licence 
