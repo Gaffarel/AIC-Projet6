@@ -15,9 +15,9 @@
 ## Table des matières :
 - [Préparation du serveur](#pr%C3%A9paration-)
     - [Configuration du programme create.py](#configuration-du-programme-createpy-)
-    - [Fichier P6_config.ini](#Le%20Fichier%20`P6_config.ini`)
-    - [Fichier .env](#le-fichier-p6_configini-)
-- [Utilisation du logiciel SafetyWpress.py](#)
+    - [Fichier P6_config.ini](#le-fichier-p6_configini-)
+    - [Fichier .env](#le-fichier-env-)
+- [Utilisation du logiciel SafetyWpress.py](#utilisation-du-logiciel-safetywpresspy-)
 - [Licence](#licence)
 
 ## Préparation :
@@ -45,3 +45,4 @@ Avant de lancer le programme `create.py`, il vous faudra préparer les fichiers 
 ## Licence 
 
  Gaffarel/AIC-Projet6 is licensed under the GNU General Public License v3.0
+
