@@ -16,10 +16,8 @@
     - [Configuration du programme create.py](#Configuration%20du%20programme%20create.py)
     - [Fichier P6_config.ini](#Le%20Fichier%20`P6_config.ini`)
     - [Fichier .env](#Le%20Fichier%20`.env`)
-
 - [Utilisation du logiciel SafetyWpress.py](#)
-
-- [Licence](https://github.com/Gaffarel/AIC-Projet6#licence)
+- [Licence](#licence)
 
 ## Préparation :
 
@@ -38,7 +36,6 @@ Avant de lancer le programme `create.py`, il vous faudra préparer le fichier de
 
 
 ### Le Fichier `.env`
-
 
 
 
