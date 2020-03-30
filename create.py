@@ -2,7 +2,7 @@
 
 #####################################################################
 ##                                                                 ##
-##   Script de création d'un serveur wordpress avec MariaDB V0.8c  ##
+##   Script de création d'un serveur wordpress avec MariaDB V0.8d  ##
 ##               avec docker-compose sur DEBIAN 10.2               ##
 ##                                                                 ##
 #####################################################################
@@ -139,4 +139,5 @@ os.system("docker-compose --version")
 ##                                                                 ##
 #####################################################################
 
-os.system("docker-compose -f /srv/backup/docker-compose.yml up -d") 
+#os.system("docker-compose -f /srv/backup/docker-compose.yml up -d")
+os.system("docker-compose -f "+repertoire_de_sauvegarde+"/docker-compose.yml up -d") 
