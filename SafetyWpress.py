@@ -3,7 +3,7 @@
 #####################################################################
 ##                                                                 ##
 ##      Script de sauvegarde, de création, et de restauration      ##   
-##            d'un serveur wordpress avec MariaDB  V0.3            ##
+##            d'un serveur wordpress avec MariaDB  V0.3a           ##
 ##                                                                 ##
 #####################################################################
 
@@ -33,7 +33,7 @@ import yaml #
 ################ Import du fichier de configuration #################
 
 config = configparser.ConfigParser()
-config.read('/home/backup/P6_config.ini')
+config.read('/srv/backup/P6_config.ini')
 AZURE_CPT = config.get('config','azure_login')
 AZURE_KEY = config.get('config','azure_key')
 AZURE_REP_BKP = config.get('config','azure_bkp')
