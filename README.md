@@ -44,6 +44,7 @@ il faudra préparer les fichiers de configuration `P6_config.ini` et `.env`
 
 ## Licence 
 
- Gaffarel/AIC-Projet6 is licensed under the GNU General Public License v3.0
+ <p><img width=7% src="https://www.gnu.org/graphics/gplv3-or-later.svg">Gaffarel/AIC-Projet6 is licensed under the GNU General Public License v3.0</p>
+
 
 
