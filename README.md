@@ -12,7 +12,7 @@
 
 
 ## Table des matières :
-- [Préparation du serveur](#Préparation)
+- [Préparation du serveur](#pr%C3%A9paration-)
     - [Configuration du programme create.py](#Configuration%20du%20programme%20create.py)
     - [Fichier P6_config.ini](#Le%20Fichier%20`P6_config.ini`)
     - [Fichier .env](#Le%20Fichier%20`.env`)
