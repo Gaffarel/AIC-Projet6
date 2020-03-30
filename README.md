@@ -10,7 +10,7 @@
 ![Contibutions welcom](https://img.shields.io/badge/contributions-welcom-orange.svg)
 ![](https://img.shields.io/github/last-commit/Gaffarel/AIC-Projet6)
 
-https://github.com/Gaffarel/AIC-Projet6#licence
+
 
 ## Table des matières :
 - [Préparation du serveur](#pr%C3%A9paration-)
