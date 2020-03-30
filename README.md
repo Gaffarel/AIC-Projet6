@@ -13,9 +13,9 @@
 
 ## Table des matières :
 - [Préparation du serveur](#Préparation)
-    - [Configuration du programme create.py](#Configuration%20du%20programme%20create.py)
-    - [Fichier P6_config.ini](#Le%20Fichier%20`P6_config.ini`)
-    - [Fichier .env](#Le%20Fichier%20`.env`)
+    - [Configuration du programme create.py](#Configuration%20du%20programme%20create.py%20:)
+    - [Fichier P6_config.ini](#Le%20Fichier%20`P6_config.ini`%20:)
+    - [Fichier .env](#Le%20Fichier%20`.env`%20:)
 - [Utilisation du logiciel SafetyWpress.py](#)
 - [Licence](#licence)
 
@@ -29,13 +29,13 @@ Docker, Docker-compose et les images de Wordpress ainsi que la base de donnée M
 
 ### Configuration du programme `create.py` :
 
-Avant de lancer le programme `create.py`, il vous faudra préparer le fichier de configuration `P6_config.ini` et `.env`
+Avant de lancer le programme `create.py`, il vous faudra préparer les fichiers de configuration `P6_config.ini` et `.env`
 
-### Le Fichier `P6_config.ini`
+### Le Fichier `P6_config.ini` :
 
 
 
-### Le Fichier `.env`
+### Le Fichier `.env` :
 
 
 
