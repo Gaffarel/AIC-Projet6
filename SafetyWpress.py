@@ -3,7 +3,7 @@
 #####################################################################
 ##                                                                 ##
 ##      Script de sauvegarde, de création, et de restauration      ##   
-##            d'un serveur wordpress avec MariaDB  V0.3a           ##
+##            d'un serveur wordpress avec MariaDB  V0.3b           ##
 ##                                                                 ##
 #####################################################################
 
@@ -23,12 +23,31 @@ import tarfile #
 from azure.storage.file import FileService # 
 import sys #
 import yaml # 
+import logging #
+from pathlib import Path #
 
 #####################################################################
 ##                                                                 ##
 ##                         Les Variables                           ##
 ##                                                                 ##
 #####################################################################
+
+####################### Nom du fichier de LOG #######################
+
+logging.basicConfig(filename='/var/log/SafetyWpress.log',level=logging.DEBUG)
+
+############## Présence des Fichiers de configuration ###############
+
+# Vérifier si le fichier .env existe ou non #
+
+try:
+    (Path('P6_config.ini')).resolve(strict=True)
+    print("Fichier P6_config.ini présent")
+    logging.info("Fichier P6_config.ini présent")
+except FileNotFoundError:
+    print("Fichier P6_config.ini manquant")
+    logging.error("Fichier P6_config.ini manquant")
+    exit(1)
 
 ################ Import du fichier de configuration #################
 
