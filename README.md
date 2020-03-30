@@ -32,7 +32,7 @@ Docker, Docker-compose et les images de Wordpress ainsi que la base de donnée M
 ### Configuration du programme `create.py` :
 
 Avant de lancer le programme `create.py`,  
-il faudra préparer les fichiers de configuration `P6_config.ini` et `.env`
+il faudra préparer les fichiers de configuration `P6_config.ini` et `.env` qui se situe dans le projet.
 
 ### Le Fichier `P6_config.ini` :
 
