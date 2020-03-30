@@ -19,7 +19,7 @@
 
 - [Utilisation du logiciel SafetyWpress.py](#)
 
-- [Licence](#licence)
+- [Licence](https://github.com/Gaffarel/AIC-Projet6#licence)
 
 ## Préparation :
 
@@ -45,4 +45,4 @@ Avant de lancer le programme `create.py`, il vous faudra préparer le fichier de
 
 ## Licence 
 
-### Gaffarel/AIC-Projet6 is licensed under the GNU General Public License v3.0
+ Gaffarel/AIC-Projet6 is licensed under the GNU General Public License v3.0
