@@ -14,7 +14,7 @@ services:
       - mycompanynet
     volumes:
       - wp:/var/www/html
-      - /home/backup/log:/var/log
+      - /srv/backup/log:/var/log
     restart: always
   db:
     image: mariadb:10.3.18
