@@ -2,7 +2,7 @@
 
 #####################################################################
 ##                                                                 ##
-##   Script de création d'un serveur wordpress avec MariaDB V0.8f  ##
+##   Script de création d'un serveur wordpress avec MariaDB V0.8g  ##
 ##               avec docker-compose sur DEBIAN 10.2               ##
 ##                                                                 ##
 #####################################################################
@@ -25,7 +25,7 @@ import shutil # aide à automatiser la copie des fichiers et des répertoires
 os.system("apt install python3-pip -y") # installation de PIP pour python 3
 os.system("pip3 install -r requirements.txt") # installation de la liste des modules suplèmentaires via le fichier requirements.txt
 
-import docker # Docker
+#import docker # Docker
 
 ####################### Nom du fichier de LOG #######################
 
