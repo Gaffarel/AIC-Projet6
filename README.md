@@ -18,6 +18,7 @@
     - [Fichier P6_config.ini](#le-fichier-p6_configini-)
     - [Fichier .env](#le-fichier-env-)
 - [Utilisation du logiciel SafetyWpress.py](#utilisation-du-logiciel-safetywpresspy-)
+- [Log](#les-fichiers-logs-)
 - [Crontab](#crontab)
 - [Licence](#licence)
 
@@ -85,12 +86,19 @@ WP_DB_NAME=********  # le nom de la base de donnée pour Wordpress
 
 en root lancé crontab -e puis :
 
+20 3 * * * /bin/python3.7 /srv/backup/SafetyWpress.py save >/dev/null 2>&1
 
+où
+
+20 3 * * * /bin/python3.7 /srv/backup/SafetyWpress.py -s >/dev/null 2>&1
+
+afin d'éffectuer une sauvegarde tous les jours à 3H20 .
+
+## Les fichiers logs :
+
+`SafetyWpress.log` et `create.log` sont créés dans /var/log/
 
 
 ## Licence 
 
- <p><img width=7% src="https://www.gnu.org/graphics/gplv3-or-later.svg">Gaffarel/AIC-Projet6 is licensed under the GNU General Public License v3.0</p>
-
-
-
+ <p><img width=6% src="https://www.gnu.org/graphics/gplv3-or-later.svg"> AIC-Projet6 is licensed under the GNU General Public License v3.0</p>
