@@ -2,7 +2,7 @@
 
 #####################################################################
 ##                                                                 ##
-##   Script de création d'un serveur wordpress avec MariaDB V0.9   ##
+##   Script de création d'un serveur wordpress avec MariaDB V0.9a  ##
 ##               avec docker-compose sur DEBIAN 10.2               ##
 ##                                                                 ##
 #####################################################################
@@ -20,15 +20,15 @@ from pathlib import Path #
 import configparser # Configuration file parser
 import shutil # aide à automatiser la copie des fichiers et des répertoires
 
+####################### Nom du fichier de LOG #######################
+
+logging.basicConfig(filename='/var/log/create.log',level=logging.DEBUG)
+
 ############# Installation des modules supplémentaires ##############
 
 os.system("apt install python3-pip -y") # installation de PIP pour python 3
 os.system("pip3 install -r requirements.txt") # installation de la liste des modules suplèmentaires via le fichier requirements.txt
                                               # afin de préparer le système à l'utilisation du programme SafetyWpress.py
-
-####################### Nom du fichier de LOG #######################
-
-logging.basicConfig(filename='/var/log/create.log',level=logging.DEBUG)
 
 ############## Présence des Fichiers de configuration ###############
 
