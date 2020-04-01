@@ -10,19 +10,17 @@
 ![Contibutions welcom](https://img.shields.io/badge/contributions-welcom-orange.svg)
 ![](https://img.shields.io/github/last-commit/Gaffarel/AIC-Projet6)
 
-
-
-## Table des matières :
-- [Préparation du serveur](#pr%C3%A9paration-)
-    - [Configuration du programme create.py](#configuration-du-programme-createpy-)
-    - [Fichier P6_config.ini](#le-fichier-p6_configini-)
-    - [Fichier .env](#le-fichier-env-)
-- [Utilisation du logiciel SafetyWpress.py](#utilisation-du-logiciel-safetywpresspy-)
-- [Log](#les-fichiers-logs-)
+## Table des matières
+- [Préparation du serveur](#pr%C3%A9paration)
+    - [Configuration du programme create.py](#configuration-du-programme-createpy)
+    - [Fichier P6_config.ini](#le-fichier-p6_configini)
+    - [Fichier .env](#le-fichier-env)
+- [Utilisation du logiciel SafetyWpress.py](#utilisation-du-logiciel-safetywpresspy)
+- [Log](#les-fichiers-logs)
 - [Crontab](#crontab)
 - [Licence](#licence)
 
-## Préparation :
+## Préparation
 
 Afin d'utiliser au mieux les programmes [create.py](https://github.com/Gaffarel/AIC-Projet6/blob/master/create.py) et [SafetyWpress.py](https://github.com/Gaffarel/AIC-Projet6/blob/master/SafetyWpress.py),  
 il faudra installer un serveur Linux avec Debian 10.
@@ -30,12 +28,12 @@ il faudra installer un serveur Linux avec Debian 10.
 Puis on lancera le programme `create.py` pour préparer le serveur à recevoir  
 Docker, Docker-compose et les images de Wordpress ainsi que la base de donnée MariaDB avec le fichier `docker-compose.yml`.
 
-### Configuration du programme `create.py` :
+### Configuration du programme `create.py`
 
 Avant de lancer le programme `create.py`,  
 il faudra préparer les fichiers de configuration `P6_config.ini` et `.env` qui se situe dans le projet.
 
-### Le Fichier `P6_config.ini` :
+### Le Fichier `P6_config.ini`
 
 ; Fichier de configuration
 
@@ -56,16 +54,7 @@ nbjour=10 ; nombre de jour de rétention
 
 backup_repertoire=/srv/backup ; répertoire de sauvegarde par défaut.  
 
----
-
-Si vous décidez de modifier le répertoire de sauvegarde par défaut, n'oubliez pas de modifier aussi la ligne du fichier `SafetyWpress.py` :  
-
-(Path('/srv/backup/P6_config.ini')).resolve(strict=True)  
-config.read('/srv/backup/P6_config.ini') 
-
----
-
-### Le Fichier `.env` :
+### Le Fichier `.env`
 
 DB_ROOT_PASSWORD=********  # Le mot de passe administrateur de notre moteur MariaDB  
 DB_DATABASE=********  # le nom de la base de donnée à créer  
@@ -75,7 +64,7 @@ WP_DB_USER=********  # le nom de l'utilisateur de la base de donnée
 WP_DB_PASSWORD=********  # le mot de passe de l'utilisateur de la base de donnée  
 WP_DB_NAME=********  # le nom de la base de donnée pour Wordpress  
 
-## Utilisation du logiciel `SafetyWpress.py` :
+## Utilisation du logiciel `SafetyWpress.py`
 
 | Commandes                      | Arguments     | Raccourcis     |
 |--------------------------------|---------------|----------------|
@@ -95,12 +84,11 @@ où
 
 afin d'éffectuer une sauvegarde tous les jours à 3H20 .
 
-## Les fichiers logs :
+## Les fichiers logs
 
 `SafetyWpress.log` et `create.log` sont créés dans /var/log/
 
-
-## Licence 
+## Licence
 
  <p><a href="https://github.com/Gaffarel/AIC-Projet6/blob/master/LICENSE">
  <img width=6% src="https://www.gnu.org/graphics/gplv3-or-later.svg">AIC-Projet6 is licensed under the GNU General Public License v3.0
