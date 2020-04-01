@@ -58,8 +58,9 @@ backup_repertoire=/srv/backup ; répertoire de sauvegarde par défaut.
 
 ---
 
-Si vous décidez de modifier ce répertoire de sauvegarde par défaut, n'oubliez pas de modifier aussi la ligne du fichier `SafetyWpress.py` :  
+Si vous décidez de modifier le répertoire de sauvegarde par défaut, n'oubliez pas de modifier aussi la ligne du fichier `SafetyWpress.py` :  
 
+(Path('/srv/backup/P6_config.ini')).resolve(strict=True)  
 config.read('/srv/backup/P6_config.ini') 
 
 ---
