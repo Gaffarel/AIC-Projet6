@@ -83,7 +83,7 @@ repertoire_de_sauvegarde = config.get('repertoire','backup_repertoire')
 ##                                                                 ##
 #####################################################################
 
-# Vérifier si le répertoire de sauvegarde existe ou non # LOG A FAIRE !
+# Vérifier si le répertoire de sauvegarde existe ou non #
 
 try:
     (Path(repertoire_de_sauvegarde)).resolve(strict=True)
