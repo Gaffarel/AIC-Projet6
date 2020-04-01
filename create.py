@@ -2,7 +2,7 @@
 
 #####################################################################
 ##                                                                 ##
-##   Script de création d'un serveur wordpress avec MariaDB V0.9a  ##
+##   Script de création d'un serveur wordpress avec MariaDB V1.0   ##
 ##               avec docker-compose sur DEBIAN 10.2               ##
 ##                                                                 ##
 #####################################################################
@@ -19,6 +19,7 @@ import logging #
 from pathlib import Path #
 import configparser # Configuration file parser
 import shutil # aide à automatiser la copie des fichiers et des répertoires
+import os.path #
 
 ####################### Nom du fichier de LOG #######################
 
@@ -30,12 +31,16 @@ os.system("apt install python3-pip -y") # installation de PIP pour python 3
 os.system("pip3 install -r requirements.txt") # installation de la liste des modules suplèmentaires via le fichier requirements.txt
                                               # afin de préparer le système à l'utilisation du programme SafetyWpress.py
 
+############## On récupére le chemin absolu du script ###############
+
+script_path = os.path.abspath(os.path.dirname( __file__))
+
 ############## Présence des Fichiers de configuration ###############
 
 # Vérifier si le fichier .env existe ou non #
 
 try:
-    (Path('.env')).resolve(strict=True)
+    (Path(script_path+'/.env')).resolve(strict=True)
     print("Fichier .env présent")
     logging.info("Fichier .env présent")
 except FileNotFoundError:
@@ -46,7 +51,7 @@ except FileNotFoundError:
 # Vérifier si le fichier P6_config.ini existe ou non #
 
 try:
-    (Path('P6_config.ini')).resolve(strict=True)
+    (Path(script_path+'/P6_config.ini')).resolve(strict=True)
     print("Fichier P6_config.ini présent")
     logging.info("Fichier P6_config.ini présent")
 except FileNotFoundError:
@@ -57,7 +62,7 @@ except FileNotFoundError:
 # Vérifier si le fichier docker-compose.yml existe ou non #
 
 try:
-    (Path('docker-compose.yml')).resolve(strict=True)
+    (Path(script_path+'/docker-compose.yml')).resolve(strict=True)
     print("Fichier docker-compose.yml présent")
     logging.info("Fichier docker-compose.yml présent")
 except FileNotFoundError:
@@ -74,7 +79,7 @@ except FileNotFoundError:
 ################ Import du fichier de configuration #################
 
 config = configparser.ConfigParser()
-config.read('P6_config.ini')
+config.read(script_path+'/P6_config.ini')
 repertoire_de_sauvegarde = config.get('repertoire','backup_repertoire')
 
 #####################################################################
