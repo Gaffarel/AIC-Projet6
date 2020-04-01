@@ -92,8 +92,8 @@ repertoire_de_sauvegarde = config.get('repertoire','backup_repertoire')
 
 try:
     (Path(repertoire_de_sauvegarde)).resolve(strict=True)
-    print("Le répertoire n'existe pas !")
-    logging.info("Le répertoire n'existe pas !")
+    print("Le répertoire existe !")
+    logging.info("Le répertoire existe!")
 except FileNotFoundError:
     os.makedirs(repertoire_de_sauvegarde, exist_ok=True)
     print("Création du répertoire de sauvegarde")
