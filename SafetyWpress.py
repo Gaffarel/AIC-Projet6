@@ -2,8 +2,8 @@
 
 #####################################################################
 ##                                                                 ##
-##      Script de sauvegarde, de création, et de restauration      ##   
-##            d'un serveur wordpress avec MariaDB  V0.3b           ##
+##      Script de sauvegarde, de création, et de restauration      ##
+##            d'un serveur wordpress avec MariaDB  V0.4            ##
 ##                                                                 ##
 #####################################################################
 
@@ -15,6 +15,7 @@
 
 import os # Diverses interfaces pour le système d'exploitation
 import os.path # manipulation courante des chemins
+from pathlib import Path #
 import datetime # Types de base pour la date et l'heure
 import configparser # Configuration file parser
 import docker # Docker
@@ -24,7 +25,6 @@ from azure.storage.file import FileService #
 import sys #
 import yaml # 
 import logging #
-from pathlib import Path #
 
 #####################################################################
 ##                                                                 ##
@@ -36,12 +36,16 @@ from pathlib import Path #
 
 logging.basicConfig(filename='/var/log/SafetyWpress.log',level=logging.DEBUG)
 
+############## On récupére le chemin absolu du script ###############
+
+script_path = os.path.abspath(os.path.dirname( __file__))
+
 ############## Présence des Fichiers de configuration ###############
 
 # Vérifier si le fichier .env existe ou non #
 
 try:
-    (Path('P6_config.ini')).resolve(strict=True)
+    (Path(script_path+'/P6_config.ini')).resolve(strict=True)
     print("Fichier P6_config.ini présent")
     logging.info("Fichier P6_config.ini présent")
 except FileNotFoundError:
@@ -52,7 +56,7 @@ except FileNotFoundError:
 ################ Import du fichier de configuration #################
 
 config = configparser.ConfigParser()
-config.read('/srv/backup/P6_config.ini')
+config.read(script_path+'/P6_config.ini')
 AZURE_CPT = config.get('config','azure_login')
 AZURE_KEY = config.get('config','azure_key')
 AZURE_REP_BKP = config.get('config','azure_bkp')
@@ -119,9 +123,8 @@ def get_choix_de_la_sauvegarde():
 if len(sys.argv) < 2:
         print("Il faut un argument pour appeller le script :\n")
         print("\n        save ou -s   pour sauvegarder ")
-#        print("\n        create ou -c   pour sauvegarder ")
         print("\n        restoreDB ou -rDB   pour restaurer uniquement la base de donnée")
-        print("\n        restoreT ou -rT   pour restaurer le serveur complet")        
+        print("\n        restoreT ou -rT   pour restaurer le serveur complet")
         exit(1)
 # Retrieving the argument
 argument = sys.argv[1]
@@ -129,7 +132,7 @@ argument = sys.argv[1]
 # Processing the argument and launching the attached function
 if argument == 'save' or argument == '-s':
   print("Sauvegarde en cours ...")
-  
+
   NAME = get_database_name()
   print (NAME)
 
@@ -143,7 +146,6 @@ if argument == 'save' or argument == '-s':
   #container = client.containers.get(dict_conteneur["'mariadb:10.3.18'"])
   container = client.containers.get(ID)
   MySQLdump = str((container.exec_run("mysqldump -u "+UserBDD+" -p"+MdpBDD+" "+Nom_de_la_BDD)).output, 'utf-8')
-  #print(res)
   fichier = open(repertoire_de_sauvegarde+"/save_"+str(BACKUP_DATE)+"db.sql","w")
   fichier.write(MySQLdump)
   fichier.close()
@@ -159,15 +161,11 @@ if argument == 'save' or argument == '-s':
   backup_bz2.add('/var/log/') #
   backup_bz2.add('/var/spool/cron/crontabs/') #
   backup_bz2.add(repertoire_de_sauvegarde+'/log/') #
-  #backup_bz2.add(repertoire_de_sauvegarde+'/save_'+str(BACKUP_DATE)+'db.sql') #
   backup_bz2.add(repertoire_de_sauvegarde+'/.env') #
   backup_bz2.add(repertoire_de_sauvegarde+'/docker-compose.yml') #
   backup_bz2.close() # 
 
 # Sauvegarde sur AZURE #
-
-# Autorisation d'accès au compte Microsoft AZURE
-  #file_service = FileService(account_name=AZURE_CPT, account_key=AZURE_KEY)
 
 # Création du répertoire: backup6
   file_service.create_share(AZURE_REP_BKP)
@@ -197,9 +195,6 @@ if argument == 'save' or argument == '-s':
       print("")
       print(file_or_dir.name)
 
-#elif argument == 'create' or argument == '-c':
-#  print("Création en cours ...")
-
 elif argument == 'restoreDB' or argument == '-rDB':
   print("Restauration de la Base de donnée en cours ...")
 
@@ -224,10 +219,8 @@ elif argument == 'restoreDB' or argument == '-rDB':
 # suppression du fichiers tar.bz2 sauvegarde récupéré #
   os.remove(repertoire_de_sauvegarde+"/"+BACKUP_DATE_SAVE+"db.sql")
 
-
 elif argument == 'restoreT' or argument == '-rT':
   print("Restauration du serveur en cours ...")
-
   print ("Choix du Numéro de sauvegarde: ?")
   print ("")
   BACKUP_DATE_SAVE=get_choix_de_la_sauvegarde()
@@ -261,14 +254,12 @@ elif argument == 'restoreT' or argument == '-rT':
 # suppression du fichiers tar.bz2 sauvegarde récupéré #
   os.remove(repertoire_de_sauvegarde+"/"+BACKUP_DATE_SAVE+"db.sql")
 
-# redémarrage du serveur Linux # 
-  os.system("reboot") 
-
+# redémarrage du serveur Linux #
+  os.system("reboot")
 
 else:
         print("Il faut un argument pour appeller le script :\n")
         print("\n        save ou -s   pour sauvegarder ")
-#        print("\n        create ou -c   pour sauvegarder ")
         print("\n        restoreDB ou -rDB   pour restaurer uniquement la base de donnée")
-        print("\n        restoreT ou -rT   pour restaurer le serveur complet")        
+        print("\n        restoreT ou -rT   pour restaurer le serveur complet")
         exit(1)
