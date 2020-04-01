@@ -2,7 +2,7 @@
 
 #####################################################################
 ##                                                                 ##
-##   Script de création d'un serveur wordpress avec MariaDB V1.0   ##
+##   Script de création d'un serveur wordpress avec MariaDB V1.0a  ##
 ##               avec docker-compose sur DEBIAN 10.2               ##
 ##                                                                 ##
 #####################################################################
@@ -15,11 +15,11 @@
 #####################################################################
 
 import os # Diverses interfaces pour le système d'exploitation
-import logging #
+import os.path #
 from pathlib import Path #
+import logging #
 import configparser # Configuration file parser
 import shutil # aide à automatiser la copie des fichiers et des répertoires
-import os.path #
 
 ####################### Nom du fichier de LOG #######################
 
