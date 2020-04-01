@@ -2,7 +2,7 @@
 
 #####################################################################
 ##                                                                 ##
-##   Script de création d'un serveur wordpress avec MariaDB V0.8i  ##
+##   Script de création d'un serveur wordpress avec MariaDB V0.9   ##
 ##               avec docker-compose sur DEBIAN 10.2               ##
 ##                                                                 ##
 #####################################################################
@@ -85,12 +85,6 @@ repertoire_de_sauvegarde = config.get('repertoire','backup_repertoire')
 
 # Vérifier si le répertoire de sauvegarde existe ou non # LOG A FAIRE !
 
-# if os.path.exists(repertoire_de_sauvegarde) :
-#      print("Chemin " , repertoire_de_sauvegarde, " existe")
-# else:
-#      os.makedirs(repertoire_de_sauvegarde, exist_ok=True)
-#      print("Chemin " , repertoire_de_sauvegarde, " n'existe pas")
-
 try:
     (Path(repertoire_de_sauvegarde)).resolve(strict=True)
     print("Le répertoire n'existe pas !")
@@ -99,7 +93,6 @@ except FileNotFoundError:
     os.makedirs(repertoire_de_sauvegarde, exist_ok=True)
     print("Création du répertoire de sauvegarde")
     logging.warning("Création du répertoire de sauvegarde")
-#    exit(1)
 
 # Déplacement fichiers utiles dans le repertoire de sauvegarde #
 
