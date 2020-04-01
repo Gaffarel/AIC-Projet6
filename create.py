@@ -2,7 +2,7 @@
 
 #####################################################################
 ##                                                                 ##
-##   Script de création d'un serveur wordpress avec MariaDB V0.8g  ##
+##   Script de création d'un serveur wordpress avec MariaDB V0.8h  ##
 ##               avec docker-compose sur DEBIAN 10.2               ##
 ##                                                                 ##
 #####################################################################
@@ -24,8 +24,7 @@ import shutil # aide à automatiser la copie des fichiers et des répertoires
 
 os.system("apt install python3-pip -y") # installation de PIP pour python 3
 os.system("pip3 install -r requirements.txt") # installation de la liste des modules suplèmentaires via le fichier requirements.txt
-
-#import docker # Docker
+                                              # afin de préparer le système à l'utilisation du programme SafetyWpress.py
 
 ####################### Nom du fichier de LOG #######################
 
@@ -55,6 +54,17 @@ except FileNotFoundError:
     logging.error("Fichier P6_config.ini manquant")
     exit(1)
 
+# Vérifier si le fichier docker-compose.yml existe ou non #
+
+try:
+    (Path('docker-compose.yml')).resolve(strict=True)
+    print("Fichier docker-compose.yml présent")
+    logging.info("Fichier docker-compose.yml présent")
+except FileNotFoundError:
+    print("Fichier docker-compose.yml manquant")
+    logging.error("Fichier docker-compose.yml manquant")
+    exit(1)
+
 #####################################################################
 ##                                                                 ##
 ##                         Les Variables                           ##
@@ -65,12 +75,6 @@ except FileNotFoundError:
 
 config = configparser.ConfigParser()
 config.read('P6_config.ini')
-AZURE_CPT = config.get('config','azure_login')
-AZURE_KEY = config.get('config','azure_key')
-AZURE_REP_BKP = config.get('config','azure_bkp')
-UserBDD = config.get('config','user_bdd')
-MdpBDD = config.get('config','mdp_bdd')
-NBjourDEretention = config.get('retention','nbjour')
 repertoire_de_sauvegarde = config.get('repertoire','backup_repertoire')
 
 #####################################################################
@@ -79,7 +83,7 @@ repertoire_de_sauvegarde = config.get('repertoire','backup_repertoire')
 ##                                                                 ##
 #####################################################################
 
-# Vérifier si le répertoire de sauvegarde existe ou non #
+# Vérifier si le répertoire de sauvegarde existe ou non # LOG A FAIRE !
 
 if os.path.exists(repertoire_de_sauvegarde) :
      print("Chemin " , repertoire_de_sauvegarde, " existe")
@@ -94,7 +98,7 @@ repertoire = shutil.copy('.env', repertoire_de_sauvegarde+'/')
 repertoire = shutil.copy('P6_config.ini', repertoire_de_sauvegarde+'/')
 repertoire = shutil.copy('SafetyWpress.py', repertoire_de_sauvegarde+'/')
 
-# Modification des fichiers save.py et create.py pour les rendre exécutables #
+# Modification des fichiers SafetyWpress.py pour le rendre exécutable #
 
 os.chmod(repertoire_de_sauvegarde+"/SafetyWpress.py", 751)
 
@@ -138,5 +142,4 @@ os.system("docker-compose --version")
 ##                                                                 ##
 #####################################################################
 
-#os.system("docker-compose -f /srv/backup/docker-compose.yml up -d")
 os.system("docker-compose -f "+repertoire_de_sauvegarde+"/docker-compose.yml up -d") 
