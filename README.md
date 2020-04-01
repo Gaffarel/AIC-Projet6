@@ -1,20 +1,23 @@
 # <div align="center"> Script de Création , Sauvegarde et de Restauration d'un serveur Wordpress avec MariaDB sous Docker </div>
+
 # <div align="center"> Projet N°6 [AIC] </div>
 
 # <p align="center"><img width=20% src="https://github.com/Gaffarel/AIC-Projet6/blob/master/images/logo.png"></p>
 
-# <p align="center"> SafetyWpress.py</p>
+# <div align="center">SafetyWpress.py</div>
+
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
 [![Python 3.7.3](https://badgen.net/badge/python/3.7.3)](https://www.python.org/downloads/release/python-373/)
 [![Debian 10](https://badgen.net/badge/Debian/10)](https://www.debian.org/)
 ![Contibutions welcom](https://img.shields.io/badge/contributions-welcom-orange.svg)
-![](https://img.shields.io/github/last-commit/Gaffarel/AIC-Projet6)
+![Last commit](https://img.shields.io/github/last-commit/Gaffarel/AIC-Projet6)
 
 ## Table des matières
+
 - [Préparation du serveur](#pr%C3%A9paration)
-    - [Configuration du programme create.py](#configuration-du-programme-createpy)
-    - [Fichier P6_config.ini](#le-fichier-p6_configini)
-    - [Fichier .env](#le-fichier-env)
+  - [Configuration du programme create.py](#configuration-du-programme-createpy)
+  - [Fichier P6_config.ini](#le-fichier-p6_configini)
+  - [Fichier .env](#le-fichier-env)
 - [Utilisation du logiciel SafetyWpress.py](#utilisation-du-logiciel-safetywpresspy)
 - [Log](#les-fichiers-logs)
 - [Crontab](#crontab)
