@@ -28,12 +28,12 @@
 Afin d'utiliser au mieux les programmes [create.py](https://github.com/Gaffarel/AIC-Projet6/blob/master/create.py) et [SafetyWpress.py](https://github.com/Gaffarel/AIC-Projet6/blob/master/SafetyWpress.py),  
 il faudra installer un serveur Linux avec Debian 10.
 
-Puis on lancera le programme `create.py` pour préparer le serveur à recevoir  
+Puis on lancera le programme `./create.py` pour préparer le serveur à recevoir  
 Docker, Docker-compose et les images de Wordpress ainsi que la base de donnée MariaDB avec le fichier `docker-compose.yml`.
 
 ### Configuration du programme `create.py`
 
-Avant de lancer le programme `create.py`,  
+Avant de lancer le programme `./create.py`,  
 il faudra préparer les fichiers de configuration `P6_config.ini` et `.env` qui se situe dans le projet.
 
 ### Le Fichier `P6_config.ini`
@@ -67,7 +67,7 @@ WP_DB_USER=********  # le nom de l'utilisateur de la base de donnée
 WP_DB_PASSWORD=********  # le mot de passe de l'utilisateur de la base de donnée  
 WP_DB_NAME=********  # le nom de la base de donnée pour Wordpress  
 
-## Utilisation du logiciel `SafetyWpress.py`
+## Utilisation du logiciel `./SafetyWpress.py`
 
 | Commandes                      | Arguments     | Raccourcis     |
 |--------------------------------|---------------|----------------|
