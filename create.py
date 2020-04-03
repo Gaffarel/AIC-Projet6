@@ -62,7 +62,7 @@ try:
 except FileNotFoundError:
     print("Fichier .env manquant")
     logging.error("Fichier .env manquant")
-    syslog.syslog(syslog.LOG_ERR,"Fichier .env présent")
+    syslog.syslog(syslog.LOG_ERR,"Fichier .env manquant")
     exit(1)
 
 # Vérifier si le fichier P6_config.ini existe ou non #
@@ -75,7 +75,7 @@ try:
 except FileNotFoundError:
     print("Fichier P6_config.ini manquant")
     logging.error("Fichier P6_config.ini manquant")
-    syslog.syslog(syslog.LOG_ERR,"Fichier P6_config.ini présent")
+    syslog.syslog(syslog.LOG_ERR,"Fichier P6_config.ini manquant")
     exit(1)
 
 # Vérifier si le fichier docker-compose.yml existe ou non #
@@ -88,7 +88,7 @@ try:
 except FileNotFoundError:
     print("Fichier docker-compose.yml manquant")
     logging.error("Fichier docker-compose.yml manquant")
-    syslog.syslog(syslog.LOG_ERR,"Fichier docker-compose.yml présent")
+    syslog.syslog(syslog.LOG_ERR,"Fichier docker-compose.yml manquant")
     exit(1)
 
 #####################################################################
