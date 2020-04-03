@@ -2,7 +2,7 @@
 
 #####################################################################
 ##                                                                 ##
-##   Script de création d'un serveur wordpress avec MariaDB V1.0d  ##
+##   Script de création d'un serveur wordpress avec MariaDB V1.0e  ##
 ##               avec docker-compose sur DEBIAN 10.2               ##
 ##                                                                 ##
 #####################################################################
@@ -24,17 +24,18 @@ import shutil # aide à automatiser la copie des fichiers et des répertoires
 
 ####################### Nom du fichier de LOG #######################
 
-# Vérifier si le répertoire de LOG SafetyWpres existe ou non #
+# Vérifier si le répertoire de LOG SafetyWpress existe ou non #
 
 try:
     (Path("/var/log/SafetyWpress/")).resolve(strict=True)
     print("Le répertoire des LOGs existe !")
-    logging.info("Le répertoire des LOGs existe !")
+#    logging.info("Le répertoire des LOGs existe !")
     syslog.syslog(syslog.LOG_INFO,"Le répertoire des LOGs existe !")
+
 except FileNotFoundError:
-    os.makedirs(("/var/log/SafetyWpress/"), exist_ok=True)
+    os.makedirs(("/var/log/SafetyWpress"), exist_ok=True)
     print("Création du répertoire de LOG SafetyWpress")
-    logging.warning("Création du répertoire de LOG SafetyWpress")
+#    logging.warning("Création du répertoire de LOG SafetyWpress")
     syslog.syslog(syslog.LOG_WARNING,"Création du répertoire de LOG SafetyWpress")
 
 logging.basicConfig(filename='/var/log/SafetyWpress/create.log',level=logging.DEBUG, format='%(asctime)s : %(levelname)s - %(name)s - %(module)s : %(message)s')
