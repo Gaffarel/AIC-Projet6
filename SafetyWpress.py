@@ -3,7 +3,7 @@
 #####################################################################
 ##                                                                 ##
 ##      Script de sauvegarde, de création, et de restauration      ##
-##            d'un serveur wordpress avec MariaDB  V0.4            ##
+##            d'un serveur wordpress avec MariaDB  V0.5            ##
 ##                                                                 ##
 #####################################################################
 
@@ -13,6 +13,7 @@
 ##                                                                 ##
 #####################################################################
 
+import time #
 import os # Diverses interfaces pour le système d'exploitation
 import os.path # manipulation courante des chemins
 from pathlib import Path #
@@ -25,6 +26,7 @@ from azure.storage.file import FileService #
 import sys #
 import yaml # 
 import logging #
+import syslog #
 
 #####################################################################
 ##                                                                 ##
@@ -34,7 +36,7 @@ import logging #
 
 ####################### Nom du fichier de LOG #######################
 
-logging.basicConfig(filename='/var/log/SafetyWpress.log',level=logging.DEBUG)
+logging.basicConfig(filename='/var/log/SafetyWpress/SafetyWpress.log',level=logging.DEBUG, format='%(asctime)s : %(levelname)s - %(name)s - %(module)s : %(message)s')
 
 ############## On récupére le chemin absolu du script ###############
 
@@ -42,15 +44,18 @@ script_path = os.path.abspath(os.path.dirname( __file__))
 
 ############## Présence des Fichiers de configuration ###############
 
-# Vérifier si le fichier .env existe ou non #
+# Vérifier si le fichier P6_config.ini existe ou non #
 
 try:
     (Path(script_path+'/P6_config.ini')).resolve(strict=True)
     print("Fichier P6_config.ini présent")
     logging.info("Fichier P6_config.ini présent")
+    syslog.syslog(syslog.LOG_INFO,"Fichier P6_config.ini présent")
+
 except FileNotFoundError:
     print("Fichier P6_config.ini manquant")
     logging.error("Fichier P6_config.ini manquant")
+    syslog.syslog(syslog.LOG_ERR,"Fichier P6_config.ini manquant")
     exit(1)
 
 ################ Import du fichier de configuration #################
@@ -113,6 +118,14 @@ def get_choix_de_la_sauvegarde():
   choix = input("Entrez le numéro de sauvegarde: N°:") # input choice
   return(dict_save[int(choix)])
 
+def countdown(temps):
+    while temps:
+        mins, secs = divmod(t, 60)
+        timeformat = '{:02d}:{:02d}'.format(mins, secs)
+        print(timeformat, end='\r')
+        time.sleep(1)
+        temps -= 1
+
 #####################################################################
 ##                                                                 ##
 ##         Test et choix des fonctions avec les arguments          ##
@@ -120,32 +133,37 @@ def get_choix_de_la_sauvegarde():
 #####################################################################
 
 # Testing the presence of an argument
+
 if len(sys.argv) < 2:
         print("Il faut un argument pour appeller le script :\n")
         print("\n        save ou -s   pour sauvegarder ")
         print("\n        restoreDB ou -rDB   pour restaurer uniquement la base de donnée")
         print("\n        restoreT ou -rT   pour restaurer le serveur complet")
         exit(1)
-# Retrieving the argument
+
+# Récupération de l'argument
+
 argument = sys.argv[1]
 
-# Processing the argument and launching the attached function
+# Traitement de l'argument et lancement de la fonction attachée
+
 if argument == 'save' or argument == '-s':
   print("Sauvegarde en cours ...")
-
+  print("")
   NAME = get_database_name()
-  print (NAME)
-
+  print ("le nom de l'image de la Base de donnée est: ",NAME)
+  print("")
   ID = get_short_id_container(NAME)
-  print (ID)
+  print ("le short ID de l'image de la Base de donnée est: ",ID)
+  print("")
 
 # Dump de la base de donnée MariaDB #
 
   client = docker.from_env()
-  #container = client.containers.get('33a595d494')
-  #container = client.containers.get(dict_conteneur["'mariadb:10.3.18'"])
   container = client.containers.get(ID)
-  MySQLdump = str((container.exec_run("mysqldump -u "+UserBDD+" -p"+MdpBDD+" "+Nom_de_la_BDD)).output, 'utf-8')
+  MySQLdump = str((container.exec_run("mysqldump -u "+UserBDD+" -p"+MdpBDD+" "+Nom_de_la_BDD)).output, 'utf-8') # dump de la BDD,
+                                                                                                                # puis récupération de la sortie de command
+                                                                                                                # et formattage du binaire
   fichier = open(repertoire_de_sauvegarde+"/save_"+str(BACKUP_DATE)+"db.sql","w")
   fichier.write(MySQLdump)
   fichier.close()
@@ -153,17 +171,17 @@ if argument == 'save' or argument == '-s':
 # Compréssion et sauvegarde des fichiers du serveur #
 
   backup_bz2 = tarfile.open(repertoire_de_sauvegarde+'/save_'+str(BACKUP_DATE)+'.tar.bz2','w:bz2') # Emplacement de sauvegarde du fichier compressé (tar.bz2)
-  backup_bz2.add('/var/lib/docker/volumes/backup_wp/') # sauvegarde du volumes wordpress
-  backup_bz2.add('/etc/network/interfaces') #
-  backup_bz2.add('/etc/resolv.conf') #
-  backup_bz2.add('/etc/hosts') #
-  backup_bz2.add('/etc/hostname') #
-  backup_bz2.add('/var/log/') #
-  backup_bz2.add('/var/spool/cron/crontabs/') #
-  backup_bz2.add(repertoire_de_sauvegarde+'/log/') #
-  backup_bz2.add(repertoire_de_sauvegarde+'/.env') #
-  backup_bz2.add(repertoire_de_sauvegarde+'/docker-compose.yml') #
-  backup_bz2.close() # 
+  backup_bz2.add('/var/lib/docker/volumes/backup_wp/') # sauvegarde du volumes docker wordpress
+  backup_bz2.add('/etc/network/interfaces')
+  backup_bz2.add('/etc/resolv.conf')
+  backup_bz2.add('/etc/hosts')
+  backup_bz2.add('/etc/hostname')
+  backup_bz2.add('/var/log/')
+  backup_bz2.add('/var/spool/cron/crontabs/')
+  backup_bz2.add(repertoire_de_sauvegarde+'/log/')
+  backup_bz2.add(repertoire_de_sauvegarde+'/.env')
+  backup_bz2.add(repertoire_de_sauvegarde+'/docker-compose.yml')
+  backup_bz2.close() # fermeture du fichier
 
 # Sauvegarde sur AZURE #
 
@@ -195,6 +213,8 @@ if argument == 'save' or argument == '-s':
       print("")
       print(file_or_dir.name)
 
+# Traitement de l'argument et lancement de la fonction attachée
+
 elif argument == 'restoreDB' or argument == '-rDB':
   print("Restauration de la Base de donnée en cours ...")
 
@@ -219,6 +239,8 @@ elif argument == 'restoreDB' or argument == '-rDB':
 # suppression du fichiers tar.bz2 sauvegarde récupéré #
   os.remove(repertoire_de_sauvegarde+"/"+BACKUP_DATE_SAVE+"db.sql")
 
+# Traitement de l'argument et lancement de la fonction attachée
+
 elif argument == 'restoreT' or argument == '-rT':
   print("Restauration du serveur en cours ...")
   print ("Choix du Numéro de sauvegarde: ?")
@@ -240,7 +262,7 @@ elif argument == 'restoreT' or argument == '-rT':
 
   os.remove(repertoire_de_sauvegarde+"/"+BACKUP_DATE_SAVE+".tar.bz2")
 
-# Restauration de la base de donnée .sql #
+# Restauration de la base de donnée *.sql #
   NAME = get_database_name()
   print (NAME)
 
@@ -251,10 +273,13 @@ elif argument == 'restoreT' or argument == '-rT':
   os.system("cat "+BACKUP_DATE_SAVE+"db.sql | docker exec -i "+ID+" /usr/bin/mysql -u "+UserBDD+" -p"+MdpBDD+" "+Nom_de_la_BDD)
   #MySQLdump = str((container.exec_run("mysqldump -u "+UserBDD+" -p"+MdpBDD+" "+Nom_de_la_BDD)).output, 'utf-8')
 
-# suppression du fichiers tar.bz2 sauvegarde récupéré #
+# suppression du fichiers *db.sql sauvegarde récupéré #
   os.remove(repertoire_de_sauvegarde+"/"+BACKUP_DATE_SAVE+"db.sql")
 
-# redémarrage du serveur Linux #
+# redémarrage du serveur Linux dans 5 secondes #
+  print("Reboot du système dans 5 secondes...")
+  countdown(5)
+  print('Redémarrage !\n\n\n\n\n')
   os.system("reboot")
 
 else:
