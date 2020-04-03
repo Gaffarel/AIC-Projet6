@@ -3,7 +3,7 @@
 #####################################################################
 ##                                                                 ##
 ##      Script de sauvegarde, de création, et de restauration      ##
-##            d'un serveur wordpress avec MariaDB  V0.6            ##
+##            d'un serveur wordpress avec MariaDB  V0.6a           ##
 ##                                                                 ##
 #####################################################################
 
@@ -92,7 +92,7 @@ except:
     print("Problème d'autorisation d'accès au compte Microsoft AZURE")
     logging.error("Problème d'autorisation d'accès au compte Microsoft AZURE")
     syslog.syslog(syslog.LOG_ERR,"Problème d'autorisation d'accès au compte Microsoft AZURE")
-    exit(1)
+    exit(2) # sortie avec erreur !
 
 # Création du répertoire: backup6 sur Microsoft AZURE de notre exemple
 
@@ -233,7 +233,7 @@ if argument == 'save' or argument == '-s':
   os.remove(repertoire_de_sauvegarde+"/save_"+str(BACKUP_DATE)+"db.sql")
   os.remove(repertoire_de_sauvegarde+"/save_"+str(BACKUP_DATE)+".tar.bz2")
 
-# Liste des fichiers ou repertoires de Microsoft AZURE
+# Liste des fichiers ou repertoires de Microsoft AZURE et suppression des anciennes sauvegardes en fonction du nombre de jour 
 
   list_file = file_service.list_directories_and_files(AZURE_REP_BKP)
   for file_or_dir in list_file:
@@ -307,7 +307,7 @@ elif argument == 'restoreT' or argument == '-rT':
   ID = get_short_id_container(NAME)
   print("le short ID de l'image de la Base de donnée est: ",ID)
   print("")
-  
+
   #os.system("cat save_21-03-2020db.sql | docker exec -i 4698 /usr/bin/mysql -u allouis -pbob MyCompany")
   os.system("cat "+BACKUP_DATE_SAVE+"db.sql | docker exec -i "+ID+" /usr/bin/mysql -u "+UserBDD+" -p"+MdpBDD+" "+Nom_de_la_BDD)
   #MySQLdump = str((container.exec_run("mysqldump -u "+UserBDD+" -p"+MdpBDD+" "+Nom_de_la_BDD)).output, 'utf-8')
