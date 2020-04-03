@@ -70,11 +70,11 @@ WP_DB_NAME=********  # le nom de la base de donnée pour Wordpress
 ### Le Fichier `requirements.txt`
 Il contient les modules spécifiques au bon fonctionnement du programme `SafetyWpress.py`  
 
-| Modules                  | version|
-|--------------------------|--------|
-|azure-storage-file==2.1.0 | |
-|docker==4.2.0             | |
-|PyYAML==5.3               | |
+| Modules                  | version | explication                          |
+|--------------------------|---------|--------------------------------------|
+|azure-storage-file==2.1.0 | 2.1.0   | permet d'utiliser la librairie AZURE |
+|docker==4.2.0             | 4.2.0   | permet d'utiliser la librairie DOCKER|
+|PyYAML==5.3               | 5.3     | permet de parser les fichiers YAML   |
 
 ## Utilisation du logiciel `./SafetyWpress.py`
 
