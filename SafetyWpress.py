@@ -51,7 +51,6 @@ try:
     print("Fichier P6_config.ini présent")
     logging.info("Fichier P6_config.ini présent")
     syslog.syslog(syslog.LOG_INFO,"Fichier P6_config.ini présent")
-
 except FileNotFoundError:
     print("Fichier P6_config.ini manquant")
     logging.error("Fichier P6_config.ini manquant")
@@ -79,7 +78,38 @@ repertoire_de_sauvegarde = config.get('repertoire','backup_repertoire')
 
 # Autorisation d'accès au compte Microsoft AZURE
 
-file_service = FileService(account_name=AZURE_CPT, account_key=AZURE_KEY)
+#file_service = FileService(account_name=AZURE_CPT, account_key=AZURE_KEY)
+
+# Test de l'accès à Microsoft AZURE #
+
+try:
+    FileService(account_name=AZURE_CPT, account_key=AZURE_KEY)
+    file_service = FileService(account_name=AZURE_CPT, account_key=AZURE_KEY)
+    print("Autorisation d'accès au compte Microsoft AZURE OK")
+    logging.info("Autorisation d'accès au compte Microsoft AZURE OK")
+    syslog.syslog(syslog.LOG_INFO,"Autorisation d'accès au compte Microsoft AZURE OK")
+except:
+    print("Problème d'autorisation d'accès au compte Microsoft AZURE")
+    logging.error("Problème d'autorisation d'accès au compte Microsoft AZURE")
+    syslog.syslog(syslog.LOG_ERR,"Problème d'autorisation d'accès au compte Microsoft AZURE")
+    exit(1)
+
+# Création du répertoire: backup6 sur Microsoft AZURE de notre exemple
+
+# Vérifier si le répertoire de sauvegarde backup6 sur Microsoft AZURE existe ou non #
+
+try:
+    file_service.exists(AZURE_REP_BKP)
+    print("Le répertoire de sauvegarde AZURE existe !")
+    logging.info("Le répertoire de sauvegarde AZURE existe !")
+    syslog.syslog(syslog.LOG_INFO,"Le répertoire de sauvegarde AZURE existe !")
+except FileNotFoundError:
+    file_service.create_share(AZURE_REP_BKP)
+    print("Création du répertoire de sauvegarde AZURE ")
+    logging.warning("Création du répertoire de sauvegarde AZURE ")
+    syslog.syslog(syslog.LOG_WARNING,"Création du répertoire de sauvegarde AZURE ")
+
+#file_service.create_share(AZURE_REP_BKP)
 
 ############################## Temps ################################
 
@@ -118,9 +148,11 @@ def get_choix_de_la_sauvegarde():
   choix = input("Entrez le numéro de sauvegarde: N°:") # input choice
   return(dict_save[int(choix)])
 
-def countdown(temps):
+# Fonction de Compte à rebours
+
+def get_countdown(temps):
     while temps:
-        mins, secs = divmod(t, 60)
+        mins, secs = divmod(temps, 60)
         timeformat = '{:02d}:{:02d}'.format(mins, secs)
         print(timeformat, end='\r')
         time.sleep(1)
@@ -145,7 +177,10 @@ if len(sys.argv) < 2:
 
 argument = sys.argv[1]
 
-# Traitement de l'argument et lancement de la fonction attachée
+##################################################
+#            Traitement de l'argument            #
+# et lancement de la fonction attachée save / -s #
+##################################################
 
 if argument == 'save' or argument == '-s':
   print("Sauvegarde en cours ...")
@@ -183,15 +218,12 @@ if argument == 'save' or argument == '-s':
   backup_bz2.add(repertoire_de_sauvegarde+'/docker-compose.yml')
   backup_bz2.close() # fermeture du fichier
 
-# Sauvegarde sur AZURE #
-
-# Création du répertoire: backup6
-  file_service.create_share(AZURE_REP_BKP)
+# Sauvegarde sur Microsoft AZURE #
 
 # Création d'un sous-repertoire: save_date du jour
   file_service.create_directory(AZURE_REP_BKP,'save_'+str(BACKUP_DATE))
 
-# copy des fichiers de sauvegarde sur un repertoire Microsoft AZURE
+# copy des fichiers de sauvegarde sur le repertoire Microsoft AZURE
 
   file_service.create_file_from_path(AZURE_REP_BKP,'save_'+str(BACKUP_DATE),'save_'+str(BACKUP_DATE)+'db.sql',repertoire_de_sauvegarde+'/save_'+str(BACKUP_DATE)+'db.sql')
   file_service.create_file_from_path(AZURE_REP_BKP,'save_'+str(BACKUP_DATE),'save_'+str(BACKUP_DATE)+'.tar.bz2',repertoire_de_sauvegarde+'/save_'+str(BACKUP_DATE)+'.tar.bz2')
@@ -213,7 +245,9 @@ if argument == 'save' or argument == '-s':
       print("")
       print(file_or_dir.name)
 
-# Traitement de l'argument et lancement de la fonction attachée
+######################################################
+# Lancement de la fonction attachée restoreDB / -rDB #
+######################################################
 
 elif argument == 'restoreDB' or argument == '-rDB':
   print("Restauration de la Base de donnée en cours ...")
@@ -239,7 +273,9 @@ elif argument == 'restoreDB' or argument == '-rDB':
 # suppression du fichiers tar.bz2 sauvegarde récupéré #
   os.remove(repertoire_de_sauvegarde+"/"+BACKUP_DATE_SAVE+"db.sql")
 
-# Traitement de l'argument et lancement de la fonction attachée
+####################################################
+# Lancement de la fonction attachée restoreT / -rT #
+####################################################
 
 elif argument == 'restoreT' or argument == '-rT':
   print("Restauration du serveur en cours ...")
@@ -278,7 +314,7 @@ elif argument == 'restoreT' or argument == '-rT':
 
 # redémarrage du serveur Linux dans 5 secondes #
   print("Reboot du système dans 5 secondes...")
-  countdown(5)
+  get_countdown(5)
   print('Redémarrage !\n\n\n\n\n')
   os.system("reboot")
 
