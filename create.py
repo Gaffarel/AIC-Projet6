@@ -31,7 +31,6 @@ try:
     print("Le répertoire des LOGs existe !")
 #    logging.info("Le répertoire des LOGs existe !")
     syslog.syslog(syslog.LOG_INFO,"Le répertoire des LOGs existe !")
-
 except FileNotFoundError:
     os.makedirs(("/var/log/SafetyWpress"), exist_ok=True)
     print("Création du répertoire de LOG SafetyWpress")
@@ -59,7 +58,6 @@ try:
     print("Fichier .env présent")
     logging.info("Fichier .env présent")
     syslog.syslog(syslog.LOG_INFO,"Fichier .env présent")
-
 except FileNotFoundError:
     print("Fichier .env manquant")
     logging.error("Fichier .env manquant")
