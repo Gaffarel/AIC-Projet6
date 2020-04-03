@@ -2,7 +2,7 @@
 
 #####################################################################
 ##                                                                 ##
-##   Script de création d'un serveur wordpress avec MariaDB V1.0e  ##
+##   Script de création d'un serveur wordpress avec MariaDB V1.0f  ##
 ##               avec docker-compose sur DEBIAN 10.2               ##
 ##                                                                 ##
 #####################################################################
@@ -22,7 +22,7 @@ import syslog
 import configparser # Configuration file parser
 import shutil # aide à automatiser la copie des fichiers et des répertoires
 
-####################### Nom du fichier de LOG #######################
+################################ LOG ################################
 
 # Vérifier si le répertoire de LOG SafetyWpress existe ou non #
 
@@ -37,13 +37,9 @@ except FileNotFoundError:
 #    logging.warning("Création du répertoire de LOG SafetyWpress")
     syslog.syslog(syslog.LOG_WARNING,"Création du répertoire de LOG SafetyWpress")
 
+# Création du fichier create.log #
+
 logging.basicConfig(filename='/var/log/SafetyWpress/create.log',level=logging.DEBUG, format='%(asctime)s : %(levelname)s - %(name)s - %(module)s : %(message)s')
-
-############# Installation des modules supplémentaires ##############
-
-os.system("apt install python3-pip -y") # installation de PIP pour python 3
-os.system("pip3 install -r requirements.txt") # installation de la liste des modules suplèmentaires via le fichier requirements.txt
-                                              # afin de préparer le système à l'utilisation du programme SafetyWpress.py
 
 ############## On récupére le chemin absolu du script ###############
 
@@ -89,6 +85,25 @@ except FileNotFoundError:
     logging.error("Fichier docker-compose.yml manquant")
     syslog.syslog(syslog.LOG_ERR,"Fichier docker-compose.yml manquant")
     exit(1)
+
+# Vérifier si le fichier requirement.txt existe ou non #
+
+try:
+    (Path(script_path+'/requirements.txt')).resolve(strict=True)
+    print("Fichier requirements.txt présent")
+    logging.info("Fichier requirements.txt présent")
+    syslog.syslog(syslog.LOG_INFO,"Fichier requirements.txt présent")
+except FileNotFoundError:
+    print("Fichier requirements.txt manquant")
+    logging.error("Fichier requirements.txt manquant")
+    syslog.syslog(syslog.LOG_ERR,"Fichier requirements.txt manquant")
+    exit(1)
+
+############# Installation des modules supplémentaires ##############
+
+os.system("apt install python3-pip -y") # installation de PIP pour python 3
+os.system("pip3 install -r requirements.txt") # installation de la liste des modules suplèmentaires via le fichier requirements.txt
+                                              # afin de préparer le système à l'utilisation du programme SafetyWpress.py
 
 #####################################################################
 ##                                                                 ##
