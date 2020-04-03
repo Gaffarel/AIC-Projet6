@@ -89,7 +89,7 @@ afin d'éffectuer une sauvegarde tous les jours à 3H20 .
 
 ## Les fichiers logs
 
-`SafetyWpress.log` et `create.log` sont créés dans /var/log/
+`SafetyWpress.log` et `create.log` sont créés dans /var/log/SafetyWpress/
 
 ## Licence
 
