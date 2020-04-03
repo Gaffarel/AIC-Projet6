@@ -186,10 +186,10 @@ if argument == 'save' or argument == '-s':
   print("Sauvegarde en cours ...")
   print("")
   NAME = get_database_name()
-  print ("le nom de l'image de la Base de donnée est: ",NAME)
+  print("le nom de l'image de la Base de donnée est: ",NAME)
   print("")
   ID = get_short_id_container(NAME)
-  print ("le short ID de l'image de la Base de donnée est: ",ID)
+  print("le short ID de l'image de la Base de donnée est: ",ID)
   print("")
 
 # Dump de la base de donnée MariaDB #
@@ -251,20 +251,21 @@ if argument == 'save' or argument == '-s':
 
 elif argument == 'restoreDB' or argument == '-rDB':
   print("Restauration de la Base de donnée en cours ...")
-
-  print ("Choix du Numéro de sauvegarde: ?")
-  print ("")
+  print("")
+  print("Choix du Numéro de sauvegarde: ?")
+  print("")
   BACKUP_DATE_SAVE=get_choix_de_la_sauvegarde()
   print (BACKUP_DATE_SAVE)
   file_service.get_file_to_path(AZURE_REP_BKP, BACKUP_DATE_SAVE, BACKUP_DATE_SAVE+'db.sql', BACKUP_DATE_SAVE+'db.sql')
-  print ('sauvegarde récupéré')
+  print('sauvegarde récupéré')
 
 # Restauration de la base de donnée .sql #
   NAME = get_database_name()
-  print (NAME)
-
+  print("le nom de l'image de la Base de donnée est: ",NAME)
+  print("")
   ID = get_short_id_container(NAME)
-  print (ID)
+  print("le short ID de l'image de la Base de donnée est: ",ID)
+  print("")
 
   #os.system("cat save_21-03-2020db.sql | docker exec -i 4698 /usr/bin/mysql -u allouis -pbob MyCompany")
   os.system("cat "+BACKUP_DATE_SAVE+"db.sql | docker exec -i "+ID+" /usr/bin/mysql -u "+UserBDD+" -p"+MdpBDD+" "+Nom_de_la_BDD)
@@ -279,13 +280,14 @@ elif argument == 'restoreDB' or argument == '-rDB':
 
 elif argument == 'restoreT' or argument == '-rT':
   print("Restauration du serveur en cours ...")
-  print ("Choix du Numéro de sauvegarde: ?")
-  print ("")
+  print("")
+  print("Choix du Numéro de sauvegarde: ?")
+  print("")
   BACKUP_DATE_SAVE=get_choix_de_la_sauvegarde()
-  print (BACKUP_DATE_SAVE)
+  print(BACKUP_DATE_SAVE)
   file_service.get_file_to_path(AZURE_REP_BKP, BACKUP_DATE_SAVE, BACKUP_DATE_SAVE+'.tar.bz2', BACKUP_DATE_SAVE+'.tar.bz2')
   file_service.get_file_to_path(AZURE_REP_BKP, BACKUP_DATE_SAVE, BACKUP_DATE_SAVE+'db.sql', BACKUP_DATE_SAVE+'db.sql')
-  print ('sauvegarde récupéré')
+  print('sauvegarde récupéré')
 
 # Décompression de la sauvegarde des fichiers du serveur #
 
@@ -300,11 +302,12 @@ elif argument == 'restoreT' or argument == '-rT':
 
 # Restauration de la base de donnée *.sql #
   NAME = get_database_name()
-  print (NAME)
-
+  print("le nom de l'image de la Base de donnée est: ",NAME)
+  print("")
   ID = get_short_id_container(NAME)
-  print (ID)
-
+  print("le short ID de l'image de la Base de donnée est: ",ID)
+  print("")
+  
   #os.system("cat save_21-03-2020db.sql | docker exec -i 4698 /usr/bin/mysql -u allouis -pbob MyCompany")
   os.system("cat "+BACKUP_DATE_SAVE+"db.sql | docker exec -i "+ID+" /usr/bin/mysql -u "+UserBDD+" -p"+MdpBDD+" "+Nom_de_la_BDD)
   #MySQLdump = str((container.exec_run("mysqldump -u "+UserBDD+" -p"+MdpBDD+" "+Nom_de_la_BDD)).output, 'utf-8')
