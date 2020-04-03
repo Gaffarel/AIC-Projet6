@@ -2,7 +2,7 @@
 
 #####################################################################
 ##                                                                 ##
-##   Script de création d'un serveur wordpress avec MariaDB V1.0b  ##
+##   Script de création d'un serveur wordpress avec MariaDB V1.0c  ##
 ##               avec docker-compose sur DEBIAN 10.2               ##
 ##                                                                 ##
 #####################################################################
@@ -24,7 +24,7 @@ import shutil # aide à automatiser la copie des fichiers et des répertoires
 
 ####################### Nom du fichier de LOG #######################
 
-logging.basicConfig(filename='/var/log/create.log',level=logging.DEBUG)
+logging.basicConfig(filename='/var/log/SafetyWpress/create.log',level=logging.DEBUG, format='%(asctime)s : %(levelname)s - %(name)s - %(module)s : %(message)s')
 
 ############# Installation des modules supplémentaires ##############
 
@@ -58,9 +58,11 @@ try:
     (Path(script_path+'/P6_config.ini')).resolve(strict=True)
     print("Fichier P6_config.ini présent")
     logging.info("Fichier P6_config.ini présent")
+    syslog.syslog(syslog.LOG_INFO,"Fichier P6_config.ini présent")
 except FileNotFoundError:
     print("Fichier P6_config.ini manquant")
     logging.error("Fichier P6_config.ini manquant")
+    syslog.syslog(syslog.LOG_ERR,"Fichier P6_config.ini présent")
     exit(1)
 
 # Vérifier si le fichier docker-compose.yml existe ou non #
@@ -69,9 +71,11 @@ try:
     (Path(script_path+'/docker-compose.yml')).resolve(strict=True)
     print("Fichier docker-compose.yml présent")
     logging.info("Fichier docker-compose.yml présent")
+    syslog.syslog(syslog.LOG_INFO,"Fichier docker-compose.yml présent")
 except FileNotFoundError:
     print("Fichier docker-compose.yml manquant")
     logging.error("Fichier docker-compose.yml manquant")
+    syslog.syslog(syslog.LOG_ERR,"Fichier docker-compose.yml présent")
     exit(1)
 
 #####################################################################
@@ -98,10 +102,12 @@ try:
     (Path(repertoire_de_sauvegarde)).resolve(strict=True)
     print("Le répertoire existe !")
     logging.info("Le répertoire existe!")
+    syslog.syslog(syslog.LOG_INFO,"Création du répertoire de sauvegarde")
 except FileNotFoundError:
     os.makedirs(repertoire_de_sauvegarde, exist_ok=True)
     print("Création du répertoire de sauvegarde")
     logging.warning("Création du répertoire de sauvegarde")
+    syslog.syslog(syslog.LOG_WARNING,"Création du répertoire de sauvegarde")
 
 # Déplacement fichiers utiles dans le repertoire de sauvegarde #
 
