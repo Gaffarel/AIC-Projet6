@@ -13,11 +13,11 @@
 ![Last commit](https://img.shields.io/github/last-commit/Gaffarel/AIC-Projet6)
 
 ## Table des matières
-
 - [Préparation du serveur](#pr%C3%A9paration)
   - [Configuration du programme create.py](#configuration-du-programme-createpy)
   - [Fichier P6_config.ini](#le-fichier-p6_configini)
   - [Fichier .env](#le-fichier-env)
+  - [Fichier requirements.txt](#le-fichier-requirementstxt)
 - [Utilisation du logiciel SafetyWpress.py](#utilisation-du-logiciel-safetywpresspy)
 - [Log](#les-fichiers-logs)
 - [Crontab](#crontab)
@@ -34,7 +34,7 @@ Docker, Docker-compose et les images de Wordpress ainsi que la base de donnée M
 ### Configuration du programme `create.py`
 
 Avant de lancer le programme `./create.py`,  
-il faudra préparer les fichiers de configuration `P6_config.ini` et `.env` qui se situe dans le projet.
+il faudra préparer les fichiers de configuration `P6_config.ini`, `.env` et `requirements.txt` qui se situe dans le projet.
 
 ### Le Fichier `P6_config.ini`
 
@@ -66,6 +66,15 @@ DB_PASSWORD=********  # le mot de passe de l'utilisateur de la base de donnée
 WP_DB_USER=********  # le nom de l'utilisateur de la base de donnée  
 WP_DB_PASSWORD=********  # le mot de passe de l'utilisateur de la base de donnée  
 WP_DB_NAME=********  # le nom de la base de donnée pour Wordpress  
+
+### Le Fichier `requirements.txt`
+Il contient les modules spécifiques au bon fonctionnement du programme `SafetyWpress.py`  
+
+| Modules                  | version|
+|--------------------------|--------|
+|azure-storage-file==2.1.0 | |
+|docker==4.2.0             | |
+|PyYAML==5.3               | |
 
 ## Utilisation du logiciel `./SafetyWpress.py`
 
