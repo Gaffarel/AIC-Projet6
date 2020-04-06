@@ -3,7 +3,7 @@
 #####################################################################
 ##                                                                 ##
 ##     Script de sauvegarde et de restauration sur le cloud de     ##
-##    Microsoft AZURE d'un serveur wordpress avec MariaDB  V0.6c   ##
+##    Microsoft AZURE d'un serveur wordpress avec MariaDB  V0.6d   ##
 ##                                                                 ##
 #####################################################################
 
@@ -101,7 +101,7 @@ except:
     syslog.syslog(syslog.LOG_ERR,"Problème d'autorisation d'accès au compte Microsoft AZURE")
     exit(2) # sortie avec erreur !
 
-# Création du répertoire: backup6 sur Microsoft AZURE de notre exemple
+# Création du répertoire: backup6 sur Microsoft AZURE de notre exemple #
 
 #file_service.create_share(AZURE_REP_BKP)
 
@@ -125,7 +125,7 @@ BACKUP_DATE_OLD = (date.today()-datetime.timedelta(days=int(NBjourDEretention)))
 
 ############################# Fonction ##############################
 
-# Récupération du Nom de l'image de la Base De Donnée du fichier docker-compose.yml #
+# Fonction de récupération du Nom de l'image de la Base De Donnée du fichier docker-compose.yml #
 
 def get_database_name():
   with open(repertoire_de_sauvegarde+"/docker-compose.yml",'r') as file: #
@@ -133,7 +133,7 @@ def get_database_name():
     txt = doc["services"]["db"]["image"] #
   return(txt) # la fontion retourne le nom du conteneur demandé
 
-# Récupération du short_id de la Base De Donnée via le dictionnaire #
+# Donction de récupération du short_id de la Base De Donnée via le dictionnaire #
 
 def get_short_id_container(name_container):
   client = docker.from_env() #
@@ -142,7 +142,7 @@ def get_short_id_container(name_container):
     dict_conteneur[str(container.image)[9:-2]] = str(container.short_id) # récuperation du short_id et de l'image avec mise en forme dans le dictionnaire
   return (dict_conteneur[name_container]) # la fontion retourne le short_id nom conteneur demandé
 
-# récupération d'un fichier de sauvegarde dans un répertoire de Microsoft AZURE
+# Fonction de récupération d'un fichier de sauvegarde dans un répertoire de Microsoft AZURE #
 
 def get_choix_de_la_sauvegarde():
   list_file_save = file_service.list_directories_and_files(AZURE_REP_BKP)
@@ -152,10 +152,21 @@ def get_choix_de_la_sauvegarde():
     dict_save[nb_save] = str(file_save.name)
     print("N°"+str(nb_save)+":", file_save.name) # affichage des sauvegardes
     nb_save += 1
-  choix = input("Entrez le numéro de sauvegarde: N°:") # Attente du choix de l'utilisateur
+# Vérification du bonne saisie de N° de Sauvegarde avec un caractère valide #
+  while True:
+      try:
+          choix = int(input("Entrez le numéro de sauvegarde: N°:"))
+      except ValueError:
+          print("Caractère non accepté, veuillez choisir entre 1 et",nb_save-1)
+          continue
+      if choix < 1 or choix > nb_save-1:
+          print("Sauvegarde de 1 à ",nb_save-1)
+          continue
+      else:
+          break
   return(dict_save[int(choix)])
 
-# Fonction de Compte à rebours
+# Fonction de Compte à rebours #
 
 def get_countdown(temps):
     while temps:
@@ -171,7 +182,7 @@ def get_countdown(temps):
 ##                                                                 ##
 #####################################################################
 
-# Tester la présence d'un argument
+# Tester la présence d'un argument #
 
 if len(sys.argv) < 2:
         print("Il faut un argument pour appeller le script :\n")
@@ -180,7 +191,7 @@ if len(sys.argv) < 2:
         print("\n        restoreT ou -rT   pour restaurer le serveur complet")
         exit(1)
 
-# Récupération de l'argument
+# Récupération de l'argument #
 
 argument = sys.argv[1]
 
