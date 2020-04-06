@@ -103,5 +103,5 @@ afin d'éffectuer une sauvegarde tous les jours à 3H20 .
 ## Licence
 
  <p><a href="https://github.com/Gaffarel/AIC-Projet6/blob/master/LICENSE">
- <img width=6% src="https://github.com/Gaffarel/AIC-Projet6/blob/master/images/mit.png">AIC-Projet6 est licencié sous la Licence MIT
+ <img width=3% src="https://github.com/Gaffarel/AIC-Projet6/blob/master/images/mit.png">AIC-Projet6 est licencié sous la Licence MIT
  </a></p>
