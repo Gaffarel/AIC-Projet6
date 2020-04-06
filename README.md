@@ -26,7 +26,7 @@
 
 ## Présentation
 
-Ce projet à pour but de cééer automatiquement un serveur WordPress prêt à l'emploi avec [create.py](https://github.com/Gaffarel/AIC-Projet6/blob/master/create.py),  
+Ce projet à pour but de créer automatiquement un serveur WordPress prêt à l'emploi avec [create.py](https://github.com/Gaffarel/AIC-Projet6/blob/master/create.py),  
 de sauvegarder les fichiers importants du serveur hote, ainsi que les fichiers du serveur WordPress  
 et de sa base de donnée et l'envoyer sur le cloud de Microsoft AZURE avec  [SafetyWpress.py](https://github.com/Gaffarel/AIC-Projet6/blob/master/SafetyWpress.py) .
 
