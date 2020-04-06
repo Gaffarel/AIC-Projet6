@@ -9,7 +9,7 @@
 
 #####################################################################
 ##                                                                 ##
-##      Script de sauvegarde, de création, et de restauration      ##
+##               Script crée par : Allouis Sébastien               ##
 ##            d'un serveur wordpress avec MariaDB  V0.6a           ##
 ##                                                                 ##
 #####################################################################
