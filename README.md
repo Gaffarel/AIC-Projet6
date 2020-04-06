@@ -13,6 +13,7 @@
 ![Last commit](https://img.shields.io/github/last-commit/Gaffarel/AIC-Projet6)
 
 ## Table des matières
+- [Présentation du projet](#pr%C3%A9sentation)
 - [Préparation du serveur](#pr%C3%A9paration)
   - [Configuration du programme create.py](#configuration-du-programme-createpy)
   - [Fichier P6_config.ini](#le-fichier-p6_configini)
@@ -22,6 +23,10 @@
 - [Log](#les-fichiers-logs)
 - [Crontab](#crontab)
 - [Licence](#licence)
+
+## Présentation
+
+
 
 ## Préparation
 
