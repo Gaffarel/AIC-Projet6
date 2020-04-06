@@ -3,14 +3,14 @@
 #####################################################################
 ##                                                                 ##
 ##      Script de sauvegarde, de création, et de restauration      ##
-##            d'un serveur wordpress avec MariaDB  V0.6b           ##
+##            d'un serveur wordpress avec MariaDB  V0.6c           ##
 ##                                                                 ##
 #####################################################################
 
 #####################################################################
 ##                                                                 ##
 ##               Script crée par : Allouis Sébastien               ##
-##            d'un serveur wordpress avec MariaDB  V0.6a           ##
+##                     il est sous License MIT                     ##
 ##                                                                 ##
 #####################################################################
 
@@ -171,7 +171,7 @@ def get_countdown(temps):
 ##                                                                 ##
 #####################################################################
 
-# Testing the presence of an argument
+# Tester la présence d'un argument
 
 if len(sys.argv) < 2:
         print("Il faut un argument pour appeller le script :\n")
@@ -212,6 +212,9 @@ if argument == 'save' or argument == '-s':
 
 # Compréssion et sauvegarde des fichiers du serveur #
 
+  print("Sauvegarde des fichiers de configuration du serveur Linux ...")
+  print("")
+
   backup_bz2 = tarfile.open(repertoire_de_sauvegarde+'/save_'+str(BACKUP_DATE)+'.tar.bz2','w:bz2') # Emplacement de sauvegarde du fichier compressé (tar.bz2)
   backup_bz2.add('/var/lib/docker/volumes/backup_wp/') # sauvegarde du volumes docker wordpress
   backup_bz2.add('/etc/network/interfaces')
@@ -228,6 +231,7 @@ if argument == 'save' or argument == '-s':
 # Sauvegarde sur Microsoft AZURE #
 
 # Création d'un sous-repertoire: save_date du jour
+
   file_service.create_directory(AZURE_REP_BKP,'save_'+str(BACKUP_DATE))
 
 # copy des fichiers de sauvegarde sur le repertoire Microsoft AZURE
@@ -242,6 +246,7 @@ if argument == 'save' or argument == '-s':
 
 # Liste des fichiers ou repertoires de Microsoft AZURE et suppression des anciennes sauvegardes en fonction du nombre de jour 
 
+  print("Liste des sauvegardes: ")
   list_file = file_service.list_directories_and_files(AZURE_REP_BKP)
   for file_or_dir in list_file:
     if ('save_'+str(BACKUP_DATE_OLD)) in file_or_dir.name:
@@ -251,6 +256,8 @@ if argument == 'save' or argument == '-s':
     else:
       print("")
       print(file_or_dir.name)
+
+  print("")
 
 ######################################################
 # Lancement de la fonction attachée restoreDB / -rDB #
