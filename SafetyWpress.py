@@ -9,6 +9,13 @@
 
 #####################################################################
 ##                                                                 ##
+##      Script de sauvegarde, de création, et de restauration      ##
+##            d'un serveur wordpress avec MariaDB  V0.6a           ##
+##                                                                 ##
+#####################################################################
+
+#####################################################################
+##                                                                 ##
 ##                    Importation des modules                      ##
 ##                                                                 ##
 #####################################################################
@@ -96,6 +103,8 @@ except:
 
 # Création du répertoire: backup6 sur Microsoft AZURE de notre exemple
 
+#file_service.create_share(AZURE_REP_BKP)
+
 # Vérifier si le répertoire de sauvegarde backup6 sur Microsoft AZURE existe ou non #
 
 try:
@@ -109,8 +118,6 @@ except FileNotFoundError:
     logging.warning("Création du répertoire de sauvegarde AZURE ")
     syslog.syslog(syslog.LOG_WARNING,"Création du répertoire de sauvegarde AZURE ")
 
-#file_service.create_share(AZURE_REP_BKP)
-
 ############################## Temps ################################
 
 BACKUP_DATE = date.today().strftime("%d-%m-%Y") # date d'aujourd'hui au format Jour/Mois/Année
@@ -120,7 +127,7 @@ BACKUP_DATE_OLD = (date.today()-datetime.timedelta(days=int(NBjourDEretention)))
 
 # Récupération du Nom de l'image de la Base De Donnée du fichier docker-compose.yml #
 
-def get_database_name(): #
+def get_database_name():
   with open(repertoire_de_sauvegarde+"/docker-compose.yml",'r') as file: #
     doc = yaml.load(file, Loader=yaml.FullLoader) #
     txt = doc["services"]["db"]["image"] #
@@ -128,7 +135,7 @@ def get_database_name(): #
 
 # Récupération du short_id de la Base De Donnée via le dictionnaire #
 
-def get_short_id_container(name_container): #
+def get_short_id_container(name_container):
   client = docker.from_env() #
   dict_conteneur = {} # dictionnaire vide des conteneurs
   for container in client.containers.list(): # equivaut à docker ps
@@ -140,12 +147,12 @@ def get_short_id_container(name_container): #
 def get_choix_de_la_sauvegarde():
   list_file_save = file_service.list_directories_and_files(AZURE_REP_BKP)
   nb_save=1
-  dict_save = {}
-  for file_save in list_file_save:
+  dict_save = {} # dictionnaire vide de la liste des sauvegarde
+  for file_save in list_file_save: # parcours de tous les dossiers de sauvegarde
     dict_save[nb_save] = str(file_save.name)
-    print("N°"+str(nb_save)+":", file_save.name)
+    print("N°"+str(nb_save)+":", file_save.name) # affichage des sauvegardes
     nb_save += 1
-  choix = input("Entrez le numéro de sauvegarde: N°:") # input choice
+  choix = input("Entrez le numéro de sauvegarde: N°:") # Attente du choix de l'utilisateur
   return(dict_save[int(choix)])
 
 # Fonction de Compte à rebours
@@ -250,14 +257,12 @@ if argument == 'save' or argument == '-s':
 ######################################################
 
 elif argument == 'restoreDB' or argument == '-rDB':
-  print("Restauration de la Base de donnée en cours ...")
-  print("")
+
   print("Choix du Numéro de sauvegarde: ?")
   print("")
   BACKUP_DATE_SAVE=get_choix_de_la_sauvegarde()
-  print (BACKUP_DATE_SAVE)
+  print("Récupération de la sauvegarde du :",BACKUP_DATE_SAVE)
   file_service.get_file_to_path(AZURE_REP_BKP, BACKUP_DATE_SAVE, BACKUP_DATE_SAVE+'db.sql', BACKUP_DATE_SAVE+'db.sql')
-  print('sauvegarde récupéré')
 
 # Restauration de la base de donnée .sql #
   NAME = get_database_name()
@@ -266,12 +271,12 @@ elif argument == 'restoreDB' or argument == '-rDB':
   ID = get_short_id_container(NAME)
   print("le short ID de l'image de la Base de donnée est: ",ID)
   print("")
-
-  #os.system("cat save_21-03-2020db.sql | docker exec -i 4698 /usr/bin/mysql -u allouis -pbob MyCompany")
+  print("Restauration de la Base de donnée en cours ...")
+  print("")
   os.system("cat "+BACKUP_DATE_SAVE+"db.sql | docker exec -i "+ID+" /usr/bin/mysql -u "+UserBDD+" -p"+MdpBDD+" "+Nom_de_la_BDD)
   #MySQLdump = str((container.exec_run("mysqldump -u "+UserBDD+" -p"+MdpBDD+" "+Nom_de_la_BDD)).output, 'utf-8')
 
-# suppression du fichiers tar.bz2 sauvegarde récupéré #
+# suppression du fichiers *db.sql sauvegarde récupéré #
   os.remove(repertoire_de_sauvegarde+"/"+BACKUP_DATE_SAVE+"db.sql")
 
 ####################################################
@@ -279,22 +284,20 @@ elif argument == 'restoreDB' or argument == '-rDB':
 ####################################################
 
 elif argument == 'restoreT' or argument == '-rT':
-  print("Restauration du serveur en cours ...")
-  print("")
+
   print("Choix du Numéro de sauvegarde: ?")
   print("")
   BACKUP_DATE_SAVE=get_choix_de_la_sauvegarde()
-  print(BACKUP_DATE_SAVE)
+  print("Récupération de la sauvegarde du :",BACKUP_DATE_SAVE)
   file_service.get_file_to_path(AZURE_REP_BKP, BACKUP_DATE_SAVE, BACKUP_DATE_SAVE+'.tar.bz2', BACKUP_DATE_SAVE+'.tar.bz2')
   file_service.get_file_to_path(AZURE_REP_BKP, BACKUP_DATE_SAVE, BACKUP_DATE_SAVE+'db.sql', BACKUP_DATE_SAVE+'db.sql')
-  print('sauvegarde récupéré')
 
 # Décompression de la sauvegarde des fichiers du serveur #
 
   backup_bz2 = tarfile.open(repertoire_de_sauvegarde+'/'+BACKUP_DATE_SAVE+'.tar.bz2') # Emplacement de sauvegarde du fichier compressé (tar.bz2)
   backup_bz2.extractall('/')
   backup_bz2.close() #
-  print ('décompression faite')
+  print ('décompression faite !')
 
 # suppression du fichiers tar.bz2 sauvegarde récupéré #
 
@@ -307,8 +310,8 @@ elif argument == 'restoreT' or argument == '-rT':
   ID = get_short_id_container(NAME)
   print("le short ID de l'image de la Base de donnée est: ",ID)
   print("")
-
-  #os.system("cat save_21-03-2020db.sql | docker exec -i 4698 /usr/bin/mysql -u allouis -pbob MyCompany")
+  print("Restauration du serveur en cours ...")
+  print("")
   os.system("cat "+BACKUP_DATE_SAVE+"db.sql | docker exec -i "+ID+" /usr/bin/mysql -u "+UserBDD+" -p"+MdpBDD+" "+Nom_de_la_BDD)
   #MySQLdump = str((container.exec_run("mysqldump -u "+UserBDD+" -p"+MdpBDD+" "+Nom_de_la_BDD)).output, 'utf-8')
 
