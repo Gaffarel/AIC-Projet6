@@ -2,8 +2,8 @@
 
 #####################################################################
 ##                                                                 ##
-##      Script de sauvegarde, de création, et de restauration      ##
-##            d'un serveur wordpress avec MariaDB  V0.6c           ##
+##     Script de sauvegarde et de restauration sur le cloud de     ##
+##    Microsoft AZURE d'un serveur wordpress avec MariaDB  V0.6c   ##
 ##                                                                 ##
 #####################################################################
 
