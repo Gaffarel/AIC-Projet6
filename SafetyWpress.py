@@ -3,7 +3,7 @@
 #####################################################################
 ##                                                                 ##
 ##      Script de sauvegarde, de création, et de restauration      ##
-##            d'un serveur wordpress avec MariaDB  V0.6a           ##
+##            d'un serveur wordpress avec MariaDB  V0.6b           ##
 ##                                                                 ##
 #####################################################################
 
