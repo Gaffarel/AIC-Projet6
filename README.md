@@ -102,7 +102,7 @@ où
 
 20 3 * * *  /srv/backup/SafetyWpress.py -s >/dev/null 2>&1
 
-afin d'éffectuer une sauvegarde tous les jours à 3H20 .
+afin d'éffectuer une sauvegarde tous les jours à 3H20 par exemple.
 
 ## Les fichiers logs
 
