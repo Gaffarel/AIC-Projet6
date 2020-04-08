@@ -10,7 +10,7 @@
 #####################################################################
 ##                                                                 ##
 ##               Script crée par : Allouis Sébastien               ##
-##                  Ce script est sous License MIT                 ##
+##   Ce script est sous licence GNU General Public License v3.0    ##
 ##                                                                 ##
 #####################################################################
 
