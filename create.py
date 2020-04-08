@@ -2,7 +2,7 @@
 
 #####################################################################
 ##                                                                 ##
-##   Script de création d'un serveur wordpress avec MariaDB V1.0i  ##
+##   Script de création d'un serveur wordpress avec MariaDB V1.0j  ##
 ##               avec docker-compose sur DEBIAN 10.2               ##
 ##                                                                 ##
 #####################################################################
@@ -40,7 +40,7 @@ except FileNotFoundError:
 
 # Création du fichier create.log #
 
-logging.basicConfig(filename='/var/log/SafetyWpress/create.log',level=logging.DEBUG, format='%(asctime)s : %(levelname)s - %(name)s - %(module)s : %(message)s')
+logging.basicConfig(filename='/var/log/SafetyWpress/create.log',level=logging.INFO, format='%(asctime)s : %(levelname)s - %(name)s - %(module)s : %(message)s')
 
 ############## On récupére le chemin absolu du script ###############
 
