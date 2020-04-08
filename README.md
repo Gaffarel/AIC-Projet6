@@ -111,5 +111,5 @@ afin d'éffectuer une sauvegarde tous les jours à 3H20 par exemple.
 ## Licence
 
  <p><a href="https://github.com/Gaffarel/AIC-Projet6/blob/master/LICENSE">
- <img width=6% src="https://www.gnu.org/graphics/gplv3-or-later.svg">AIC-Projet6 is licensed under the GNU General Public License v3.0
+ <img width=6% src="https://www.gnu.org/graphics/gplv3-or-later.svg">AIC-Projet6 est sous licence GNU General Public License v3.0 
  </a></p>
