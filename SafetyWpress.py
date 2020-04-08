@@ -3,14 +3,14 @@
 #####################################################################
 ##                                                                 ##
 ##     Script de sauvegarde et de restauration sur le cloud de     ##
-##    Microsoft AZURE d'un serveur wordpress avec MariaDB  V0.7    ##
+##    Microsoft AZURE d'un serveur wordpress avec MariaDB  V0.7a    ##
 ##                                                                 ##
 #####################################################################
 
 #####################################################################
 ##                                                                 ##
 ##               Script crée par : Allouis Sébastien               ##
-##                  Ce script est sous License MIT                 ##
+##   Ce script est sous licence GNU General Public License v3.0    ##
 ##                                                                 ##
 #####################################################################
 
