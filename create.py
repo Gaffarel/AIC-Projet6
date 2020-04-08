@@ -2,7 +2,7 @@
 
 #####################################################################
 ##                                                                 ##
-##   Script de création d'un serveur wordpress avec MariaDB V1.0h  ##
+##   Script de création d'un serveur wordpress avec MariaDB V1.0i  ##
 ##               avec docker-compose sur DEBIAN 10.2               ##
 ##                                                                 ##
 #####################################################################
@@ -24,7 +24,7 @@ import os # Diverses interfaces pour le système d'exploitation
 import os.path #
 from pathlib import Path #
 import logging #
-import syslog
+#import syslog
 import configparser # Configuration file parser
 import shutil # aide à automatiser la copie des fichiers et des répertoires
 
@@ -35,13 +35,9 @@ import shutil # aide à automatiser la copie des fichiers et des répertoires
 try:
     (Path("/var/log/SafetyWpress/")).resolve(strict=True)
     print("Le répertoire des LOGs existe !")
-#    logging.info("Le répertoire des LOGs existe !")
-    syslog.syslog(syslog.LOG_INFO,"Le répertoire des LOGs existe !")
 except FileNotFoundError:
     os.makedirs(("/var/log/SafetyWpress"), exist_ok=True)
     print("Création du répertoire de LOG SafetyWpress")
-#    logging.warning("Création du répertoire de LOG SafetyWpress")
-    syslog.syslog(syslog.LOG_WARNING,"Création du répertoire de LOG SafetyWpress")
 
 # Création du fichier create.log #
 
@@ -58,12 +54,10 @@ script_path = os.path.abspath(os.path.dirname( __file__))
 try:
     (Path(script_path+'/.env')).resolve(strict=True)
     print("Fichier .env présent")
-    logging.info("Fichier .env présent")
-    syslog.syslog(syslog.LOG_INFO,"Fichier .env présent")
+#    logging.info("Fichier .env présent")
 except FileNotFoundError:
     print("Fichier .env manquant")
-    logging.error("Fichier .env manquant")
-    syslog.syslog(syslog.LOG_ERR,"Fichier .env manquant")
+#    logging.error("Fichier .env manquant")
     exit(1)
 
 # Vérifier si le fichier P6_config.ini existe ou non #
@@ -71,12 +65,10 @@ except FileNotFoundError:
 try:
     (Path(script_path+'/P6_config.ini')).resolve(strict=True)
     print("Fichier P6_config.ini présent")
-    logging.info("Fichier P6_config.ini présent")
-    syslog.syslog(syslog.LOG_INFO,"Fichier P6_config.ini présent")
+#    logging.info("Fichier P6_config.ini présent")
 except FileNotFoundError:
     print("Fichier P6_config.ini manquant")
-    logging.error("Fichier P6_config.ini manquant")
-    syslog.syslog(syslog.LOG_ERR,"Fichier P6_config.ini manquant")
+#    logging.error("Fichier P6_config.ini manquant")
     exit(1)
 
 # Vérifier si le fichier docker-compose.yml existe ou non #
@@ -84,12 +76,10 @@ except FileNotFoundError:
 try:
     (Path(script_path+'/docker-compose.yml')).resolve(strict=True)
     print("Fichier docker-compose.yml présent")
-    logging.info("Fichier docker-compose.yml présent")
-    syslog.syslog(syslog.LOG_INFO,"Fichier docker-compose.yml présent")
+#    logging.info("Fichier docker-compose.yml présent")
 except FileNotFoundError:
     print("Fichier docker-compose.yml manquant")
-    logging.error("Fichier docker-compose.yml manquant")
-    syslog.syslog(syslog.LOG_ERR,"Fichier docker-compose.yml manquant")
+#    logging.error("Fichier docker-compose.yml manquant")
     exit(1)
 
 # Vérifier si le fichier requirement.txt existe ou non #
@@ -97,12 +87,10 @@ except FileNotFoundError:
 try:
     (Path(script_path+'/requirements.txt')).resolve(strict=True)
     print("Fichier requirements.txt présent")
-    logging.info("Fichier requirements.txt présent")
-    syslog.syslog(syslog.LOG_INFO,"Fichier requirements.txt présent")
+#    logging.info("Fichier requirements.txt présent")
 except FileNotFoundError:
     print("Fichier requirements.txt manquant")
-    logging.error("Fichier requirements.txt manquant")
-    syslog.syslog(syslog.LOG_ERR,"Fichier requirements.txt manquant")
+#    logging.error("Fichier requirements.txt manquant")
     exit(1)
 
 ############# Installation des modules supplémentaires ##############
@@ -134,13 +122,11 @@ repertoire_de_sauvegarde = config.get('repertoire','backup_repertoire')
 try:
     (Path(repertoire_de_sauvegarde+"/")).resolve(strict=True)
     print("Le répertoire de sauvegarde existe !")
-    logging.info("Le répertoire de sauvegarde existe !")
-    syslog.syslog(syslog.LOG_INFO,"Le répertoire de sauvegarde existe !")
+#    logging.info("Le répertoire de sauvegarde existe !")
 except FileNotFoundError:
     os.makedirs(repertoire_de_sauvegarde, exist_ok=True)
     print("Création du répertoire de sauvegarde")
-    logging.warning("Création du répertoire de sauvegarde")
-    syslog.syslog(syslog.LOG_WARNING,"Création du répertoire de sauvegarde")
+#    logging.warning("Création du répertoire de sauvegarde")
 
 # Déplacement fichiers utiles dans le repertoire de sauvegarde #
 
