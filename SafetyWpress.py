@@ -3,14 +3,14 @@
 #####################################################################
 ##                                                                 ##
 ##     Script de sauvegarde et de restauration sur le cloud de     ##
-##    Microsoft AZURE d'un serveur wordpress avec MariaDB  V0.6d   ##
+##    Microsoft AZURE d'un serveur wordpress avec MariaDB  V0.7    ##
 ##                                                                 ##
 #####################################################################
 
 #####################################################################
 ##                                                                 ##
 ##               Script crée par : Allouis Sébastien               ##
-##                     il est sous License MIT                     ##
+##                  Ce script est sous License MIT                 ##
 ##                                                                 ##
 #####################################################################
 
@@ -34,6 +34,7 @@ import sys #
 import yaml # 
 import logging #
 import syslog #
+import subprocess #
 
 #####################################################################
 ##                                                                 ##
@@ -43,7 +44,8 @@ import syslog #
 
 ####################### Nom du fichier de LOG #######################
 
-logging.basicConfig(filename='/var/log/SafetyWpress/SafetyWpress.log',level=logging.DEBUG, format='%(asctime)s : %(levelname)s - %(name)s - %(module)s : %(message)s')
+logging.basicConfig(filename='/var/log/SafetyWpress/SafetyWpress.log',level=logging.INFO, format='%(asctime)s : %(levelname)s - %(name)s - %(module)s : %(message)s')
+#logging.basicConfig(filename='/var/log/SafetyWpress/SafetyWpress.log',level=logging.DEBUG, format='%(asctime)s : %(levelname)s - %(name)s - %(module)s : %(message)s')
 
 ############## On récupére le chemin absolu du script ###############
 
@@ -56,13 +58,13 @@ script_path = os.path.abspath(os.path.dirname( __file__))
 try:
     (Path(script_path+'/P6_config.ini')).resolve(strict=True)
     print("Fichier P6_config.ini présent")
-    logging.info("Fichier P6_config.ini présent")
-    syslog.syslog(syslog.LOG_INFO,"Fichier P6_config.ini présent")
+    logging.debug("Fichier P6_config.ini présent")
+    syslog.syslog(syslog.LOG_DEBUG,"Fichier P6_config.ini présent")
 except FileNotFoundError:
     print("Fichier P6_config.ini manquant")
     logging.error("Fichier P6_config.ini manquant")
     syslog.syslog(syslog.LOG_ERR,"Fichier P6_config.ini manquant")
-    exit(1)
+    exit(1)  # sortie avec Warning !
 
 ################ Import du fichier de configuration #################
 
@@ -93,8 +95,8 @@ try:
     FileService(account_name=AZURE_CPT, account_key=AZURE_KEY)
     file_service = FileService(account_name=AZURE_CPT, account_key=AZURE_KEY)
     print("Autorisation d'accès au compte Microsoft AZURE OK")
-    logging.info("Autorisation d'accès au compte Microsoft AZURE OK")
-    syslog.syslog(syslog.LOG_INFO,"Autorisation d'accès au compte Microsoft AZURE OK")
+    logging.debug("Autorisation d'accès au compte Microsoft AZURE OK")
+    syslog.syslog(syslog.LOG_DEBUG,"Autorisation d'accès au compte Microsoft AZURE OK")
 except:
     print("Problème d'autorisation d'accès au compte Microsoft AZURE")
     logging.error("Problème d'autorisation d'accès au compte Microsoft AZURE")
@@ -110,8 +112,8 @@ except:
 try:
     file_service.exists(AZURE_REP_BKP)
     print("Le répertoire de sauvegarde AZURE existe !")
-    logging.info("Le répertoire de sauvegarde AZURE existe !")
-    syslog.syslog(syslog.LOG_INFO,"Le répertoire de sauvegarde AZURE existe !")
+    logging.debug("Le répertoire de sauvegarde AZURE existe !")
+    syslog.syslog(syslog.LOG_DEBUG,"Le répertoire de sauvegarde AZURE existe !")
 except FileNotFoundError:
     file_service.create_share(AZURE_REP_BKP)
     print("Création du répertoire de sauvegarde AZURE ")
@@ -128,10 +130,10 @@ BACKUP_DATE_OLD = (date.today()-datetime.timedelta(days=int(NBjourDEretention)))
 # Fonction de récupération du Nom de l'image de la Base De Donnée du fichier docker-compose.yml #
 
 def get_database_name():
-  with open(repertoire_de_sauvegarde+"/docker-compose.yml",'r') as file: #
-    doc = yaml.load(file, Loader=yaml.FullLoader) #
-    txt = doc["services"]["db"]["image"] #
-  return(txt) # la fontion retourne le nom du conteneur demandé
+  with open(repertoire_de_sauvegarde+"/docker-compose.yml",'r') as file: # Ouverture du fichier YML en lecture
+    fichier_yml = yaml.load(file, Loader=yaml.FullLoader) #
+    BDD = fichier_yml["services"]["db"]["image"] # Emplacement de l'image de le base de donnée dans le fchier YML
+  return(BDD) # la fontion retourne le nom du conteneur demandé
 
 # Donction de récupération du short_id de la Base De Donnée via le dictionnaire #
 
@@ -176,6 +178,19 @@ def get_countdown(temps):
         time.sleep(1)
         temps -= 1
 
+# Test de la connexion à la base de donnée #
+
+def connect_db():
+  while True:
+    try:
+      subprocess.check_call('docker exec -it '+ID+' mysql -u '+UserBDD+' -p'+MdpBDD+' --execute \"SHOW DATABASES;"', shell = True) 
+      break
+    except subprocess.CalledProcessError as e:
+      print(e.returncode)
+      print(e.cmd)
+      print(e.output)
+      time.sleep(5)
+
 #####################################################################
 ##                                                                 ##
 ##         Test et choix des fonctions avec les arguments          ##
@@ -209,10 +224,13 @@ if argument == 'save' or argument == '-s':
   ID = get_short_id_container(NAME)
   print("le short ID de l'image de la Base de donnée est: ",ID)
   print("")
+  logging.info("Début de la sauvegarde !")
+  syslog.syslog(syslog.LOG_INFO,"Début de la sauvegarde !")
 
 # Dump de la base de donnée MariaDB #
 
   client = docker.from_env()
+  connect_db()
   container = client.containers.get(ID)
   MySQLdump = str((container.exec_run("mysqldump -u "+UserBDD+" -p"+MdpBDD+" "+Nom_de_la_BDD)).output, 'utf-8') # dump de la BDD,
                                                                                                                 # puis récupération de la sortie de command
@@ -269,6 +287,8 @@ if argument == 'save' or argument == '-s':
       print(file_or_dir.name)
 
   print("")
+  logging.info("Le sauvegarde c'est terminé correctement !")
+  syslog.syslog(syslog.LOG_INFO,"Le sauvegarde c'est terminé correctement !")
 
 ######################################################
 # Lancement de la fonction attachée restoreDB / -rDB #
