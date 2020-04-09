@@ -3,7 +3,7 @@
 #####################################################################
 ##                                                                 ##
 ##     Script de sauvegarde et de restauration sur le cloud de     ##
-##    Microsoft AZURE d'un serveur wordpress avec MariaDB  V0.7e   ##
+##    Microsoft AZURE d'un serveur wordpress avec MariaDB  V0.7f   ##
 ##                                                                 ##
 #####################################################################
 
@@ -227,21 +227,27 @@ if argument == 'save' or argument == '-s':
 
   client = docker.from_env()
   container = client.containers.get(ID)
+  print("Dump de la Base de donnée "+Nom_de_la_BDD+" en cours ...")
+  logging.info("Dump de la Base de donnée "+Nom_de_la_BDD+" en cours ...") # warning 
+  syslog.syslog(syslog.LOG_INFO, "Dump de la Base de donnée "+Nom_de_la_BDD+" en cours ...") # warning 
   MySQLdump = str((container.exec_run("mysqldump -u "+UserBDD+" -p"+MdpBDD+" "+Nom_de_la_BDD)).output, 'utf-8') # dump de la BDD,
                                                                                                                 # puis récupération de la sortie de command
                                                                                                                 # et formattage du binaire
   fichier = open(repertoire_de_sauvegarde+"/save_"+str(BACKUP_DATE)+"db.sql","w")
   fichier.write(MySQLdump)
   fichier.close()
+  print("Dump de la Base de donnée "+Nom_de_la_BDD+" OK !")
+  logging.info("Dump de la Base de donnée "+Nom_de_la_BDD+" OK !") # warning 
+  syslog.syslog(syslog.LOG_INFO, "Dump de la Base de donnée "+Nom_de_la_BDD+" OK !") # warning 
 
 # Compression et sauvegarde des fichiers du serveur #
 
   print("Sauvegarde des fichiers de configuration du serveur Linux ...")
   print("")
 
-  print("Compression et sauvegarde des fichiers du serveur...")
-  logging.info("Compression et sauvegarde des fichiers du serveur...") # warning 
-  syslog.syslog(syslog.LOG_INFO,"Compression et sauvegarde des fichiers du serveur...") # warning 
+  print("Compression et sauvegarde des fichiers du serveur ...")
+  logging.info("Compression et sauvegarde des fichiers du serveur ...") # warning 
+  syslog.syslog(syslog.LOG_INFO,"Compression et sauvegarde des fichiers du serveur ...") # warning 
 
   backup_bz2 = tarfile.open(repertoire_de_sauvegarde+'/save_'+str(BACKUP_DATE)+'.tar.bz2','w:bz2') # Emplacement de sauvegarde du fichier compressé (tar.bz2)
   backup_bz2.add('/var/lib/docker/volumes/backup_wp/') # sauvegarde du volumes docker wordpress
