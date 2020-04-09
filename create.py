@@ -42,7 +42,7 @@ except FileNotFoundError:
 
 logging.basicConfig(filename='/var/log/SafetyWpress/create.log',level=logging.INFO, format='%(asctime)s : %(levelname)s - %(name)s - %(module)s : %(message)s')
 
-############## On récupére le chemin absolu du script ###############
+############## On récupère le chemin absolu du script ###############
 
 script_path = os.path.abspath(os.path.dirname( __file__))
 
