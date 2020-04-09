@@ -3,7 +3,7 @@
 #####################################################################
 ##                                                                 ##
 ##     Script de sauvegarde et de restauration sur le cloud de     ##
-##    Microsoft AZURE d'un serveur wordpress avec MariaDB  V0.7d   ##
+##    Microsoft AZURE d'un serveur wordpress avec MariaDB  V0.7e   ##
 ##                                                                 ##
 #####################################################################
 
@@ -63,8 +63,8 @@ try:
     syslog.syslog(syslog.LOG_DEBUG,"Fichier P6_config.ini présent")
 except FileNotFoundError:
     print("Fichier P6_config.ini manquant")
-    logging.error("Fichier P6_config.ini manquant")
-    syslog.syslog(syslog.LOG_ERR,"Fichier P6_config.ini manquant")
+    logging.warning("Fichier P6_config.ini manquant")
+    syslog.syslog(syslog.LOG_WARNING,"Fichier P6_config.ini manquant")
     exit(1)  # sortie avec Warning !
 
 ################ Import du fichier de configuration #################
@@ -238,6 +238,8 @@ if argument == 'save' or argument == '-s':
 
   print("Sauvegarde des fichiers de configuration du serveur Linux ...")
   print("")
+
+  print("Compression et sauvegarde des fichiers du serveur...")
   logging.info("Compression et sauvegarde des fichiers du serveur...") # warning 
   syslog.syslog(syslog.LOG_INFO,"Compression et sauvegarde des fichiers du serveur...") # warning 
 
@@ -254,36 +256,42 @@ if argument == 'save' or argument == '-s':
   backup_bz2.add(repertoire_de_sauvegarde+'/docker-compose.yml')
   backup_bz2.close() # fermeture du fichier
 
+  print("Compression et sauvegarde des fichiers OK !")
   logging.info("Compression et sauvegarde des fichiers OK !") # warning 
   syslog.syslog(syslog.LOG_INFO,"Compression et sauvegarde des fichiers OK !") # warning 
 
 # Sauvegarde sur Microsoft AZURE #
 
 # Création d'un sous-répertoire: save_date du jour
-
-  logging.info("Compression et sauvegarde des fichiers OK !") # warning 
-  syslog.syslog(syslog.LOG_INFO,"Compression et sauvegarde des fichiers OK !") # warning 
+  print("Création d'un sous-répertoire save_"+str(BACKUP_DATE)+" sur Microsoft AZURE en cours ...")
+  logging.info("Création d'un sous-répertoire save_"+str(BACKUP_DATE)+" sur Microsoft AZURE en cours ...") # warning 
+  syslog.syslog(syslog.LOG_INFO, "Création d'un sous-répertoire save_"+str(BACKUP_DATE)+" sur Microsoft AZURE en cours ...") # warning 
 
   file_service.create_directory(AZURE_REP_BKP,'save_'+str(BACKUP_DATE))
 
-  logging.info("Compression et sauvegarde des fichiers OK !") # warning 
-  syslog.syslog(syslog.LOG_INFO,"Compression et sauvegarde des fichiers OK !") # warning 
+  print("Création d'un sous-répertoire save_"+str(BACKUP_DATE)+" sur Microsoft AZURE OK !")
+  logging.info("Création d'un sous-répertoire save_"+str(BACKUP_DATE)+" sur Microsoft AZURE OK !") # warning 
+  syslog.syslog(syslog.LOG_INFO, "Création d'un sous-répertoire save_"+str(BACKUP_DATE)+" sur Microsoft AZURE OK !") # warning 
 
 # copy des fichiers de sauvegarde sur le répertoire Microsoft AZURE
 
-  logging.info("Compression et sauvegarde des fichiers OK !") # warning 
-  syslog.syslog(syslog.LOG_INFO,"Compression et sauvegarde des fichiers OK !") # warning 
+  print("Copy des fichiers de sauvegarde sur le répertoire Microsoft AZURE en cours ...")
+  logging.info("Copy des fichiers de sauvegarde sur le répertoire Microsoft AZURE en cours ...") # warning 
+  syslog.syslog(syslog.LOG_INFO,"Copy des fichiers de sauvegarde sur le répertoire Microsoft AZURE en cours ...") # warning 
 
   file_service.create_file_from_path(AZURE_REP_BKP,'save_'+str(BACKUP_DATE),'save_'+str(BACKUP_DATE)+'db.sql',repertoire_de_sauvegarde+'/save_'+str(BACKUP_DATE)+'db.sql')
   file_service.create_file_from_path(AZURE_REP_BKP,'save_'+str(BACKUP_DATE),'save_'+str(BACKUP_DATE)+'.tar.bz2',repertoire_de_sauvegarde+'/save_'+str(BACKUP_DATE)+'.tar.bz2')
 
-  logging.info("Compression et sauvegarde des fichiers OK !") # warning 
-  syslog.syslog(syslog.LOG_INFO,"Compression et sauvegarde des fichiers OK !") # warning 
+  print("Copy des fichiers de sauvegarde sur le répertoire Microsoft AZURE OK !")
+  logging.info("Copy des fichiers de sauvegarde sur le répertoire Microsoft AZURE OK !") # warning 
+  syslog.syslog(syslog.LOG_INFO,"Copy des fichiers de sauvegarde sur le répertoire Microsoft AZURE OK !") # warning 
 
 # suppression des fichiers de sauvegarde
 
   os.remove(repertoire_de_sauvegarde+"/save_"+str(BACKUP_DATE)+"db.sql")
+  print("Suppression du fichier "+BACKUP_DATE+"db.sql")
   os.remove(repertoire_de_sauvegarde+"/save_"+str(BACKUP_DATE)+".tar.bz2")
+  print("Suppression du fichier "+BACKUP_DATE+".tar.bz2")
 
 # Liste des fichiers ou répertoires de Microsoft AZURE et suppression des anciennes sauvegardes en fonction du nombre de jour 
 
@@ -297,13 +305,13 @@ if argument == 'save' or argument == '-s':
     else:
       print("")
       print(file_or_dir.name)
-      logging.info(file_or_dir.name) # warning 
-      syslog.syslog(syslog.LOG_INFO, file_or_dir.name) # warning 
+      logging.warning(file_or_dir.name) # warning 
+      syslog.syslog(syslog.LOG_WARNING, file_or_dir.name) # warning 
 
   print("")
   print("La sauvegarde c'est terminé correctement !")
-  logging.info("La sauvegarde c'est terminé correctement !") # warning
-  syslog.syslog(syslog.LOG_INFO,"La sauvegarde c'est terminé correctement !") # warning
+  logging.warning("La sauvegarde c'est terminé correctement !") # warning
+  syslog.syslog(syslog.LOG_WARNING,"La sauvegarde c'est terminé correctement !") # warning
 
 ######################################################
 # Lancement de la fonction attachée restoreDB / -rDB #
@@ -338,7 +346,7 @@ elif argument == 'restoreDB' or argument == '-rDB':
   print("Suppression du fichier "+BACKUP_DATE_SAVE+"db.sql")
   print("")
   print ("Opération terminé !")
-  
+
 ####################################################
 # Lancement de la fonction attachée restoreT / -rT #
 ####################################################
@@ -391,6 +399,8 @@ elif argument == 'restoreT' or argument == '-rT':
 
 # redémarrage du serveur Linux dans 5 secondes #
 
+  print ("Opération terminé !")
+  print("")
   print("Reboot du système dans 5 secondes...")
   get_countdown(5)
   print('Redémarrage !\n\n\n\n\n')
