@@ -3,7 +3,7 @@
 #####################################################################
 ##                                                                 ##
 ##     Script de sauvegarde et de restauration sur le cloud de     ##
-##    Microsoft AZURE d'un serveur wordpress avec MariaDB  V0.7c   ##
+##    Microsoft AZURE d'un serveur wordpress avec MariaDB  V0.7d   ##
 ##                                                                 ##
 #####################################################################
 
@@ -44,8 +44,9 @@ import subprocess #
 
 ####################### Nom du fichier de LOG #######################
 
-logging.basicConfig(filename='/var/log/SafetyWpress/SafetyWpress.log',level=logging.INFO, format='%(asctime)s : %(levelname)s - %(name)s - %(module)s : %(message)s')
-#logging.basicConfig(filename='/var/log/SafetyWpress/SafetyWpress.log',level=logging.DEBUG, format='%(asctime)s : %(levelname)s - %(name)s - %(module)s : %(message)s')
+logging.basicConfig(filename='/var/log/SafetyWpress/SafetyWpress.log',level=logging.WARNING, format='%(asctime)s : %(levelname)s - %(name)s - %(module)s : %(message)s') # pour le mode WARNING
+#logging.basicConfig(filename='/var/log/SafetyWpress/SafetyWpress.log',level=logging.INFO, format='%(asctime)s : %(levelname)s - %(name)s - %(module)s : %(message)s') # pour le mode INFO
+#logging.basicConfig(filename='/var/log/SafetyWpress/SafetyWpress.log',level=logging.DEBUG, format='%(asctime)s : %(levelname)s - %(name)s - %(module)s : %(message)s') # pour le mode DEBUG
 
 ############## On récupére le chemin absolu du script ###############
 
@@ -86,9 +87,6 @@ repertoire_de_sauvegarde = config.get('repertoire','backup_repertoire')
 #####################################################################
 
 # Autorisation d'accès au compte Microsoft AZURE
-
-#file_service = FileService(account_name=AZURE_CPT, account_key=AZURE_KEY)
-
 # Test de l'accès à Microsoft AZURE #
 
 try:
@@ -104,9 +102,6 @@ except:
     exit(2) # sortie avec erreur !
 
 # Création du répertoire: backup6 sur Microsoft AZURE de notre exemple #
-
-#file_service.create_share(AZURE_REP_BKP)
-
 # Vérifier si le répertoire de sauvegarde backup6 sur Microsoft AZURE existe ou non #
 
 try:
@@ -225,8 +220,8 @@ if argument == 'save' or argument == '-s':
   ID = get_short_id_container(NAME)
   print("le short ID de l'image de la Base de donnée est: ",ID)
   print("")
-  logging.info("Début de la sauvegarde !")
-  syslog.syslog(syslog.LOG_INFO,"Début de la sauvegarde !")
+  logging.warning("Début de la sauvegarde !") # warning 
+  syslog.syslog(syslog.LOG_WARNING,"Début de la sauvegarde !") # warning 
 
 # Dump de la base de donnée MariaDB #
 
@@ -243,6 +238,8 @@ if argument == 'save' or argument == '-s':
 
   print("Sauvegarde des fichiers de configuration du serveur Linux ...")
   print("")
+  logging.info("Compression et sauvegarde des fichiers du serveur...") # warning 
+  syslog.syslog(syslog.LOG_INFO,"Compression et sauvegarde des fichiers du serveur...") # warning 
 
   backup_bz2 = tarfile.open(repertoire_de_sauvegarde+'/save_'+str(BACKUP_DATE)+'.tar.bz2','w:bz2') # Emplacement de sauvegarde du fichier compressé (tar.bz2)
   backup_bz2.add('/var/lib/docker/volumes/backup_wp/') # sauvegarde du volumes docker wordpress
@@ -257,16 +254,31 @@ if argument == 'save' or argument == '-s':
   backup_bz2.add(repertoire_de_sauvegarde+'/docker-compose.yml')
   backup_bz2.close() # fermeture du fichier
 
+  logging.info("Compression et sauvegarde des fichiers OK !") # warning 
+  syslog.syslog(syslog.LOG_INFO,"Compression et sauvegarde des fichiers OK !") # warning 
+
 # Sauvegarde sur Microsoft AZURE #
 
 # Création d'un sous-répertoire: save_date du jour
 
+  logging.info("Compression et sauvegarde des fichiers OK !") # warning 
+  syslog.syslog(syslog.LOG_INFO,"Compression et sauvegarde des fichiers OK !") # warning 
+
   file_service.create_directory(AZURE_REP_BKP,'save_'+str(BACKUP_DATE))
+
+  logging.info("Compression et sauvegarde des fichiers OK !") # warning 
+  syslog.syslog(syslog.LOG_INFO,"Compression et sauvegarde des fichiers OK !") # warning 
 
 # copy des fichiers de sauvegarde sur le répertoire Microsoft AZURE
 
+  logging.info("Compression et sauvegarde des fichiers OK !") # warning 
+  syslog.syslog(syslog.LOG_INFO,"Compression et sauvegarde des fichiers OK !") # warning 
+
   file_service.create_file_from_path(AZURE_REP_BKP,'save_'+str(BACKUP_DATE),'save_'+str(BACKUP_DATE)+'db.sql',repertoire_de_sauvegarde+'/save_'+str(BACKUP_DATE)+'db.sql')
   file_service.create_file_from_path(AZURE_REP_BKP,'save_'+str(BACKUP_DATE),'save_'+str(BACKUP_DATE)+'.tar.bz2',repertoire_de_sauvegarde+'/save_'+str(BACKUP_DATE)+'.tar.bz2')
+
+  logging.info("Compression et sauvegarde des fichiers OK !") # warning 
+  syslog.syslog(syslog.LOG_INFO,"Compression et sauvegarde des fichiers OK !") # warning 
 
 # suppression des fichiers de sauvegarde
 
@@ -285,10 +297,13 @@ if argument == 'save' or argument == '-s':
     else:
       print("")
       print(file_or_dir.name)
+      logging.info(file_or_dir.name) # warning 
+      syslog.syslog(syslog.LOG_INFO, file_or_dir.name) # warning 
 
   print("")
-  logging.info("Le sauvegarde c'est terminé correctement !")
-  syslog.syslog(syslog.LOG_INFO,"Le sauvegarde c'est terminé correctement !")
+  print("La sauvegarde c'est terminé correctement !")
+  logging.info("La sauvegarde c'est terminé correctement !") # warning
+  syslog.syslog(syslog.LOG_INFO,"La sauvegarde c'est terminé correctement !") # warning
 
 ######################################################
 # Lancement de la fonction attachée restoreDB / -rDB #
@@ -304,6 +319,7 @@ elif argument == 'restoreDB' or argument == '-rDB':
   file_service.get_file_to_path(AZURE_REP_BKP, BACKUP_DATE_SAVE, BACKUP_DATE_SAVE+'db.sql', BACKUP_DATE_SAVE+'db.sql')
 
 # Restauration de la base de donnée .sql #
+
   NAME = get_database_name()
   print("le nom de l'image de la Base de donnée est: ",NAME)
   print("")
@@ -312,13 +328,17 @@ elif argument == 'restoreDB' or argument == '-rDB':
   print("")
   print("Restauration de la Base de donnée en cours ...")
   print("")
-
   os.system("cat "+BACKUP_DATE_SAVE+"db.sql | docker exec -i "+ID+" /usr/bin/mysql -u "+UserBDD+" -p"+MdpBDD+" "+Nom_de_la_BDD)
-  #MySQLdump = str((container.exec_run("mysqldump -u "+UserBDD+" -p"+MdpBDD+" "+Nom_de_la_BDD)).output, 'utf-8')
+  print("Restauration de la base de donnée ok !")
+  print("")
 
 # suppression du fichiers *db.sql sauvegarde récupéré #
-  os.remove(repertoire_de_sauvegarde+"/"+BACKUP_DATE_SAVE+"db.sql")
 
+  os.remove(repertoire_de_sauvegarde+"/"+BACKUP_DATE_SAVE+"db.sql")
+  print("Suppression du fichier "+BACKUP_DATE_SAVE+"db.sql")
+  print("")
+  print ("Opération terminé !")
+  
 ####################################################
 # Lancement de la fonction attachée restoreT / -rT #
 ####################################################
@@ -335,32 +355,42 @@ elif argument == 'restoreT' or argument == '-rT':
 
 # Décompression de la sauvegarde des fichiers du serveur #
 
+  print ("décompression en cours ...")
+  print("")
   backup_bz2 = tarfile.open(repertoire_de_sauvegarde+'/'+BACKUP_DATE_SAVE+'.tar.bz2') # Emplacement de sauvegarde du fichier compressé (tar.bz2)
   backup_bz2.extractall('/')
   backup_bz2.close() #
-  print ('décompression faite !')
+  print ("décompression OK !")
+  print("")
 
 # suppression du fichiers tar.bz2 sauvegarde récupéré #
 
   os.remove(repertoire_de_sauvegarde+"/"+BACKUP_DATE_SAVE+".tar.bz2")
+  print("Suppression du fichier "+BACKUP_DATE_SAVE+".tar.bz2")
+  print("")
 
 # Restauration de la base de donnée *.sql #
+
   NAME = get_database_name()
   print("le nom de l'image de la Base de donnée est: ",NAME)
   print("")
   ID = get_short_id_container(NAME)
   print("le short ID de l'image de la Base de donnée est: ",ID)
   print("")
-  print("Restauration du serveur en cours ...")
+  print("Restauration de la base de donnée cours ...")
+  print("")
+  os.system("cat "+BACKUP_DATE_SAVE+"db.sql | docker exec -i "+ID+" /usr/bin/mysql -u "+UserBDD+" -p"+MdpBDD+" "+Nom_de_la_BDD)
+  print("Restauration de la base de donnée ok !")
   print("")
 
-  os.system("cat "+BACKUP_DATE_SAVE+"db.sql | docker exec -i "+ID+" /usr/bin/mysql -u "+UserBDD+" -p"+MdpBDD+" "+Nom_de_la_BDD)
-  #MySQLdump = str((container.exec_run("mysqldump -u "+UserBDD+" -p"+MdpBDD+" "+Nom_de_la_BDD)).output, 'utf-8')
-
 # suppression du fichiers *db.sql sauvegarde récupéré #
+
   os.remove(repertoire_de_sauvegarde+"/"+BACKUP_DATE_SAVE+"db.sql")
+  print("Suppression du fichier "+BACKUP_DATE_SAVE+"db.sql")
+  print("")
 
 # redémarrage du serveur Linux dans 5 secondes #
+
   print("Reboot du système dans 5 secondes...")
   get_countdown(5)
   print('Redémarrage !\n\n\n\n\n')
