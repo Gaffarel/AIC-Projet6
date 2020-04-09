@@ -3,7 +3,7 @@
 #####################################################################
 ##                                                                 ##
 ##     Script de sauvegarde et de restauration sur le cloud de     ##
-##    Microsoft AZURE d'un serveur wordpress avec MariaDB  V0.7b   ##
+##    Microsoft AZURE d'un serveur wordpress avec MariaDB  V0.7c   ##
 ##                                                                 ##
 #####################################################################
 
@@ -178,18 +178,19 @@ def get_countdown(temps):
         time.sleep(1)
         temps -= 1
 
-# Test de la connexion à la base de donnée #
+# Test de la disponibilité de la base de donnée #
 
 def connect_db():
-  while True:
-    try:
-      subprocess.check_call('docker exec -it '+ID+' /usr/bin/mysql -u '+UserBDD+' -p'+MdpBDD+' --execute \"SHOW DATABASES;"', shell = True) 
-      break
-    except subprocess.CalledProcessError as e:
-      print(e.returncode)
-      print(e.cmd)
-      print(e.output)
-      time.sleep(5)
+  NAME = get_database_name()
+  ID = get_short_id_container(NAME)
+  try:
+    subprocess.check_call('docker exec -it '+ID+' /usr/bin/mysql -u '+UserBDD+' -p'+MdpBDD+' --execute \"SHOW DATABASES;"', shell = True)
+  except subprocess.CalledProcessError as err:
+    print(err.output)
+    print("La base de donnée n'est pas prête, veuillez réssayer !")
+    logging.error("La base de donnée n'est pas prête, veuillez réssayer !")
+    syslog.syslog(syslog.LOG_ERR,"La base de donnée n'est pas prête, veuillez réssayer !")
+    exit(2) # sortie avec erreur !
 
 #####################################################################
 ##                                                                 ##
@@ -295,6 +296,7 @@ if argument == 'save' or argument == '-s':
 
 elif argument == 'restoreDB' or argument == '-rDB':
 
+  connect_db() # verification de la disponibilité de la Base de Donnée
   print("Choix du Numéro de sauvegarde: ?")
   print("")
   BACKUP_DATE_SAVE=get_choix_de_la_sauvegarde()
@@ -310,7 +312,7 @@ elif argument == 'restoreDB' or argument == '-rDB':
   print("")
   print("Restauration de la Base de donnée en cours ...")
   print("")
-  connect_db() # verification de la présence de la Base de Donnée 
+
   os.system("cat "+BACKUP_DATE_SAVE+"db.sql | docker exec -i "+ID+" /usr/bin/mysql -u "+UserBDD+" -p"+MdpBDD+" "+Nom_de_la_BDD)
   #MySQLdump = str((container.exec_run("mysqldump -u "+UserBDD+" -p"+MdpBDD+" "+Nom_de_la_BDD)).output, 'utf-8')
 
@@ -323,6 +325,7 @@ elif argument == 'restoreDB' or argument == '-rDB':
 
 elif argument == 'restoreT' or argument == '-rT':
 
+  connect_db() # verification de la disponibilité de la Base de Donnée 
   print("Choix du Numéro de sauvegarde: ?")
   print("")
   BACKUP_DATE_SAVE=get_choix_de_la_sauvegarde()
@@ -350,6 +353,7 @@ elif argument == 'restoreT' or argument == '-rT':
   print("")
   print("Restauration du serveur en cours ...")
   print("")
+
   os.system("cat "+BACKUP_DATE_SAVE+"db.sql | docker exec -i "+ID+" /usr/bin/mysql -u "+UserBDD+" -p"+MdpBDD+" "+Nom_de_la_BDD)
   #MySQLdump = str((container.exec_run("mysqldump -u "+UserBDD+" -p"+MdpBDD+" "+Nom_de_la_BDD)).output, 'utf-8')
 
