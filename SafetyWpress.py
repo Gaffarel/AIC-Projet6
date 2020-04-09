@@ -3,7 +3,7 @@
 #####################################################################
 ##                                                                 ##
 ##     Script de sauvegarde et de restauration sur le cloud de     ##
-##    Microsoft AZURE d'un serveur wordpress avec MariaDB  V0.7a    ##
+##    Microsoft AZURE d'un serveur wordpress avec MariaDB  V0.7b   ##
 ##                                                                 ##
 #####################################################################
 
@@ -135,7 +135,7 @@ def get_database_name():
     BDD = fichier_yml["services"]["db"]["image"] # Emplacement de l'image de le base de donnée dans le fchier YML
   return(BDD) # la fontion retourne le nom du conteneur demandé
 
-# Donction de récupération du short_id de la Base De Donnée via le dictionnaire #
+# Fonction de récupération du short_id de la Base De Donnée via le dictionnaire #
 
 def get_short_id_container(name_container):
   client = docker.from_env() #
@@ -183,7 +183,7 @@ def get_countdown(temps):
 def connect_db():
   while True:
     try:
-      subprocess.check_call('docker exec -it '+ID+' mysql -u '+UserBDD+' -p'+MdpBDD+' --execute \"SHOW DATABASES;"', shell = True) 
+      subprocess.check_call('docker exec -it '+ID+' /usr/bin/mysql -u '+UserBDD+' -p'+MdpBDD+' --execute \"SHOW DATABASES;"', shell = True) 
       break
     except subprocess.CalledProcessError as e:
       print(e.returncode)
@@ -230,7 +230,6 @@ if argument == 'save' or argument == '-s':
 # Dump de la base de donnée MariaDB #
 
   client = docker.from_env()
-  connect_db()
   container = client.containers.get(ID)
   MySQLdump = str((container.exec_run("mysqldump -u "+UserBDD+" -p"+MdpBDD+" "+Nom_de_la_BDD)).output, 'utf-8') # dump de la BDD,
                                                                                                                 # puis récupération de la sortie de command
@@ -239,7 +238,7 @@ if argument == 'save' or argument == '-s':
   fichier.write(MySQLdump)
   fichier.close()
 
-# Compréssion et sauvegarde des fichiers du serveur #
+# Compression et sauvegarde des fichiers du serveur #
 
   print("Sauvegarde des fichiers de configuration du serveur Linux ...")
   print("")
@@ -259,11 +258,11 @@ if argument == 'save' or argument == '-s':
 
 # Sauvegarde sur Microsoft AZURE #
 
-# Création d'un sous-repertoire: save_date du jour
+# Création d'un sous-répertoire: save_date du jour
 
   file_service.create_directory(AZURE_REP_BKP,'save_'+str(BACKUP_DATE))
 
-# copy des fichiers de sauvegarde sur le repertoire Microsoft AZURE
+# copy des fichiers de sauvegarde sur le répertoire Microsoft AZURE
 
   file_service.create_file_from_path(AZURE_REP_BKP,'save_'+str(BACKUP_DATE),'save_'+str(BACKUP_DATE)+'db.sql',repertoire_de_sauvegarde+'/save_'+str(BACKUP_DATE)+'db.sql')
   file_service.create_file_from_path(AZURE_REP_BKP,'save_'+str(BACKUP_DATE),'save_'+str(BACKUP_DATE)+'.tar.bz2',repertoire_de_sauvegarde+'/save_'+str(BACKUP_DATE)+'.tar.bz2')
@@ -273,7 +272,7 @@ if argument == 'save' or argument == '-s':
   os.remove(repertoire_de_sauvegarde+"/save_"+str(BACKUP_DATE)+"db.sql")
   os.remove(repertoire_de_sauvegarde+"/save_"+str(BACKUP_DATE)+".tar.bz2")
 
-# Liste des fichiers ou repertoires de Microsoft AZURE et suppression des anciennes sauvegardes en fonction du nombre de jour 
+# Liste des fichiers ou répertoires de Microsoft AZURE et suppression des anciennes sauvegardes en fonction du nombre de jour 
 
   print("Liste des sauvegardes: ")
   list_file = file_service.list_directories_and_files(AZURE_REP_BKP)
@@ -311,6 +310,7 @@ elif argument == 'restoreDB' or argument == '-rDB':
   print("")
   print("Restauration de la Base de donnée en cours ...")
   print("")
+  connect_db() # verification de la présence de la Base de Donnée 
   os.system("cat "+BACKUP_DATE_SAVE+"db.sql | docker exec -i "+ID+" /usr/bin/mysql -u "+UserBDD+" -p"+MdpBDD+" "+Nom_de_la_BDD)
   #MySQLdump = str((container.exec_run("mysqldump -u "+UserBDD+" -p"+MdpBDD+" "+Nom_de_la_BDD)).output, 'utf-8')
 
