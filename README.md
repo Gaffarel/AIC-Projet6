@@ -26,7 +26,7 @@
 
 ## Présentation
 
-Ce projet à pour but de créer automatiquement un serveur WordPress prêt à l'emploi,  
+Ce projet a pour but de créer automatiquement un serveur WordPress prêt à l'emploi,  
 avec le programme Python [create.py](https://github.com/Gaffarel/AIC-Projet6/blob/master/create.py) .  
 Pour cela on se servira de docker-compose et d'un fichier de référence [docker-compose.yml](https://github.com/Gaffarel/AIC-Projet6/blob/master/docker-compose.yml)  
 qu'il faudra configurer avec le fichier d'environnement [.env](https://github.com/Gaffarel/AIC-Projet6/blob/master/ex_.env)  
@@ -36,16 +36,15 @@ Nous pourrons également grâce au programme Python [SafetyWpress.py](https://gi
 sauvegarder et restaurer les fichiers de configuration du serveur linux hôte,  
 ainsi que les fichiers du volume WordPress et le Dump de sa base de donnée.  
 
-Et enfin, envoyer et récupérer les sauvegardes depuis le cloud de Microsoft AZURE  
+Enfin, envoyer et récupérer les sauvegardes depuis le cloud de Microsoft AZURE  
 
 
 ## Préparation
 
-Afin d'utiliser au mieux les programmes [create.py](https://github.com/Gaffarel/AIC-Projet6/blob/master/create.py) et [SafetyWpress.py](https://github.com/Gaffarel/AIC-Projet6/blob/master/SafetyWpress.py),  
-il faudra installer un serveur Linux avec Debian 10.
+Afin d'utiliser au mieux les programmes [create.py](https://github.com/Gaffarel/AIC-Projet6/blob/master/create.py) et [SafetyWpress.py](https://github.com/Gaffarel/AIC-Projet6/blob/master/SafetyWpress.py), il faudra installer un serveur Linux avec Debian 10.  
 
-Puis on lancera le programme `./create.py` pour préparer le serveur à recevoir  
-Docker, Docker-compose et les images de Wordpress ainsi que la base de donnée MariaDB avec le fichier `docker-compose.yml`.
+Puis on lancera le programme `./create.py` pour préparer le serveur à recevoir Docker,  
+Docker-compose et les images de Wordpress ainsi que la base de donnée MariaDB avec le fichier `docker-compose.yml`.
 
 ### Configuration du programme `create.py`
 
@@ -110,7 +109,7 @@ où
 
 20 3 * * *  /srv/backup/SafetyWpress.py -s >/dev/null 2>&1
 
-afin d'éffectuer une sauvegarde tous les jours à 3H20 par exemple.
+afin d'effectuer une sauvegarde tous les jours à 3H20 par exemple.
 
 ## Les fichiers logs
 
