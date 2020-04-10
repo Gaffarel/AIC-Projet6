@@ -3,7 +3,7 @@
 #####################################################################
 ##                                                                 ##
 ##     Script de sauvegarde et de restauration sur le cloud de     ##
-##    Microsoft AZURE d'un serveur wordpress avec MariaDB  V0.7g   ##
+##    Microsoft AZURE d'un serveur wordpress avec MariaDB  V0.7h   ##
 ##                                                                 ##
 #####################################################################
 
@@ -28,12 +28,12 @@ import datetime # Types de base pour la date et l'heure
 import configparser # Configuration file parser
 import docker # Docker
 from datetime import date # 
-import tarfile # 
+import tarfile # pour la compression de fichier (tar)
 from azure.storage.file import FileService # 
 import sys #
-import yaml # 
-import logging #
-import syslog #
+import yaml # pour parser les fichiers YAML
+import logging # pour créer des logs dans un fichier de log
+#import syslog # pour envoyer les logs sur syslog 
 import subprocess #
 
 #####################################################################
@@ -45,8 +45,7 @@ import subprocess #
 ####################### Nom du fichier de LOG #######################
 
 logging.basicConfig(filename='/var/log/SafetyWpress/SafetyWpress.log',level=logging.WARNING, format='%(asctime)s : %(levelname)s - %(name)s - %(module)s : %(message)s') # pour le mode WARNING
-#logging.basicConfig(filename='/var/log/SafetyWpress/SafetyWpress.log',level=logging.INFO, format='%(asctime)s : %(levelname)s - %(name)s - %(module)s : %(message)s') # pour le mode INFO
-#logging.basicConfig(filename='/var/log/SafetyWpress/SafetyWpress.log',level=logging.DEBUG, format='%(asctime)s : %(levelname)s - %(name)s - %(module)s : %(message)s') # pour le mode DEBUG
+# Mettre level=logging.DEBUG  # pour le mode DEBUG
 
 ############## On récupére le chemin absolu du script ###############
 
@@ -60,11 +59,11 @@ try:
     (Path(script_path+'/P6_config.ini')).resolve(strict=True)
     print("Fichier P6_config.ini présent")
     logging.debug("Fichier P6_config.ini présent")
-    syslog.syslog(syslog.LOG_DEBUG,"Fichier P6_config.ini présent")
+#    syslog.syslog(syslog.LOG_DEBUG,"Fichier P6_config.ini présent")
 except FileNotFoundError:
     print("Fichier P6_config.ini manquant")
     logging.warning("Fichier P6_config.ini manquant")
-    syslog.syslog(syslog.LOG_WARNING,"Fichier P6_config.ini manquant")
+#    syslog.syslog(syslog.LOG_WARNING,"Fichier P6_config.ini manquant")
     exit(1)  # sortie avec Warning !
 
 ################ Import du fichier de configuration #################
@@ -94,11 +93,11 @@ try:
     file_service = FileService(account_name=AZURE_CPT, account_key=AZURE_KEY)
     print("Autorisation d'accès au compte Microsoft AZURE OK")
     logging.debug("Autorisation d'accès au compte Microsoft AZURE OK")
-    syslog.syslog(syslog.LOG_DEBUG,"Autorisation d'accès au compte Microsoft AZURE OK")
+#    syslog.syslog(syslog.LOG_DEBUG,"Autorisation d'accès au compte Microsoft AZURE OK")
 except:
     print("Problème d'autorisation d'accès au compte Microsoft AZURE")
     logging.error("Problème d'autorisation d'accès au compte Microsoft AZURE")
-    syslog.syslog(syslog.LOG_ERR,"Problème d'autorisation d'accès au compte Microsoft AZURE")
+#    syslog.syslog(syslog.LOG_ERR,"Problème d'autorisation d'accès au compte Microsoft AZURE")
     exit(2) # sortie avec erreur !
 
 # Création du répertoire: backup6 sur Microsoft AZURE de notre exemple #
@@ -108,12 +107,12 @@ try:
     file_service.exists(AZURE_REP_BKP)
     print("Le répertoire de sauvegarde AZURE existe !")
     logging.debug("Le répertoire de sauvegarde AZURE existe !")
-    syslog.syslog(syslog.LOG_DEBUG,"Le répertoire de sauvegarde AZURE existe !")
+#    syslog.syslog(syslog.LOG_DEBUG,"Le répertoire de sauvegarde AZURE existe !")
 except FileNotFoundError:
     file_service.create_share(AZURE_REP_BKP)
     print("Création du répertoire de sauvegarde AZURE ")
     logging.warning("Création du répertoire de sauvegarde AZURE ")
-    syslog.syslog(syslog.LOG_WARNING,"Création du répertoire de sauvegarde AZURE ")
+#    syslog.syslog(syslog.LOG_WARNING,"Création du répertoire de sauvegarde AZURE ")
 
 ############################## Temps ################################
 
@@ -184,7 +183,7 @@ def connect_db():
     print(err.output)
     print("La base de donnée n'est pas prête, veuillez réssayer !")
     logging.error("La base de donnée n'est pas prête, veuillez réssayer !")
-    syslog.syslog(syslog.LOG_ERR,"La base de donnée n'est pas prête, veuillez réssayer !")
+#    syslog.syslog(syslog.LOG_ERR,"La base de donnée n'est pas prête, veuillez réssayer !")
     exit(2) # sortie avec erreur !
 
 #####################################################################
@@ -220,16 +219,16 @@ if argument == 'save' or argument == '-s':
   ID = get_short_id_container(NAME)
   print("le short ID de l'image de la Base de donnée est: ",ID)
   print("")
-  logging.warning("Début de la sauvegarde !") # warning 
-  syslog.syslog(syslog.LOG_WARNING,"Début de la sauvegarde !") # warning 
+  logging.warning("Début de la sauvegarde !")
+#  syslog.syslog(syslog.LOG_WARNING,"Début de la sauvegarde !")
 
 # Dump de la base de donnée MariaDB #
 
   client = docker.from_env()
   container = client.containers.get(ID)
   print("Dump de la Base de donnée "+Nom_de_la_BDD+" en cours ...")
-  logging.info("Dump de la Base de donnée "+Nom_de_la_BDD+" en cours ...") # warning 
-  syslog.syslog(syslog.LOG_INFO, "Dump de la Base de donnée "+Nom_de_la_BDD+" en cours ...") # warning 
+  logging.debug("Dump de la Base de donnée "+Nom_de_la_BDD+" en cours ...")
+#  syslog.syslog(syslog.LOG_DEBUG, "Dump de la Base de donnée "+Nom_de_la_BDD+" en cours ...")
   MySQLdump = str((container.exec_run("mysqldump -u "+UserBDD+" -p"+MdpBDD+" "+Nom_de_la_BDD)).output, 'utf-8') # dump de la BDD,
                                                                                                                 # puis récupération de la sortie de command
                                                                                                                 # et formattage du binaire
@@ -237,8 +236,8 @@ if argument == 'save' or argument == '-s':
   fichier.write(MySQLdump)
   fichier.close()
   print("Dump de la Base de donnée "+Nom_de_la_BDD+" OK !")
-  logging.info("Dump de la Base de donnée "+Nom_de_la_BDD+" OK !") # warning 
-  syslog.syslog(syslog.LOG_INFO, "Dump de la Base de donnée "+Nom_de_la_BDD+" OK !") # warning 
+  logging.debug("Dump de la Base de donnée "+Nom_de_la_BDD+" OK !")
+#  syslog.syslog(syslog.LOG_DEBUG, "Dump de la Base de donnée "+Nom_de_la_BDD+" OK !")
 
 # Compression et sauvegarde des fichiers du serveur #
 
@@ -246,8 +245,8 @@ if argument == 'save' or argument == '-s':
   print("")
 
   print("Compression et sauvegarde des fichiers du serveur ...")
-  logging.info("Compression et sauvegarde des fichiers du serveur ...") # warning 
-  syslog.syslog(syslog.LOG_INFO,"Compression et sauvegarde des fichiers du serveur ...") # warning 
+  logging.debug("Compression et sauvegarde des fichiers du serveur ...")
+#  syslog.syslog(syslog.LOG_DEBUG,"Compression et sauvegarde des fichiers du serveur ...")
 
   backup_bz2 = tarfile.open(repertoire_de_sauvegarde+'/save_'+str(BACKUP_DATE)+'.tar.bz2','w:bz2') # Emplacement de sauvegarde du fichier compressé (tar.bz2)
   backup_bz2.add('/var/lib/docker/volumes/backup_wp/') # sauvegarde du volumes docker wordpress
@@ -263,35 +262,35 @@ if argument == 'save' or argument == '-s':
   backup_bz2.close() # fermeture du fichier
 
   print("Compression et sauvegarde des fichiers OK !")
-  logging.info("Compression et sauvegarde des fichiers OK !") # warning 
-  syslog.syslog(syslog.LOG_INFO,"Compression et sauvegarde des fichiers OK !") # warning 
+  logging.debug("Compression et sauvegarde des fichiers OK !")
+#  syslog.syslog(syslog.LOG_DEBUG,"Compression et sauvegarde des fichiers OK !")
 
 # Sauvegarde sur Microsoft AZURE #
 
 # Création d'un sous-répertoire: save_date du jour
 
   print("Création d'un sous-répertoire save_"+str(BACKUP_DATE)+" sur Microsoft AZURE en cours ...")
-  logging.info("Création d'un sous-répertoire save_"+str(BACKUP_DATE)+" sur Microsoft AZURE en cours ...") # warning 
-  syslog.syslog(syslog.LOG_INFO, "Création d'un sous-répertoire save_"+str(BACKUP_DATE)+" sur Microsoft AZURE en cours ...") # warning 
+  logging.debug("Création d'un sous-répertoire save_"+str(BACKUP_DATE)+" sur Microsoft AZURE en cours ...") # warning 
+#  syslog.syslog(syslog.LOG_DEBUG, "Création d'un sous-répertoire save_"+str(BACKUP_DATE)+" sur Microsoft AZURE en cours ...") # warning 
 
   file_service.create_directory(AZURE_REP_BKP,'save_'+str(BACKUP_DATE))
 
   print("Création d'un sous-répertoire save_"+str(BACKUP_DATE)+" sur Microsoft AZURE OK !")
-  logging.info("Création d'un sous-répertoire save_"+str(BACKUP_DATE)+" sur Microsoft AZURE OK !") # warning 
-  syslog.syslog(syslog.LOG_INFO, "Création d'un sous-répertoire save_"+str(BACKUP_DATE)+" sur Microsoft AZURE OK !") # warning 
+  logging.debug("Création d'un sous-répertoire save_"+str(BACKUP_DATE)+" sur Microsoft AZURE OK !") # warning 
+#  syslog.syslog(syslog.LOG_DEBUG, "Création d'un sous-répertoire save_"+str(BACKUP_DATE)+" sur Microsoft AZURE OK !") # warning 
 
 # copy des fichiers de sauvegarde sur le répertoire Microsoft AZURE
 
   print("Copy des fichiers de sauvegarde sur le répertoire Microsoft AZURE en cours ...")
-  logging.info("Copy des fichiers de sauvegarde sur le répertoire Microsoft AZURE en cours ...") # warning 
-  syslog.syslog(syslog.LOG_INFO,"Copy des fichiers de sauvegarde sur le répertoire Microsoft AZURE en cours ...") # warning 
+  logging.debug("Copy des fichiers de sauvegarde sur le répertoire Microsoft AZURE en cours ...") # warning 
+#  syslog.syslog(syslog.LOG_DEBUG,"Copy des fichiers de sauvegarde sur le répertoire Microsoft AZURE en cours ...") # warning 
 
   file_service.create_file_from_path(AZURE_REP_BKP,'save_'+str(BACKUP_DATE),'save_'+str(BACKUP_DATE)+'db.sql',repertoire_de_sauvegarde+'/save_'+str(BACKUP_DATE)+'db.sql')
   file_service.create_file_from_path(AZURE_REP_BKP,'save_'+str(BACKUP_DATE),'save_'+str(BACKUP_DATE)+'.tar.bz2',repertoire_de_sauvegarde+'/save_'+str(BACKUP_DATE)+'.tar.bz2')
 
   print("Copy des fichiers de sauvegarde sur le répertoire Microsoft AZURE OK !")
-  logging.info("Copy des fichiers de sauvegarde sur le répertoire Microsoft AZURE OK !") # warning 
-  syslog.syslog(syslog.LOG_INFO,"Copy des fichiers de sauvegarde sur le répertoire Microsoft AZURE OK !") # warning 
+  logging.debug("Copy des fichiers de sauvegarde sur le répertoire Microsoft AZURE OK !") # warning 
+#  syslog.syslog(syslog.LOG_DEBUG,"Copy des fichiers de sauvegarde sur le répertoire Microsoft AZURE OK !") # warning 
 
 # suppression des fichiers de sauvegarde
 
@@ -313,12 +312,12 @@ if argument == 'save' or argument == '-s':
       print("")
       print(file_or_dir.name)
       logging.warning(file_or_dir.name) # warning 
-      syslog.syslog(syslog.LOG_WARNING, file_or_dir.name) # warning 
+#      syslog.syslog(syslog.LOG_WARNING, file_or_dir.name) # warning 
 
   print("")
   print("La sauvegarde c'est terminé correctement !")
   logging.warning("La sauvegarde c'est terminé correctement !") # warning
-  syslog.syslog(syslog.LOG_WARNING,"La sauvegarde c'est terminé correctement !") # warning
+#  syslog.syslog(syslog.LOG_WARNING,"La sauvegarde c'est terminé correctement !") # warning
 
 ######################################################
 # Lancement de la fonction attachée restoreDB / -rDB #
