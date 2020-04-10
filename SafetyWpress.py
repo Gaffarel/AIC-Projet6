@@ -3,7 +3,7 @@
 #####################################################################
 ##                                                                 ##
 ##     Script de sauvegarde et de restauration sur le cloud de     ##
-##    Microsoft AZURE d'un serveur wordpress avec MariaDB  V0.7f   ##
+##    Microsoft AZURE d'un serveur wordpress avec MariaDB  V0.7g   ##
 ##                                                                 ##
 #####################################################################
 
@@ -269,6 +269,7 @@ if argument == 'save' or argument == '-s':
 # Sauvegarde sur Microsoft AZURE #
 
 # Création d'un sous-répertoire: save_date du jour
+
   print("Création d'un sous-répertoire save_"+str(BACKUP_DATE)+" sur Microsoft AZURE en cours ...")
   logging.info("Création d'un sous-répertoire save_"+str(BACKUP_DATE)+" sur Microsoft AZURE en cours ...") # warning 
   syslog.syslog(syslog.LOG_INFO, "Création d'un sous-répertoire save_"+str(BACKUP_DATE)+" sur Microsoft AZURE en cours ...") # warning 
@@ -326,6 +327,8 @@ if argument == 'save' or argument == '-s':
 elif argument == 'restoreDB' or argument == '-rDB':
 
   connect_db() # verification de la disponibilité de la Base de Donnée
+  print(" Le serveur MariaDB est prêt !")
+  print("")
   print("Choix du Numéro de sauvegarde: ?")
   print("")
   BACKUP_DATE_SAVE=get_choix_de_la_sauvegarde()
@@ -360,6 +363,8 @@ elif argument == 'restoreDB' or argument == '-rDB':
 elif argument == 'restoreT' or argument == '-rT':
 
   connect_db() # verification de la disponibilité de la Base de Donnée 
+  print(" Le serveur MariaDB est prêt !")
+  print("")
   print("Choix du Numéro de sauvegarde: ?")
   print("")
   BACKUP_DATE_SAVE=get_choix_de_la_sauvegarde()
