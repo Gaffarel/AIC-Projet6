@@ -116,11 +116,13 @@ afin d'éffectuer une sauvegarde tous les jours à 3H20 par exemple.
 
 `SafetyWpress.log` et `create.log` sont créés dans /var/log/SafetyWpress/  
 
-'''
-logging.basicConfig(filename='/var/log/SafetyWpress/SafetyWpress.log',level=logging.WARNING, format='%(asctime)s : %(levelname)s - %(name)s - %(module)s : %(message)s') # pour le mode WARNING  
+```
+logging.basicConfig(filename='/var/log/SafetyWpress/SafetyWpress.log',level=logging.WARNING, format='%(asctime)s : %(levelname)s - %(name)s - %(module)s : %(message)s')  
+# pour le mode WARNING  
 
-#logging.basicConfig(filename='/var/log/SafetyWpress/SafetyWpress.log',level=logging.DEBUG, format='%(asctime)s : %(levelname)s - %(name)s - %(module)s : %(message)s') # pour le mode DEBUG  
-''' 
+#logging.basicConfig(filename='/var/log/SafetyWpress/SafetyWpress.log',level=logging.DEBUG, format='%(asctime)s : %(levelname)s - %(name)s - %(module)s : %(message)s')  
+# pour le mode DEBUG  
+``` 
 
 ## Licence
 
