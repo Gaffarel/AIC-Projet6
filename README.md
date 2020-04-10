@@ -26,9 +26,17 @@
 
 ## Présentation
 
-Ce projet à pour but de créer automatiquement un serveur WordPress prêt à l'emploi avec [create.py](https://github.com/Gaffarel/AIC-Projet6/blob/master/create.py),  
-de sauvegarder les fichiers importants du serveur hote, ainsi que les fichiers du serveur WordPress  
-et de sa base de donnée et l'envoyer sur le cloud de Microsoft AZURE avec  [SafetyWpress.py](https://github.com/Gaffarel/AIC-Projet6/blob/master/SafetyWpress.py) .
+Ce projet à pour but de créer automatiquement un serveur WordPress prêt à l'emploi,  
+avec le programme Python [create.py](https://github.com/Gaffarel/AIC-Projet6/blob/master/create.py) .  
+Pour cela on se servira de docker-compose et d'un fichier de référence [docker-compose.yml](https://github.com/Gaffarel/AIC-Projet6/blob/master/docker-compose.yml)  
+qu'il faudra configurer avec le fichier d'environnement [.env](https://github.com/Gaffarel/AIC-Projet6/blob/master/ex_.env)  
+et configurer ensuite le fichier [P6_config.ini](https://github.com/Gaffarel/AIC-Projet6/blob/master/ex_P6_config.ini) .
+
+Nous pourrons également grâce au programme Python [SafetyWpress.py](https://github.com/Gaffarel/AIC-Projet6/blob/master/SafetyWpress.py)  
+sauvegarder et restaurer les fichiers de configuration du serveur linux hôte,  
+ainsi que les fichiers du volume WordPress et le Dump de sa base de donnée.  
+
+Et enfin, envoyer et récupérer les sauvegardes depuis le cloud de Microsoft AZURE  
 
 
 ## Préparation
@@ -106,7 +114,13 @@ afin d'éffectuer une sauvegarde tous les jours à 3H20 par exemple.
 
 ## Les fichiers logs
 
-`SafetyWpress.log` et `create.log` sont créés dans /var/log/SafetyWpress/
+`SafetyWpress.log` et `create.log` sont créés dans /var/log/SafetyWpress/  
+
+'''
+logging.basicConfig(filename='/var/log/SafetyWpress/SafetyWpress.log',level=logging.WARNING, format='%(asctime)s : %(levelname)s - %(name)s - %(module)s : %(message)s') # pour le mode WARNING  
+
+#logging.basicConfig(filename='/var/log/SafetyWpress/SafetyWpress.log',level=logging.DEBUG, format='%(asctime)s : %(levelname)s - %(name)s - %(module)s : %(message)s') # pour le mode DEBUG  
+''' 
 
 ## Licence
 
