@@ -23,6 +23,7 @@
 - [Log](#les-fichiers-logs)
 - [Crontab](#crontab)
 - [Licence](#licence)
+- [Contribution](#contribution)
 
 ## Présentation
 
@@ -131,3 +132,7 @@ level=logging.DEBUG
  <p><a href="https://github.com/Gaffarel/AIC-Projet6/blob/master/LICENSE">
  <img width=6% src="https://www.gnu.org/graphics/gplv3-or-later.svg">SafetyWpress.py et create.py sont sous licence GNU General Public License v3.0 
  </a></p>
+
+## Contribuer
+
+ [Vous voulez contribuer ?](https://github.com/Gaffarel/AIC-Projet6/blob/master/CONTRIBUTING.md)
